@@ -1,0 +1,317 @@
+[
+ {
+  "code": "B64",
+  "name": "中国",
+  "expected": "country"
+ },
+ {
+  "code": "B64",
+  "name": "江苏",
+  "expected": "province"
+ },
+ {
+  "code": "B64",
+  "name": "华东",
+  "expected": "region"
+ },
+ {
+  "code": "B64",
+  "name": "上海",
+  "expected": "city"
+ },
+ {
+  "code": "B64",
+  "name": "青浦县",
+  "expected": "district"
+ },
+ {
+  "code": "B64",
+  "name": "杨浦区",
+  "expected": "district"
+ },
+ {
+  "code": "B64",
+  "name": "巨鹿路",
+  "expected": "landmark"
+ },
+ {
+  "code": "B64",
+  "name": "文化广场",
+  "expected": "landmark"
+ },
+ {
+  "code": "B64",
+  "name": "虹桥机场",
+  "expected": "landmark"
+ },
+ {
+  "code": "B64",
+  "name": "崇明岛",
+  "expected": "nature"
+ },
+ {
+  "code": "B64",
+  "name": "东海",
+  "expected": "nature"
+ },
+ {
+  "code": "B64",
+  "name": "上柴厂",
+  "expected": "org"
+ },
+ {
+  "code": "B64",
+  "name": "杨浦区委",
+  "expected": "org"
+ },
+ {
+  "code": "B64",
+  "name": "北大",
+  "expected": "org"
+ },
+ {
+  "code": "B64",
+  "name": "二中",
+  "expected": "org"
+ },
+ {
+  "code": "B64",
+  "name": "上海市委办公大楼",
+  "expected": "org"
+ },
+ {
+  "code": "B64",
+  "name": "东湖宾馆",
+  "expected": "landmark"
+ },
+ {
+  "code": "B64",
+  "name": "徐家汇",
+  "expected": "landmark"
+ },
+ {
+  "code": "B64",
+  "name": "核试验场区",
+  "expected": "landmark"
+ },
+ {
+  "code": "B64",
+  "name": "兔子",
+  "expected": "animal"
+ },
+ {
+  "code": "B59",
+  "name": "中国猿人",
+  "expected": "fossil"
+ },
+ {
+  "code": "B59",
+  "name": "北京猿人",
+  "expected": "fossil"
+ },
+ {
+  "code": "B59",
+  "name": "钱学森",
+  "expected": "person"
+ },
+ {
+  "code": "B59",
+  "name": "中国科学院",
+  "expected": "org"
+ },
+ {
+  "code": "B59",
+  "name": "诺贝尔奖",
+  "expected": "award"
+ },
+ {
+  "code": "B59",
+  "name": "北京",
+  "expected": "city"
+ },
+ {
+  "code": "B59",
+  "name": "河北",
+  "expected": "province"
+ },
+ {
+  "code": "B59",
+  "name": "东北地区",
+  "expected": "region"
+ },
+ {
+  "code": "B59",
+  "name": "安徽歙县",
+  "expected": "district"
+ },
+ {
+  "code": "B59",
+  "name": "山邑村",
+  "expected": "district"
+ },
+ {
+  "code": "B59",
+  "name": "何梁何利基金科学与技术成就奖",
+  "expected": "award"
+ },
+ {
+  "code": "B66",
+  "name": "孔子",
+  "expected": "person"
+ },
+ {
+  "code": "B66",
+  "name": "费孝通",
+  "expected": "person"
+ },
+ {
+  "code": "B66",
+  "name": "差序格局",
+  "expected": "concept"
+ },
+ {
+  "code": "B66",
+  "name": "西洋",
+  "expected": "concept"
+ },
+ {
+  "code": "B66",
+  "name": "儒家",
+  "expected": "concept"
+ },
+ {
+  "code": "B66",
+  "name": "云南",
+  "expected": "province"
+ },
+ {
+  "code": "B66",
+  "name": "昆明",
+  "expected": "city"
+ },
+ {
+  "code": "B66",
+  "name": "江村",
+  "expected": "district"
+ },
+ {
+  "code": "B60",
+  "name": "石家庄",
+  "expected": "city"
+ },
+ {
+  "code": "B60",
+  "name": "邯郸",
+  "expected": "city"
+ },
+ {
+  "code": "B60",
+  "name": "黄河",
+  "expected": "nature"
+ },
+ {
+  "code": "B60",
+  "name": "太行山",
+  "expected": "nature"
+ },
+ {
+  "code": "B60",
+  "name": "河北人民出版社",
+  "expected": "org"
+ },
+ {
+  "code": "B60",
+  "name": "杨震",
+  "expected": "person"
+ },
+ {
+  "code": "B60",
+  "name": "赵奢",
+  "expected": "person"
+ },
+ {
+  "code": "B60",
+  "name": "西门豹",
+  "expected": "person"
+ },
+ {
+  "code": "B60",
+  "name": "四知先生",
+  "expected": "concept"
+ },
+ {
+  "code": "B56",
+  "name": "黑龙江",
+  "expected": "province"
+ },
+ {
+  "code": "B56",
+  "name": "长白山",
+  "expected": "nature"
+ },
+ {
+  "code": "B56",
+  "name": "红松",
+  "expected": "plant"
+ },
+ {
+  "code": "B56",
+  "name": "毛茛科",
+  "expected": "taxon"
+ },
+ {
+  "code": "B56",
+  "name": "人参",
+  "expected": "plant"
+ },
+ {
+  "code": "B56",
+  "name": "东北",
+  "expected": "region"
+ },
+ {
+  "code": "B56",
+  "name": "周繇",
+  "expected": "person"
+ },
+ {
+  "code": "B58",
+  "name": "法国",
+  "expected": "country"
+ },
+ {
+  "code": "B58",
+  "name": "巴黎",
+  "expected": "city"
+ },
+ {
+  "code": "B58",
+  "name": "撒哈拉沙漠",
+  "expected": "nature"
+ },
+ {
+  "code": "B58",
+  "name": "狐狸",
+  "expected": "animal"
+ },
+ {
+  "code": "B58",
+  "name": "玫瑰",
+  "expected": "plant"
+ },
+ {
+  "code": "YC",
+  "name": "鲁迅",
+  "expected": "person"
+ },
+ {
+  "code": "YC",
+  "name": "上海",
+  "expected": "city"
+ },
+ {
+  "code": "YC",
+  "name": "中国",
+  "expected": "country"
+ }
+]

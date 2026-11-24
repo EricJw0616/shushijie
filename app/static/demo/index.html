@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>知识资产 / 图书档案 · 改造对照</title>
+<link rel="stylesheet" href="../app.css">
+<style>
+/* ——— 仅本对照页使用 ——— */
+.dm-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 14px;border:1px solid #DCE6DE;
+  background:linear-gradient(180deg,#F7FBF8,#F1F7F3);border-radius:10px;margin-bottom:18px;font-size:12px;color:#3D6B4F}
+.dm-bar b{color:#274A36}
+.dm-bar .sp{margin-left:auto}
+.seg{display:inline-flex;border:1px solid var(--line);background:#fff;border-radius:9px;overflow:hidden;flex-shrink:0}
+.seg button{border:0;background:transparent;padding:7px 15px;font-size:12px;color:var(--muted);cursor:pointer;font-family:inherit;white-space:nowrap}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--brand);color:#F1E7D2;font-weight:600}
+.note{border-radius:9px;padding:11px 14px;font-size:11.5px;line-height:1.75;margin:14px 0 0}
+.note.bad{background:#FCF1EE;border:1px solid #F0D6CF;color:#7C3B2E}
+.note.good{background:#EFF6F1;border:1px solid #CFE3D6;color:#2F5540}
+.note b{display:block;font-size:12px;margin-bottom:3px}
+.note ul{margin:0;padding-left:16px}
+.note li{margin:2px 0}
+.note code{background:rgba(0,0,0,.05);border-radius:3px;padding:0 4px;font-size:10.5px}
+
+.dm-split{display:grid;grid-template-columns:212px minmax(0,1fr);gap:16px;align-items:start}
+.rail{padding:6px 0}
+.rail h3{font-size:10px;letter-spacing:1.2px;color:var(--faint);text-transform:uppercase;font-weight:600;padding:10px 14px 4px}
+.rail .ri{display:flex;align-items:center;gap:8px;padding:6px 14px;font-size:12px;color:var(--muted);cursor:pointer;border-left:2px solid transparent}
+.rail .ri:hover{background:#FBFAF6;color:var(--ink)}
+.rail .ri.on{background:var(--gold-soft);color:#6E5322;border-left-color:var(--gold);font-weight:600}
+.rail .ri .n{margin-left:auto;font-size:10.5px;color:var(--faint)}
+.rail .ri.on .n{color:#8A6B33}
+.rail .ri small{display:block;font-size:10px;color:var(--faint);font-weight:400;margin-top:-2px}
+
+.toolbar{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line2);flex-wrap:wrap}
+.toolbar .search{flex:1;min-width:180px}
+.toolbar .cnt{font-size:11.5px;color:var(--faint);white-space:nowrap}
+
+.card-row{display:flex;gap:10px;align-items:flex-start}
+.card-row input[type=checkbox]{margin-top:4px;flex-shrink:0;accent-color:#B08D57}
+.card-main{min-width:0;flex:1}
+.dm-table{table-layout:fixed;width:100%}
+.dm-table td,.dm-table th{overflow:hidden}
+.card-main b{font-size:12.5px;font-weight:600;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-main span{display:block;font-size:11px;color:var(--faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;color:var(--faint)}
+
+.selbar{position:sticky;bottom:0;display:flex;align-items:center;gap:10px;padding:11px 14px;background:#1E2B25;color:#EDE7D8;border-radius:0 0 10px 10px;font-size:12px}
+.selbar b{color:#fff}
+.selbar .sp{margin-left:auto}
+.selbar .btn{height:29px;font-size:11.5px;background:transparent;border-color:rgba(255,255,255,.28);color:#EDE7D8}
+.selbar .btn:hover{border-color:var(--gold);color:#fff}
+.pager{display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid var(--line2);font-size:11.5px;color:var(--faint)}
+.pager .sp{margin-left:auto}
+.pager .btn+.btn{margin-left:8px}
+
+.evt{display:flex;align-items:flex-start;gap:11px;padding:11px 14px;border-bottom:1px solid var(--line2);cursor:pointer}
+.evt:hover{background:#FBFAF6}
+.evt:last-child{border-bottom:0}
+.evt .when{width:96px;flex-shrink:0;font-size:11px;color:var(--faint);padding-top:2px}
+.evt .who{flex:1;min-width:0}
+.evt .who b{font-size:12.5px;font-weight:600}
+.evt .who .d{font-size:11.5px;color:var(--muted);margin-top:2px}
+.evt .who .d em{font-style:normal;color:var(--ink);background:#F4F2EA;border-radius:3px;padding:0 4px;font-family:ui-monospace,Menlo,monospace;font-size:10.5px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;padding:12px 14px;border-bottom:1px solid var(--line2)}
+.chip{font-size:11.5px;padding:4px 11px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--muted);cursor:pointer}
+.chip.on{background:var(--brand);border-color:var(--brand);color:#F1E7D2;font-weight:600}
+
+#drawer{position:fixed;inset:0 0 0 auto;width:430px;max-width:92vw;background:#fff;box-shadow:-18px 0 50px rgba(20,26,22,.18);
+  transform:translateX(102%);transition:transform .22s ease;z-index:60;display:flex;flex-direction:column}
+#drawer.open{transform:none}
+#drawer .dh{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line)}
+#drawer .dh b{font-size:13px}
+#drawer .dh .x{margin-left:auto;border:0;background:transparent;font-size:18px;color:var(--faint);cursor:pointer;line-height:1}
+#drawer .dc{padding:16px 18px;overflow:auto;flex:1}
+#drawer .df{padding:12px 18px;border-top:1px solid var(--line);display:flex;gap:8px}
+.tabs-demo{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:14px 0 12px}
+.tabs-demo span{padding:7px 11px;font-size:11.5px;color:var(--faint);border-bottom:2px solid transparent;white-space:nowrap}
+.tabs-demo span.on{color:#1E2B25;font-weight:600;border-bottom-color:#B08D57}
+.tabs-demo span .arw{color:#B08D57;margin-right:3px}
+.intent{background:#1E2B25;color:#DCD5C4;border-radius:8px;padding:10px 12px;font-family:ui-monospace,Menlo,monospace;font-size:11px;line-height:1.7;overflow:auto}
+.intent .k{color:#C9A45C}
+.intent .del{color:#C98A7E;text-decoration:line-through}
+.mask{position:fixed;inset:0;background:rgba(20,26,22,.28);opacity:0;pointer-events:none;transition:opacity .2s;z-index:55}
+.mask.on{opacity:1;pointer-events:auto}
+@media (max-width:1080px){.dm-split{grid-template-columns:1fr}.rail{display:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">书</div><div><b>书世界</b><span>图书知识库</span></div></div>
+    <div class="workspace"><span class="ws-dot"></span>果麦文化 · 内容中台<span>⌄</span></div>
+    <nav>
+      <div class="nav-label">概览</div>
+      <div class="nav-item" onclick="alert('对照页只做「知识资产 / 图书档案」两页')"><span class="ico">◫</span><span>工作台</span></div>
+      <div class="nav-label">数据资产</div>
+      <div class="nav-item" onclick="alert('对照页只做「知识资产 / 图书档案」两页')"><span class="ico">▤</span><span>图书库</span><span class="count" id="navBookCount">4</span></div>
+      <div class="nav-item" onclick="alert('对照页只做「知识资产 / 图书档案」两页')"><span class="ico">↥</span><span>入库任务</span><span class="dot"></span></div>
+      <div class="nav-item" data-sec="assets"><span class="ico">◇</span><span>知识资产</span></div>
+      <div class="nav-item" data-sec="archive"><span class="ico">▦</span><span>图书档案</span></div>
+      <div class="nav-item" onclick="alert('对照页只做「知识资产 / 图书档案」两页')"><span class="ico">⌕</span><span>全局检索</span></div>
+      <div class="nav-label">应用</div>
+      <div class="nav-item" onclick="alert('对照页只做「知识资产 / 图书档案」两页')"><span class="ico">✦</span><span>应用中心</span><span class="count">4</span></div>
+      <div class="nav-label">平台</div>
+      <div class="nav-item" onclick="alert('对照页只做「知识资产 / 图书档案」两页')"><span class="ico">⚙</span><span>解析能力</span></div>
+      <div class="nav-item" onclick="alert('对照页只做「知识资产 / 图书档案」两页')"><span class="ico">♻</span><span>回收站</span></div>
+    </nav>
+    <div class="sidebar-foot"><div class="avatar">朱</div><div><b>朱老师</b><small>管理员</small></div><span class="more">⋯</span></div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="crumb" id="crumb"></div>
+      <div class="top-search"><input id="globalQ" placeholder="搜索图书、知识条目、标签…" onkeydown="if(event.key==='Enter')location.hash='#assets-new'"><kbd>⌘K</kbd></div>
+      <button class="btn sm" onclick="location.hash='#changes'">改动清单</button>
+      <button class="icon-btn" title="帮助">?</button>
+      <div class="avatar">朱</div>
+    </header>
+    <main class="view" id="view"></main>
+  </div>
+</div>
+
+<div class="mask" id="mask" onclick="closeDrawer()"></div>
+<aside id="drawer" aria-hidden="true">
+  <div class="dh"><b>落点演示</b><span class="faint" style="font-size:11px">点一行之后会到哪</span><button class="x" onclick="closeDrawer()">×</button></div>
+  <div class="dc" id="drawerBody"></div>
+  <div class="df"><button class="btn ghost" onclick="closeDrawer()">关闭</button><span class="faint" style="font-size:10.5px;line-height:1.5">这是对照页，不会真的跳转；<br>只演示改造后落点带不带意图的差别。</span></div>
+</aside>
+
+<script src="data.js"></script>
+<script>
+const D=window.DEMO;
+const S={sec:'assets',mode:'new',tier:'',type:'',code:'',q:'',page:1,sel:new Set(),ev:'all'};
+const BOOKS=D.books, CARDS=D.cards, EVENTS=D.events, ST=D.stats;
+
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const num=n=>(n==null?'—':Number(n).toLocaleString('en-US'));
+const clip=(s,n)=>{s=String(s||'');return s.length>n?s.slice(0,n)+'…':s};
+const TITLES=(()=>{const m={};EVENTS.filter(e=>e.detail&&e.detail.title).forEach(e=>m[e.code]=e.detail.title);BOOKS.forEach(b=>m[b.code]=b.book);return m;})();
+const bookOf=code=>({book:TITLES[code]||code,code:code,prototype:(BOOKS.find(b=>b.code===code)||{}).prototype||''});
+const TIERCLS={'可直接用':'p1','需人筛':'p2','仅定位器':'p3'};
+const EVMETA={
+  upload:{t:'上传入库',cls:'p1'}, delete:{t:'删除',cls:'p5'}, restore:{t:'恢复',cls:'p2'},
+  clc:{t:'分类变更',cls:'p4'}, confirm:{t:'人工确认',cls:'p1'}, settings:{t:'能力配置',cls:'p3'}
+};
+
+/* ============ 路由 ============ */
+function route(){
+  const h=(location.hash||'#assets-new').replace(/^#/,'');
+  if(h==='changes'){S.sec='changes';S.mode='';}
+  else{const [sec,mode]=h.split('-');S.sec=sec||'assets';S.mode=mode==='now'?'now':'new';}
+  document.querySelectorAll('.nav-item[data-sec]').forEach(x=>x.classList.toggle('on',x.dataset.sec===S.sec));
+  render();
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);
+
+function crumb(html){document.getElementById('crumb').innerHTML=html;}
+function seg(){return `<div class="seg">
+  <button class="${S.mode==='now'?'on':''}" onclick="location.hash='#${S.sec}-now'">现状</button>
+  <button class="${S.mode==='new'?'on':''}" onclick="location.hash='#${S.sec}-new'">改造后</button></div>`;}
+
+/* ============ 知识资产 · 现状 ============ */
+function assetsNow(){
+  const rows=BOOKS.slice().sort((a,b)=>b.cards-a.cards);
+  return `
+  <div class="page-head">
+    <div><div class="eyebrow">Content Assets / Knowledge</div><h1>知识资产</h1>
+      <p>按图书查看可交付的知识条目与标签；后续可在这里做抽检、导出、交付。</p></div>
+    <div class="head-actions">${seg()}</div>
+  </div>
+  <div class="kpis">
+    <div class="kpi"><div class="k">知识条目</div><div class="v">${num(ST.cards)}</div><div class="d">可直接用 ${num(ST.usable)} 条</div></div>
+    <div class="kpi"><div class="k">需人工筛选</div><div class="v">${num(ST.review)}</div><div class="d">语义需要人过一遍</div></div>
+    <div class="kpi"><div class="k">索引定位</div><div class="v">${num(ST.locator)}</div><div class="d">只用于定位，不算交付资产</div></div>
+    <div class="kpi"><div class="k">标签</div><div class="v">${num(ST.tags)}</div><div class="d">标签体系</div></div>
+  </div>
+  <section class="panel">
+    <div class="panel-head"><div><h2>按图书查看</h2><div class="sub">按知识条目数排序，点书名进入知识资产页签</div></div></div>
+    <table class="table"><thead><tr><th>图书</th><th>类型</th><th class="num">知识条目</th><th class="num">可直接用</th><th class="num">标签</th><th></th></tr></thead>
+    <tbody>${rows.map(b=>`<tr onclick="openDrawer('now','${b.code}')"><td><div class="bookcell"><div class="mini-cover">${esc(b.book[0])}</div><div><b>${esc(clip(b.book,18))}</b><span>${esc(b.code)}</span></div></div></td>
+      <td><span class="pill ${b.prototype}">${esc(b.prototype)} ${esc(b.prototype_name||'')}</span></td>
+      <td class="num">${num(b.cards)}</td><td class="num">${num(b.usable)}</td><td class="num">${num(b.tags)}</td><td class="chev">›</td></tr>`).join('')}</tbody></table>
+  </section>
+  <div class="note bad"><b>现状的问题：这张表的行是「书」，不是「条目」</b>
+    <ul>
+      <li>4 行数据来自与<a onclick="location.hash='#assets-new'">「图书库」</a>同一个 <code>state.books</code>，只换了排序和列顺序。</li>
+      <li>点任意一行 → <code>go('book', code)</code> → 落在书详情，页签取的是全局残留的 <code>state.detailTab</code>，和本页标题无关。</li>
+      <li>结果：页面叫「知识资产」，但 ${num(ST.cards)} 条资产一条都没出现；最该做的「抽检 / 导出 / 交付」在这一层没有操作对象。</li>
+    </ul></div>`;
+}
+
+/* ============ 知识资产 · 改造后 ============ */
+function filtered(){
+  return CARDS.filter(c=>
+    (!S.tier||c.tier===S.tier)&&(!S.type||c.t===S.type)&&(!S.code||c.code===S.code)&&
+    (!S.q||((c.name||'')+c.ex+(c.book||'')+c.anchor).toLowerCase().includes(S.q.toLowerCase())));
+}
+function assetsNew(){
+  const rows=filtered();
+  const PER=12, pages=Math.max(1,Math.ceil(rows.length/PER));
+  S.page=Math.min(S.page,pages);
+  const pageRows=rows.slice((S.page-1)*PER,S.page*PER);
+  const cntTier=t=>t?CARDS.filter(c=>c.tier===t).length:CARDS.length;
+  const types=[...new Set(CARDS.map(c=>c.t))].map(t=>[t,CARDS.filter(c=>c.t===t).length]).sort((a,b)=>b[1]-a[1]);
+  return `
+  <div class="page-head">
+    <div><div class="eyebrow">Content Assets / Knowledge</div><h1>知识资产</h1>
+      <p>跨书看 <b>${num(ST.cards)} 条知识条目本身</b>：按质量档、条目类型、来源书筛选，勾选后可抽检、导出、交付。不再需要先进某一本书。</p></div>
+    <div class="head-actions">${seg()}</div>
+  </div>
+  <div class="dm-split">
+    <aside class="panel rail">
+      <h3>质量档</h3>
+      <div class="ri ${S.tier===''?'on':''}" onclick="setF('tier','')"><span>全部</span><span class="n">${num(CARDS.length)}</span></div>
+      ${['可直接用','需人筛','仅定位器'].map(t=>`<div class="ri ${S.tier===t?'on':''}" onclick="setF('tier','${t}')">
+        <span>${t}${t==='仅定位器'?'<small>只用于定位，不算交付</small>':''}</span><span class="n">${num(cntTier(t))}</span></div>`).join('')}
+      <h3>条目类型</h3>
+      <div class="ri ${S.type===''?'on':''}" onclick="setF('type','')"><span>全部</span><span class="n">${num(CARDS.length)}</span></div>
+      ${types.map(([t,n])=>`<div class="ri ${S.type===t?'on':''}" onclick="setF('type','${t}')"><span>${esc(t)}</span><span class="n">${num(n)}</span></div>`).join('')}
+      <h3>来源书</h3>
+      <div class="ri ${S.code===''?'on':''}" onclick="setF('code','')"><span>全部</span><span class="n">${num(CARDS.length)}</span></div>
+      ${BOOKS.map(b=>`<div class="ri ${S.code===b.code?'on':''}" onclick="setF('code','${b.code}')" title="${esc(b.book)}">
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(clip(b.book,9))}<small>${esc(b.code)} · ${esc(b.prototype_name||b.prototype)}</small></span>
+        <span class="n">${num(b.cards)}</span></div>`).join('')}
+    </aside>
+
+    <section class="panel" style="overflow:hidden">
+      <div class="toolbar">
+        <div class="search"><input id="q" placeholder="搜条目名 / 原文片段 / 锚点" value="${esc(S.q)}" oninput="setQ(this.value)"></div>
+        <span class="cnt">命中 <b>${num(rows.length)}</b> / ${num(CARDS.length)} 条</span>
+        <button class="btn sm ghost" onclick="alert('演示：把当前筛选结果导出为 JSONL，字段与 /api/book/cards 一致')">导出当前筛选</button>
+      </div>
+      <table class="table dm-table"><thead><tr>
+        <th style="width:34px"><input type="checkbox" onchange="selAll(this.checked)"></th>
+        <th>知识条目</th><th style="width:92px">类型</th><th style="width:96px">质量档</th>
+        <th style="width:132px">来源书</th><th style="width:112px">锚点</th><th style="width:34px"></th></tr></thead>
+        <tbody>${pageRows.length?pageRows.map(c=>`<tr>
+          <td><input type="checkbox" ${S.sel.has(c.id)?'checked':''} onclick="event.stopPropagation()" onchange="toggleSel('${c.id}',this.checked)"></td>
+          <td onclick="openDrawer('entry','${c.id}')"><div class="card-row"><div class="card-main">
+            <b>${esc(c.name||c.id)}</b><span>${esc(clip(c.ex,96))}</span></div></div></td>
+          <td><span class="pill">${esc(c.t)}</span></td>
+          <td><span class="pill ${TIERCLS[c.tier]||''}">${esc(c.tier||'—')}</span></td>
+          <td title="${esc(c.book)}"><div class="card-main"><b style="font-size:11.5px">${esc(c.code)}</b><span>${esc(clip(c.book,8))}</span></div></td>
+          <td><span class="mono">${esc(c.anchor)}</span></td>
+          <td class="chev" onclick="openDrawer('entry','${c.id}')">›</td></tr>`).join('')
+          :`<tr><td colspan="7"><div class="empty">没有命中的条目</div></td></tr>`}</tbody></table>
+      ${S.sel.size?`<div class="selbar"><b>已选 ${S.sel.size} 条</b><span style="color:#A9B4A9">可直接用 ${[...S.sel].filter(id=>CARDS.find(c=>c.id===id).tier==='可直接用').length} · 仅定位器 ${[...S.sel].filter(id=>CARDS.find(c=>c.id===id).tier==='仅定位器').length}</span>
+        <span class="sp"></span>
+        <button class="btn" onclick="alert('演示：导出已选 ${S.sel.size} 条为 JSONL / CSV')">导出</button>
+        <button class="btn" onclick="alert('演示：标记为需复核，写入操作记录')">标记需复核</button>
+        <button class="btn" onclick="clearSel()">清除</button></div>`:''}
+      <div class="pager"><span>第 ${S.page} / ${pages} 页 · 每页 ${PER} 条</span>
+        <span class="sp"></span>
+        <button class="btn sm ghost" ${S.page<=1?'disabled':''} onclick="setPage(${S.page-1})">上一页</button>
+        <button class="btn sm ghost" ${S.page>=pages?'disabled':''} onclick="setPage(${S.page+1})">下一页</button></div>
+    </section>
+  </div>
+  <div class="note good"><b>改造后：这张表的行是「条目」，下钻的落点也是「条目所在的书 + 知识资产页签」</b>
+    <ul>
+      <li>筛选、勾选、抽检、导出都在这一层完成——${num(ST.cards)} 条资产第一次能被直接看见和操作。</li>
+      <li>点一行 → 书详情并<b>显式打开「知识资产」页签</b>（<code>go('book', code, 'assets')</code>），不再依赖残留状态。</li>
+      <li>「仅定位器 ${num(ST.locator)} 条」单独成档：它只用于回查原文，不混进交付计数。</li>
+    </ul></div>`;
+}
+
+/* ============ 图书档案 · 现状 ============ */
+function archiveNow(){
+  return `
+  <div class="page-head">
+    <div><div class="eyebrow">Operations / Archive</div><h1>图书档案</h1>
+      <p>每本书的分类、内容结构、知识资产、能力边界与操作记录。点书名查看完整档案。</p></div>
+    <div class="head-actions">${seg()}</div>
+  </div>
+  <section class="panel">
+    <div class="filters"><div class="search"><input placeholder="搜索书名 / 编号 / 类型"></div><span class="faint">共 ${BOOKS.length} 本</span></div>
+    <table class="table"><thead><tr><th>图书</th><th>图书分类</th><th>中图分类</th><th>状态</th><th class="num">内容段</th><th class="num">知识条目</th><th class="num">标签</th><th>入库时间</th><th></th></tr></thead>
+    <tbody>${BOOKS.map(b=>`<tr onclick="openDrawer('now','${b.code}')">
+      <td><div class="bookcell"><div class="mini-cover">${esc(b.book[0])}</div><div><b>${esc(clip(b.book,16))}</b><span>${esc(b.code)}</span></div></div></td>
+      <td><span class="pill ${b.prototype}">${esc(b.prototype)} ${esc(b.prototype_name||'')}</span></td>
+      <td>${b.clc?`<span class="clc-inline" title="${esc((b.clc['依据']||[]).join('；'))}">${esc(b.clc['代码'])} ${esc(b.clc['名称'])}</span>`:'<span class="faint">—</span>'}</td>
+      <td><span class="status ok">已入库</span></td>
+      <td class="num">${num(b.segments)}</td><td class="num">${num(b.cards)}</td><td class="num">${num(b.tags)}</td>
+      <td class="faint">${esc((b.added_at||'').replace('T',' ').slice(0,10))}</td><td class="chev">›</td></tr>`).join('')}</tbody></table>
+  </section>
+  <div class="note bad"><b>现状的问题：和「图书库」的差别只剩一列中图分类</b>
+    <ul>
+      <li>列几乎完全一致（图书 / 分类 / 状态 / 段数 / 条目 / 标签 / 时间），点进去落点和图书库一样。</li>
+      <li>「档案」本来的东西——分类依据、能力边界、${EVENTS.length} 条操作事件——在列表层一条都看不到。</li>
+      <li>于是它回答不了自己最该回答的问题：<b>这本书为什么被判成 P11？昨天谁改过它的中图号？</b></li>
+    </ul></div>`;
+}
+
+/* ============ 图书档案 · 改造后 ============ */
+function evMatch(e){
+  if(S.ev==='all')return true;
+  if(S.ev==='risk')return ['delete','restore','confirm'].includes(e.event);
+  return e.event===S.ev;
+}
+function evDetail(e){
+  const d=e.detail||{};
+  const T=(s)=>`<em>${esc(s)}</em>`;
+  if(e.event==='upload')return `${T(d.format||'')} 入库 · 判型 ${T(d.prototype||'未定')} · 置信 ${T(d.confidence||'—')} · ${T((d.cards||0)+' 条')}知识条目`;
+  if(e.event==='delete')return `移入回收站 ${T(d.trash_id||'')} · 底本${d.raw_moved?'已移出':'保留'} · 产物${d.out_moved?'已移出':'保留'}`;
+  if(e.event==='restore')return `从回收站 ${T(d.trash_id||'')} 恢复并重跑 ${T(d.job||'')}`;
+  if(e.event==='clc')return `中图分类改为 ${T((d['代码']||'')+' '+(d['名称']||''))}`;
+  if(e.event==='confirm')return `人工确认为已入库 ${d.job==='manual'?'（手动）':'· 任务 '+T(d.job||'')}`;
+  if(e.event==='settings')return `能力配置变更 · 任务 ${T(d.job||'')}`;
+  return JSON.stringify(d);
+}
+function archiveNew(){
+  const rows=EVENTS.filter(evMatch).slice().sort((a,b)=>b.time.localeCompare(a.time));
+  const cnt=k=>EVENTS.filter(e=>k==='all'?true:k==='risk'?['delete','restore','confirm'].includes(e.event):e.event===k).length;
+  return `
+  <div class="page-head">
+    <div><div class="eyebrow">Operations / Archive</div><h1>图书档案</h1>
+      <p>按事件看：谁在什么时候、对哪本书、改了什么。判型依据、中图改判、人工确认、删除与恢复都留痕，点一行回到那本书的操作记录页签。</p></div>
+    <div class="head-actions">${seg()}</div>
+  </div>
+  <section class="panel">
+    <div class="chips">
+      <span class="chip ${S.ev==='all'?'on':''}" onclick="setEv('all')">全部 ${cnt('all')}</span>
+      <span class="chip ${S.ev==='risk'?'on':''}" onclick="setEv('risk')">需要复核 ${cnt('risk')}</span>
+      <span class="chip ${S.ev==='upload'?'on':''}" onclick="setEv('upload')">上传入库 ${cnt('upload')}</span>
+      <span class="chip ${S.ev==='clc'?'on':''}" onclick="setEv('clc')">分类变更 ${cnt('clc')}</span>
+      <span class="chip ${S.ev==='confirm'?'on':''}" onclick="setEv('confirm')">人工确认 ${cnt('confirm')}</span>
+      <span class="chip ${S.ev==='delete'?'on':''}" onclick="setEv('delete')">删除 ${cnt('delete')}</span>
+      <span class="chip ${S.ev==='restore'?'on':''}" onclick="setEv('restore')">恢复 ${cnt('restore')}</span>
+      <span class="chip ${S.ev==='settings'?'on':''}" onclick="setEv('settings')">能力配置 ${cnt('settings')}</span>
+    </div>
+    <div>${rows.map((e,i)=>`<div class="evt" onclick="openDrawer('event','${e.time}|${e.code}|${i}')">
+      <div class="when">${esc(e.time.replace('T',' ').slice(5,16))}</div>
+      <div class="who"><b>${e.code==='_settings'?'全库':esc(bookOf(e.code).book)}</b>
+        <span class="pill ${EVMETA[e.event]?.cls||''}" style="margin-left:6px">${EVMETA[e.event]?.t||e.event}</span>
+        <div class="d">${evDetail(e)}</div></div>
+      <span class="chev">›</span></div>`).join('')||'<div class="empty">这个筛选下没有事件</div>'}</div>
+  </section>
+  <div class="note good"><b>改造后：这张表的行是「事件」，落点固定是那本书的「操作记录」页签</b>
+    <ul>
+      <li>${EVENTS.length} 条真实事件一次看全：B60 的中图号改过两次（K → D → D）、B56 删了又恢复、B61–B63 是测试书已删。</li>
+      <li>「需要复核」一眼筛出 ${cnt('risk')} 条（删除 / 恢复 / 人工确认）——审计和排障的入口在这里，不在书列表里。</li>
+      <li>点一行 → <code>go('book', code, 'records')</code>，定位到该书操作记录并高亮这条事件。</li>
+    </ul></div>`;
+}
+
+/* ============ 改动清单 ============ */
+function changes(){
+  return `
+  <div class="page-head"><div><div class="eyebrow">Redesign Note</div><h1>改什么、为什么</h1>
+    <p>三个入口要成立，必须让它们的行是不同的对象。下面是这一版与现网的差异。</p></div></div>
+  <section class="panel"><table class="table"><thead><tr><th>页面</th><th>现状的行</th><th>改造后的行</th><th>落点</th></tr></thead><tbody>
+    <tr><td><b>图书库</b></td><td>书</td><td>书（不动）</td><td>书详情 · 概览</td></tr>
+    <tr><td><b>知识资产</b></td><td><span class="pill p5">书</span> 与图书库同表</td><td><span class="pill p1">知识条目</span> 642 条</td><td>书详情 · 知识资产页签</td></tr>
+    <tr><td><b>图书档案</b></td><td><span class="pill p5">书</span> 与图书库同表</td><td><span class="pill p1">操作事件</span> 22 条</td><td>书详情 · 操作记录页签</td></tr>
+    <tr><td><b>全局检索</b></td><td>查询</td><td>查询（不动）</td><td>书详情</td></tr>
+  </tbody></table></section>
+  <div class="note good" style="margin-top:16px"><b>要改的三处代码</b>
+    <ul>
+      <li><code>go(view,arg,tab)</code> + <code>renderBook(v,code,tab)</code>：进入时显式设 <code>state.detailTab</code>，不再用全局残留值。约 20 行。</li>
+      <li><code>renderAssets</code>：换成 <code>/api/book/cards</code> 的全库分页列表（后端已有 <code>offset/limit/by_type/by_tier</code>），加质量档/类型/来源书筛选与导出。约 150 行。</li>
+      <li><code>renderArchive</code>：换成 <code>app/data/operations.jsonl</code> 的事件流（后端已有，<code>store</code> 里读一次即可），加「需要复核」筛选。约 80 行。</li>
+    </ul></div>`;
+}
+
+/* ============ 交互 ============ */
+function setF(k,v){S[k]=v;S.page=1;render();}
+function setQ(v){S.q=v;S.page=1;render();document.getElementById('q').focus();document.getElementById('q').setSelectionRange(v.length,v.length);}
+function setPage(p){S.page=p;render();}
+function setEv(k){S.ev=k;render();}
+function toggleSel(id,on){on?S.sel.add(id):S.sel.delete(id);render();}
+function selAll(on){const rows=filtered().slice((S.page-1)*PER,S.page*PER);rows.forEach(r=>on?S.sel.add(r.id):S.sel.delete(r.id));render();}
+function clearSel(){S.sel.clear();render();}
+
+function openDrawer(kind,arg){
+  const body=document.getElementById('drawerBody');let html='';
+  if(kind==='now'){
+    const b=bookOf(arg);
+    html=`<div class="faint" style="font-size:11px;margin-bottom:8px">现状：从「${S.sec==='archive'?'图书档案':'知识资产'}」点这行</div>
+    <div style="display:flex;gap:11px;align-items:center;margin-bottom:14px">
+      <div class="mini-cover" style="width:40px;height:52px;font-size:16px">${esc(b.book[0])}</div>
+      <div><b style="font-size:13px">${esc(b.book)}</b><div class="mono">${esc(b.code)} · ${esc(b.prototype)} ${esc(b.prototype_name||'')}</div></div></div>
+    <div class="tabs-demo"><span class="">概览</span><span>知识资产</span><span>标签体系</span><span>原文</span><span>操作记录</span></div>
+    <div class="note bad" style="margin:0"><b>落到「概览」——但这是碰巧</b>
+      <code>state.detailTab</code> 是全局变量，导航时不重置。你上一个动作若停在「标签体系」，这里打开的也是「标签体系」。<br>
+      入口带的信息（我是从「知识资产」还是「图书档案」进来的）在这里已经丢了。</div>
+    <div class="intent" style="margin-top:12px"><span class="del">go('book','${esc(b.code)}')</span></div>`;
+  }else if(kind==='entry'){
+    const c=CARDS.find(x=>x.id===arg);const b=bookOf(c.code);
+    html=`<div class="faint" style="font-size:11px;margin-bottom:8px">改造后：从「知识资产」点这一条</div>
+    <div style="font-size:13px;font-weight:600;margin-bottom:3px">${esc(c.name||c.id)}</div>
+    <div class="mono" style="margin-bottom:10px">${esc(c.id)} · ${esc(c.t)} · ${esc(c.tier)} · ${esc(c.anchor)}</div>
+    <div style="font-size:11.5px;color:#4F544B;background:#FBFAF6;border:1px solid var(--line2);border-radius:8px;padding:10px 12px;line-height:1.75">${esc(clip(c.ex,220))}</div>
+    <div style="display:flex;gap:11px;align-items:center;margin:14px 0 4px">
+      <div class="mini-cover" style="width:34px;height:44px;font-size:14px">${esc(b.book[0])}</div>
+      <div><b style="font-size:12.5px">${esc(b.book)}</b><div class="mono">${esc(c.code)}</div></div></div>
+    <div class="tabs-demo"><span>概览</span><span class="on"><span class="arw">→</span>知识资产</span><span>标签体系</span><span>原文</span><span>操作记录</span></div>
+    <div class="note good" style="margin:0"><b>直接落在「知识资产」页签</b>并且预置了筛选：这条 <span class="mono">${esc(c.id)}</span> 立在第一条，返回时还是同一批筛选结果。</div>
+    <div class="intent" style="margin-top:12px"><span class="k">go</span>('book','${esc(c.code)}',<span class="k">'assets'</span>)</div>`;
+  }else{
+    const [time,code]=arg.split('|');const e=EVENTS.find(x=>x.time===time&&x.code===code);
+    const b=bookOf(e.code);
+    html=`<div class="faint" style="font-size:11px;margin-bottom:8px">改造后：从「图书档案」点这一条</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span class="pill ${EVMETA[e.event]?.cls||''}">${EVMETA[e.event]?.t||e.event}</span>
+      <span class="mono">${esc(e.time.replace('T',' ').slice(0,16))}</span></div>
+    <div style="font-size:11.5px;color:#4F544B;background:#FBFAF6;border:1px solid var(--line2);border-radius:8px;padding:10px 12px;line-height:1.75">${evDetail(e)}</div>
+    <div style="display:flex;gap:11px;align-items:center;margin:14px 0 4px">
+      <div class="mini-cover" style="width:34px;height:44px;font-size:14px">${esc(b.book[0])}</div>
+      <div><b style="font-size:12.5px">${e.code==='_settings'?'全库设置':esc(b.book)}</b><div class="mono">${esc(e.code)}</div></div></div>
+    <div class="tabs-demo"><span>概览</span><span>知识资产</span><span>标签体系</span><span>原文</span><span class="on"><span class="arw">→</span>操作记录</span></div>
+    <div class="note good" style="margin:0"><b>直接落在「操作记录」页签</b>，并滚到这一条、临时高亮它所在的那一行。</div>
+    <div class="intent" style="margin-top:12px"><span class="k">go</span>('book','${esc(e.code)}',<span class="k">'records'</span>)<br><span style="color:#8C9A8D">                 ↑ 并带 event_time 做高亮</span></div>`;
+  }
+  body.innerHTML=html;
+  document.getElementById('drawer').classList.add('open');
+  document.querySelector('.mask').classList.add('on');
+}
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.querySelector('.mask').classList.remove('on');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer();});
+
+/* ============ 渲染 ============ */
+function render(){
+  const v=document.getElementById('view');
+  if(S.sec==='changes'){crumb('<span>对照页</span><span>/</span><b>改动清单</b>');v.innerHTML=changes();return;}
+  if(S.sec==='assets'){
+    crumb(`<span>数据资产</span><span>/</span><b>知识资产</b><span class="faint" style="font-size:10px;border:1px solid var(--line);border-radius:4px;padding:0 5px;margin-left:4px">对照页</span>`);
+    v.innerHTML=S.mode==='now'?assetsNow():assetsNew();
+  }else{
+    crumb(`<span>数据资产</span><span>/</span><b>图书档案</b><span class="faint" style="font-size:10px;border:1px solid var(--line);border-radius:4px;padding:0 5px;margin-left:4px">对照页</span>`);
+    v.innerHTML=S.mode==='now'?archiveNow():archiveNew();
+  }
+}
+route();
+(function(){
+  const m=new URLSearchParams(location.search).get('open');
+  if(!m)return;
+  const i=m.indexOf(':'); if(i<0)return;
+  const kind=m.slice(0,i), arg=decodeURIComponent(m.slice(i+1));
+  if(kind==='entry')openDrawer('entry',arg);
+  else if(kind==='event')openDrawer('event',arg);
+  else if(kind==='now')openDrawer('now',arg);
+})();
+</script>
+</body>
+</html>

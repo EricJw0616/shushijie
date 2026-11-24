@@ -1,0 +1,57 @@
+{"name": "两浙", "src": "corpus", "note": "B60 ×2"}
+{"name": "云南", "src": "corpus", "note": "B60 ×4"}
+{"name": "云南省", "src": "admin", "note": "行政区划"}
+{"name": "内蒙古", "src": "corpus", "note": "B56 ×52"}
+{"name": "内蒙古自治区", "src": "admin", "note": "行政区划"}
+{"name": "台湾", "src": "corpus", "note": "B56 ×20"}
+{"name": "台湾省", "src": "corpus", "note": "B64 ×2"}
+{"name": "吉林", "src": "corpus", "note": "B59 ×2"}
+{"name": "吉林省", "src": "admin", "note": "行政区划"}
+{"name": "四川", "src": "corpus", "note": "B60 ×8"}
+{"name": "四川省", "src": "admin", "note": "行政区划"}
+{"name": "宁夏", "src": "corpus", "note": "B56 ×15"}
+{"name": "安徽", "src": "corpus", "note": "B60 ×3"}
+{"name": "安徽省", "src": "admin", "note": "行政区划"}
+{"name": "山东", "src": "corpus", "note": "B56 ×27"}
+{"name": "山东省", "src": "admin", "note": "行政区划"}
+{"name": "山西", "src": "corpus", "note": "B60 ×7"}
+{"name": "山西省", "src": "admin", "note": "行政区划"}
+{"name": "广东", "src": "corpus", "note": "B60 ×2"}
+{"name": "广东省", "src": "admin", "note": "行政区划"}
+{"name": "广西", "src": "corpus", "note": "B56 ×21"}
+{"name": "新疆", "src": "corpus", "note": "B56 ×31"}
+{"name": "江苏", "src": "corpus", "note": "B56 ×29"}
+{"name": "江苏省", "src": "admin", "note": "行政区划"}
+{"name": "江西", "src": "corpus", "note": "B60 ×2"}
+{"name": "江西省", "src": "admin", "note": "行政区划"}
+{"name": "河北", "src": "corpus", "note": "B60 ×11"}
+{"name": "河北省", "src": "corpus", "note": "B60 ×2"}
+{"name": "河南", "src": "corpus", "note": "B60 ×11"}
+{"name": "河南省", "src": "admin", "note": "行政区划"}
+{"name": "洛泽尔省", "src": "corpus", "note": "B58 ×2"}
+{"name": "浙江", "src": "corpus", "note": "B60 ×6"}
+{"name": "浙江省", "src": "admin", "note": "行政区划"}
+{"name": "海南", "src": "corpus", "note": "B56 ×8"}
+{"name": "海南省", "src": "admin", "note": "行政区划"}
+{"name": "湖北", "src": "corpus", "note": "B60 ×4"}
+{"name": "湖北省", "src": "admin", "note": "行政区划"}
+{"name": "湖南", "src": "corpus", "note": "B56 ×21"}
+{"name": "湖南省", "src": "admin", "note": "行政区划"}
+{"name": "湖广", "src": "corpus", "note": "B60 ×2"}
+{"name": "甘肃", "src": "corpus", "note": "B56 ×51"}
+{"name": "甘肃省", "src": "admin", "note": "行政区划"}
+{"name": "直隶", "src": "corpus", "note": "B60 ×9"}
+{"name": "直隶省", "src": "corpus", "note": "B60 ×2"}
+{"name": "福建", "src": "corpus", "note": "B60 ×6"}
+{"name": "福建省", "src": "admin", "note": "行政区划"}
+{"name": "西藏", "src": "corpus", "note": "B56 ×50"}
+{"name": "西藏自治区", "src": "admin", "note": "行政区划"}
+{"name": "贵州", "src": "corpus", "note": "B60 ×3"}
+{"name": "贵州省", "src": "admin", "note": "行政区划"}
+{"name": "辽宁省", "src": "admin", "note": "行政区划"}
+{"name": "陕西", "src": "corpus", "note": "B60 ×2"}
+{"name": "陕西省", "src": "admin", "note": "行政区划"}
+{"name": "青海", "src": "corpus", "note": "B56 ×23"}
+{"name": "青海省", "src": "admin", "note": "行政区划"}
+{"name": "黑龙江", "src": "corpus", "note": "B56 ×8"}
+{"name": "黑龙江省", "src": "admin", "note": "行政区划"}

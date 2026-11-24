@@ -1,0 +1,9 @@
+# OCR worker 依赖（Linux 生产环境；Python 3.11）
+# 引擎：RapidOCR（PP-OCR 模型，ONNX Runtime），Apache-2.0
+# 换 GPU：把 onnxruntime 换成 onnxruntime-gpu，并让容器可见 GPU
+rapidocr-onnxruntime==1.4.4
+onnxruntime==1.19.2
+pypdfium2==5.15.2
+Pillow==11.3.0
+numpy==2.0.2
+opencv-python==4.10.0.84

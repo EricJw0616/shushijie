@@ -1,0 +1,843 @@
+{"name": "LSE", "src": "corpus", "note": "B66 ×2"}
+{"name": "一兵团", "src": "corpus", "note": "B64 ×5"}
+{"name": "一农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "七农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "七台河经济开发区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "七星农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "七星泡农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "万宝川农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "万福经济技术开发区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "三义堂农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "三农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "三十一棉", "src": "corpus", "note": "B64 ×3"}
+{"name": "三坑农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "三大队", "src": "corpus", "note": "B64 ×2"}
+{"name": "三河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "三联书店", "src": "corpus", "note": "B66 ×3"}
+{"name": "三角山旅游度假区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "上柴厂", "src": "corpus", "note": "从地名纠正：B64 ×7"}
+{"name": "上棉十七厂", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海交通大学反到底兵团", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海人民公社", "src": "corpus", "note": "B64 ×11"}
+{"name": "上海人民公社临时委员会", "src": "corpus", "note": "B64 ×6"}
+{"name": "上海冶金研究所", "src": "corpus", "note": "B59 ×2"}
+{"name": "上海华东师范大学", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海国棉三十一厂", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海工人赤卫队", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海工人赤卫队总部", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海工人革命造反总司令部", "src": "corpus", "note": "B64 ×16"}
+{"name": "上海工人革命造反总司令部北上返沪二兵团", "src": "corpus", "note": "B64 ×3"}
+{"name": "上海市中级人民法院", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海市公安局", "src": "corpus", "note": "B64 ×5"}
+{"name": "上海市反到底联络总部", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海市委", "src": "corpus", "note": "B64 ×60"}
+{"name": "上海市委办公大楼", "src": "corpus", "note": "从地名纠正：B64 ×2"}
+{"name": "上海市委机关革命造反联络站", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海市工人革命造反总司令部", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海市检察院", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海市炮打司令部联合兵团", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海市白茅岭监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "上海市革会", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海市革命委员会", "src": "corpus", "note": "B64 ×11"}
+{"name": "上海市革委会", "src": "corpus", "note": "B64 ×3"}
+{"name": "上海市高级人民法院", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海市高级法院", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海师院", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海新闻界革命造反委员会", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海有机化学研究所", "src": "corpus", "note": "B59 ×2"}
+{"name": "上海柴油机厂", "src": "corpus", "note": "B64 ×4"}
+{"name": "上海第三十一棉纺织厂", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海第六丝织厂", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海红卫兵总部", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海警备区", "src": "corpus", "note": "B64 ×11"}
+{"name": "上海警备区支左办公室", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海铁路分局", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海铁路分局调度所", "src": "corpus", "note": "B64 ×2"}
+{"name": "上海铁路局", "src": "corpus", "note": "B64 ×2"}
+{"name": "上钢三厂", "src": "corpus", "note": "B64 ×2"}
+{"name": "专案组", "src": "corpus", "note": "B64 ×2"}
+{"name": "世界和平拥护者大会", "src": "corpus", "note": "B59 ×2"}
+{"name": "东京大学", "src": "corpus", "note": "B59 ×2"}
+{"name": "东坝头农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "东埔农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "东山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "东方华侨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "东方红农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "东林党", "src": "corpus", "note": "B60 ×2"}
+{"name": "东海农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "东海渔业指挥部", "src": "corpus", "note": "B64 ×2"}
+{"name": "东海舰队", "src": "corpus", "note": "B64 ×3"}
+{"name": "东湖宾馆", "src": "corpus", "note": "从地名纠正：B64 ×2"}
+{"name": "东辛农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "东郊开发区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "东风农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "两江总督", "src": "corpus", "note": "B60 ×2"}
+{"name": "中书", "src": "corpus", "note": "B60 ×3"}
+{"name": "中书省", "src": "corpus", "note": "B60 ×3"}
+{"name": "中共上海市委", "src": "corpus", "note": "B64 ×2"}
+{"name": "中共中央", "src": "corpus", "note": "B59 ×8"}
+{"name": "中共党史出版社", "src": "corpus", "note": "B64 ×2"}
+{"name": "中国共产党", "src": "corpus", "note": "B64 ×6"}
+{"name": "中国共产党中央委员会", "src": "corpus", "note": "B64 ×2"}
+{"name": "中国工程院", "src": "corpus", "note": "B59 ×8"}
+{"name": "中国科学技术大学", "src": "corpus", "note": "B59 ×2"}
+{"name": "中国科学院", "src": "corpus", "note": "B59 ×47"}
+{"name": "中国科学院上海冶金研究所", "src": "corpus", "note": "B59 ×2"}
+{"name": "中国科学院仪器馆", "src": "corpus", "note": "B59 ×3"}
+{"name": "中国科学院半导体研究所", "src": "corpus", "note": "B59 ×2"}
+{"name": "中国科学院地球物理研究所", "src": "corpus", "note": "B59 ×2"}
+{"name": "中国科学院学部", "src": "corpus", "note": "B59 ×2"}
+{"name": "中国科学院金属研究所", "src": "corpus", "note": "B59 ×2"}
+{"name": "中国药材公司", "src": "corpus", "note": "B56 ×2"}
+{"name": "中央", "src": "corpus", "note": "B64 ×10"}
+{"name": "中央专案组", "src": "corpus", "note": "B64 ×2"}
+{"name": "中央人民广播电台", "src": "corpus", "note": "B64 ×2"}
+{"name": "中央军委", "src": "corpus", "note": "B59 ×9"}
+{"name": "中央文革", "src": "corpus", "note": "B64 ×10"}
+{"name": "中央文革小组", "src": "corpus", "note": "B64 ×18"}
+{"name": "中央研究院气象研究所", "src": "corpus", "note": "B59 ×2"}
+{"name": "中央美术学院", "src": "corpus", "note": "B64 ×2"}
+{"name": "中百一店", "src": "corpus", "note": "B64 ×6"}
+{"name": "中苏友好大厦", "src": "corpus", "note": "从地名纠正：B64 ×2"}
+{"name": "临沧监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "临海农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "丽光华侨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "乃林果树农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "乌拉盖管理区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "乌日根塔拉农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "乌石农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "乌苏监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "九农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "乡贤祠", "src": "corpus", "note": "B60 ×3"}
+{"name": "书记处", "src": "corpus", "note": "B64 ×2"}
+{"name": "书院", "src": "corpus", "note": "B60 ×2"}
+{"name": "二中", "src": "corpus", "note": "从地名纠正：B64 ×2"}
+{"name": "二九〇农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "二九一农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "二兵团", "src": "corpus", "note": "B64 ×13"}
+{"name": "二军大红旗组织", "src": "corpus", "note": "B64 ×2"}
+{"name": "二商局", "src": "corpus", "note": "B64 ×2"}
+{"name": "二道河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "二龙山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "二龙涛农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "于田监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "云南大学", "src": "corpus", "note": "B66 ×4"}
+{"name": "云台农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "云山企业集团", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "云山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "五七干校", "src": "corpus", "note": "B64 ×6"}
+{"name": "五九七农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "五二农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "五农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "五四农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "五图河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "五大连池农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "五眼泉片区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "五里江农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "交大", "src": "corpus", "note": "B64 ×2"}
+{"name": "交大反到底", "src": "corpus", "note": "B64 ×3"}
+{"name": "交运局", "src": "corpus", "note": "B64 ×2"}
+{"name": "人民卫生出版社", "src": "corpus", "note": "B56 ×2"}
+{"name": "人民电器厂", "src": "corpus", "note": "B64 ×2"}
+{"name": "伊吾县山南开发区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "伽利玛出版社", "src": "corpus", "note": "B58 ×2"}
+{"name": "何梁何利基金", "src": "corpus", "note": "B59 ×2"}
+{"name": "佛山监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "供销合作社", "src": "corpus", "note": "B64 ×2"}
+{"name": "依兰农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "保和殿", "src": "corpus", "note": "B60 ×2"}
+{"name": "保安农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "保民农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "保温瓶二厂", "src": "corpus", "note": "B64 ×2"}
+{"name": "信宜市国营红旗农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "健康农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "先贤祠", "src": "corpus", "note": "B58 ×3"}
+{"name": "光机所", "src": "corpus", "note": "B59 ×2"}
+{"name": "免渡河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "党中央", "src": "corpus", "note": "B64 ×20"}
+{"name": "党委", "src": "corpus", "note": "B64 ×3"}
+{"name": "党总支", "src": "corpus", "note": "B64 ×2"}
+{"name": "党支部", "src": "corpus", "note": "B64 ×2"}
+{"name": "八二二厂", "src": "corpus", "note": "B64 ×2"}
+{"name": "八五〇农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "八五一零农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "八五三农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "八五九农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "八五二农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "八五八农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "八五六农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "八五四农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "八农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "八家国营农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "八家户农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "八郎农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "八革会", "src": "corpus", "note": "B64 ×2"}
+{"name": "公安农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "公安分局", "src": "corpus", "note": "B64 ×2"}
+{"name": "公安局", "src": "corpus", "note": "B64 ×4"}
+{"name": "六三监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "六农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "六办", "src": "corpus", "note": "B64 ×2"}
+{"name": "六局指挥部", "src": "corpus", "note": "B64 ×2"}
+{"name": "共产党", "src": "corpus", "note": "B64 ×2"}
+{"name": "共青农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兴隆农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兴隆华侨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团二二二团农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团六运湖农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团共青团农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团军户农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团农三师红旗农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团农九师团结农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团农六师土墩子农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团农六师新湖农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团农六师红旗农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团十二师三坪农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团十二师五一农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团十二师西山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团奇台农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团柳树泉农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团淖毛湖农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团火箭农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团红山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵团黄田农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "兵科", "src": "corpus", "note": "B60 ×3"}
+{"name": "兵部", "src": "corpus", "note": "B60 ×4"}
+{"name": "冀西抗日游击队", "src": "corpus", "note": "B60 ×2"}
+{"name": "内蒙古自治区国营杜尔基农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "内阁", "src": "corpus", "note": "B60 ×4"}
+{"name": "军川农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "农革司", "src": "corpus", "note": "B64 ×9"}
+{"name": "冶钢农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "凌家湖农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "凤凰山监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "刑部", "src": "corpus", "note": "B60 ×8"}
+{"name": "创业农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "前卫农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "前哨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "前所果树农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "前沁农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "前进农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "前锋农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "剑桥大学", "src": "corpus", "note": "B59 ×6"}
+{"name": "加尔布拉克农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "加州理工学院", "src": "corpus", "note": "B59 ×5"}
+{"name": "勐底农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "勐捧农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "勐撒农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "勐满农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "勐省农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "勐腊农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "勐醒农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "勤得利农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "北京协和医科大学", "src": "corpus", "note": "B59 ×2"}
+{"name": "北京协和医院", "src": "corpus", "note": "B59 ×2"}
+{"name": "北京大学", "src": "corpus", "note": "B59 ×12"}
+{"name": "北京大学农学院", "src": "corpus", "note": "B59 ×2"}
+{"name": "北京大学物理系", "src": "corpus", "note": "B59 ×3"}
+{"name": "北京市双河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "北京市委", "src": "corpus", "note": "B64 ×3"}
+{"name": "北大", "src": "corpus", "note": "从地名纠正：B64 ×2"}
+{"name": "医疗队", "src": "corpus", "note": "B64 ×2"}
+{"name": "医药站", "src": "corpus", "note": "B64 ×2"}
+{"name": "十一农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "十七棉", "src": "corpus", "note": "B64 ×2"}
+{"name": "十农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "卅岭农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "半壁山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "华东局", "src": "corpus", "note": "B64 ×10"}
+{"name": "华东师范大学", "src": "corpus", "note": "B64 ×3"}
+{"name": "华东物资局", "src": "corpus", "note": "B64 ×2"}
+{"name": "华严农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "华南热作学院", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "华山监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "南京军区", "src": "corpus", "note": "从地名纠正：B64 ×2"}
+{"name": "南市公安分局", "src": "corpus", "note": "B64 ×2"}
+{"name": "南市区总指挥部", "src": "corpus", "note": "B64 ×2"}
+{"name": "南市区联络站", "src": "corpus", "note": "B64 ×2"}
+{"name": "南总", "src": "corpus", "note": "B64 ×5"}
+{"name": "南昌县银三角管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "南通市海门区大东农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "南通市海门区永隆沙农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "卡内基梅隆大学", "src": "corpus", "note": "B59 ×2"}
+{"name": "卡内基理工学院", "src": "corpus", "note": "B59 ×2"}
+{"name": "卷柏科", "src": "corpus", "note": "B56 ×6"}
+{"name": "厂党委", "src": "corpus", "note": "B64 ×4"}
+{"name": "厂部", "src": "corpus", "note": "B64 ×6"}
+{"name": "原平农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "县人武部", "src": "corpus", "note": "B64 ×5"}
+{"name": "友谊农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "双王城生态经济园区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "双第华侨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "口述史小组", "src": "corpus", "note": "B64 ×2"}
+{"name": "台创园管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "司徒", "src": "corpus", "note": "B60 ×2"}
+{"name": "司礼监", "src": "corpus", "note": "B60 ×2"}
+{"name": "合成纤维研究所", "src": "corpus", "note": "B64 ×2"}
+{"name": "同济大学", "src": "corpus", "note": "B64 ×2"}
+{"name": "名宦祠", "src": "corpus", "note": "B60 ×2"}
+{"name": "名山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "吏科", "src": "corpus", "note": "B60 ×2"}
+{"name": "吏部", "src": "corpus", "note": "B60 ×14"}
+{"name": "吏部文选司", "src": "corpus", "note": "B60 ×2"}
+{"name": "吐列毛杜农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "呼伦贝尔农垦三河农牧场有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "呼伦贝尔农垦上库力农牧场有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "呼伦贝尔农垦拉布大林农牧场有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "呼伦贝尔农垦苏沁农牧场有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "和平农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "哈佛商学院", "src": "corpus", "note": "B66 ×2"}
+{"name": "哈尔滨市政府亚布力滑雪旅游度假区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "哥伦比亚大学", "src": "corpus", "note": "B59 ×2"}
+{"name": "唐山市委", "src": "corpus", "note": "B64 ×2"}
+{"name": "唐山市政府", "src": "corpus", "note": "B64 ×2"}
+{"name": "唐山路矿学堂", "src": "corpus", "note": "B59 ×2"}
+{"name": "商丘市农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "商业一局", "src": "corpus", "note": "B64 ×5"}
+{"name": "商业二局", "src": "corpus", "note": "B64 ×5"}
+{"name": "商业部", "src": "corpus", "note": "B64 ×2"}
+{"name": "商务印书馆", "src": "corpus", "note": "B66 ×3"}
+{"name": "商洛职业技术学院", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "喀什监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "嘉祥经济开发区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "四人帮", "src": "corpus", "note": "B64 ×2"}
+{"name": "四农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "四方台农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "四方坨子农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "四方山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "团委", "src": "corpus", "note": "B64 ×2"}
+{"name": "团市委", "src": "corpus", "note": "B64 ×2"}
+{"name": "团结农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国务院", "src": "corpus", "note": "B59 ×10"}
+{"name": "国子监", "src": "corpus", "note": "B60 ×2"}
+{"name": "国家地震局", "src": "corpus", "note": "B64 ×3"}
+{"name": "国家美术学院", "src": "corpus", "note": "B58 ×2"}
+{"name": "国有六号农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国有哲南农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国棉三十一厂", "src": "corpus", "note": "B64 ×4"}
+{"name": "国棉十七厂", "src": "corpus", "note": "B64 ×5"}
+{"name": "国立交通大学", "src": "corpus", "note": "B59 ×4"}
+{"name": "国营东风机械厂", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营中捷农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营中洲农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营临泽农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营兴顺德畜牧农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营博爱农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营古农农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营吊罗山林业公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营天西华侨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营宁明华侨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营官大海农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营尖峰岭林业公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营山丹农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营朝阳县贾家店农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营桃城华侨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营海渊华侨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营温县农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营金安农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营长江机械厂", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营陕西华山企业公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营饮马农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "国营黄花农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "图书馆", "src": "corpus", "note": "B59 ×3"}
+{"name": "地区一农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "地质研究所", "src": "corpus", "note": "B59 ×2"}
+{"name": "地质部", "src": "corpus", "note": "B59 ×2"}
+{"name": "坪上农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "城南片区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "城厢二中", "src": "corpus", "note": "从地名纠正：B64 ×2"}
+{"name": "埔寨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "基督教上海女青年会", "src": "corpus", "note": "B64 ×2"}
+{"name": "复兴圩农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "复旦大学", "src": "corpus", "note": "B64 ×3"}
+{"name": "复查组", "src": "corpus", "note": "B64 ×2"}
+{"name": "外贸局", "src": "corpus", "note": "B64 ×8"}
+{"name": "外贸部", "src": "corpus", "note": "B64 ×6"}
+{"name": "多孔菌科", "src": "corpus", "note": "B56 ×2"}
+{"name": "大中农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "大兴农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "大台山果树农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "大坪农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "大安农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "大帽山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "大新砖瓦厂", "src": "corpus", "note": "从地名纠正：B64 ×2"}
+{"name": "大柴旦行政委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "大池农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "大理寺", "src": "corpus", "note": "B60 ×4"}
+{"name": "大西江农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "大连华侨果树农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "天津科学技术出版社", "src": "corpus", "note": "B56 ×2"}
+{"name": "天祝建材厂", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "天祝煤电公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "天马华侨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "太常寺", "src": "corpus", "note": "B60 ×2"}
+{"name": "太阳庙农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "央塔库都片区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "头墩农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "如皋市江滨医院", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "妇联", "src": "corpus", "note": "B64 ×3"}
+{"name": "嫩北农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "嫩江农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "孟定农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "宁安农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "宁连路办", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "安图林业有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "安徽凤阳经济开发区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "安徽淮北相山经济开发区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "安徽省水家湖农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "安徽蒙城经济开发区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "安置农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "宜春市宜阳新区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "宜春经济开发区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "宝山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "宝应湖农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "宝泉岭农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "宾夕法尼亚大学", "src": "corpus", "note": "B59 ×3"}
+{"name": "密歇根大学", "src": "corpus", "note": "B59 ×2"}
+{"name": "富城路办", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "寿西湖农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "小龙矿区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "尖山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "尾山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "局革委会", "src": "corpus", "note": "B64 ×2"}
+{"name": "山河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "山西铝厂", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "岔林河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "岗埠农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "工业园区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "工交组", "src": "corpus", "note": "B64 ×2"}
+{"name": "工会", "src": "corpus", "note": "B64 ×2"}
+{"name": "工作队", "src": "corpus", "note": "B64 ×2"}
+{"name": "工宣团", "src": "corpus", "note": "B64 ×3"}
+{"name": "工宣连", "src": "corpus", "note": "B64 ×2"}
+{"name": "工宣队", "src": "corpus", "note": "B64 ×6"}
+{"name": "工宣队办公室", "src": "corpus", "note": "B64 ×2"}
+{"name": "工总司", "src": "corpus", "note": "B64 ×76"}
+{"name": "工总司青浦县联络站", "src": "corpus", "note": "B64 ×2"}
+{"name": "工科", "src": "corpus", "note": "B60 ×2"}
+{"name": "工部", "src": "corpus", "note": "B60 ×2"}
+{"name": "工青联", "src": "corpus", "note": "B64 ×9"}
+{"name": "工革司", "src": "corpus", "note": "B64 ×3"}
+{"name": "左江华侨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "巴卡台农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "巴彦淖尔农垦建沣农场有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "巴彦淖尔市中滩农场有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "巴彦淖尔市临农农牧业发展有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "巴彦淖尔市大佘太牧场有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "巴彦淖尔市新安农场有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "巴彦淖尔市牧洋海牧场有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "巴彦淖尔市狼山农场农牧业发展有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "巴彦淖尔市苏独隆农场有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "巴彦淖尔市西山嘴农场有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "巴达尔胡农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "市人委", "src": "corpus", "note": "B64 ×9"}
+{"name": "市公安局", "src": "corpus", "note": "B64 ×4"}
+{"name": "市妇联", "src": "corpus", "note": "B64 ×2"}
+{"name": "市委", "src": "corpus", "note": "B64 ×26"}
+{"name": "市委写作班", "src": "corpus", "note": "B64 ×2"}
+{"name": "市委大楼", "src": "corpus", "note": "B64 ×2"}
+{"name": "市委常委会", "src": "corpus", "note": "B64 ×3"}
+{"name": "市委接待站", "src": "corpus", "note": "B64 ×2"}
+{"name": "市委组织部", "src": "corpus", "note": "B64 ×3"}
+{"name": "市工人文化宫", "src": "corpus", "note": "B64 ×3"}
+{"name": "市总工会", "src": "corpus", "note": "B64 ×10"}
+{"name": "市民兵指挥部", "src": "corpus", "note": "B64 ×3"}
+{"name": "市民指", "src": "corpus", "note": "B64 ×2"}
+{"name": "市组织组", "src": "corpus", "note": "B64 ×2"}
+{"name": "市财联", "src": "corpus", "note": "B64 ×2"}
+{"name": "市财贸组", "src": "corpus", "note": "B64 ×2"}
+{"name": "市革会", "src": "corpus", "note": "B64 ×7"}
+{"name": "市革会财贸组", "src": "corpus", "note": "B64 ×2"}
+{"name": "市革命委员会", "src": "corpus", "note": "B64 ×2"}
+{"name": "市革委会", "src": "corpus", "note": "B64 ×8"}
+{"name": "市革委会郊区组", "src": "corpus", "note": "B64 ×2"}
+{"name": "市高院", "src": "corpus", "note": "B64 ×2"}
+{"name": "常州监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "平凉崆峒山大景区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "幸福农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "广东省江门监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "广东省济广监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "广交会", "src": "corpus", "note": "从地名纠正：B64 ×4"}
+{"name": "广州军区三水农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "庆丰农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "庆柳社区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "庆阳农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "康办", "src": "corpus", "note": "B64 ×7"}
+{"name": "康奈尔大学", "src": "corpus", "note": "B59 ×4"}
+{"name": "康桥湖农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "廖平农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "延军农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "延安通信材料厂", "src": "corpus", "note": "B59 ×2"}
+{"name": "建筑材料厂", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "建设农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "建边农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "开发区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "引龙河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "张楼农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "张码办", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "彬村山华侨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "御史中丞", "src": "corpus", "note": "B60 ×2"}
+{"name": "德胜企业集团", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "总参", "src": "corpus", "note": "B64 ×2"}
+{"name": "总后", "src": "corpus", "note": "B64 ×2"}
+{"name": "总工会", "src": "corpus", "note": "B64 ×2"}
+{"name": "总部", "src": "corpus", "note": "B64 ×2"}
+{"name": "恒丰企业集团", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "成新实业有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "战到底兵团", "src": "corpus", "note": "B64 ×2"}
+{"name": "户部", "src": "corpus", "note": "B60 ×8"}
+{"name": "打刘兵团", "src": "corpus", "note": "B64 ×3"}
+{"name": "托尔塔依农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "抗震救灾指挥部", "src": "corpus", "note": "B64 ×2"}
+{"name": "拉萨市经济技术开发区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "提篮桥监狱", "src": "corpus", "note": "B64 ×2"}
+{"name": "支左办公室", "src": "corpus", "note": "B64 ×4"}
+{"name": "政治局", "src": "corpus", "note": "B64 ×3"}
+{"name": "文汇报", "src": "corpus", "note": "B64 ×2"}
+{"name": "文汇报社", "src": "corpus", "note": "B64 ×3"}
+{"name": "文渊阁", "src": "corpus", "note": "B60 ×2"}
+{"name": "斯坦福大学", "src": "corpus", "note": "B59 ×3"}
+{"name": "新兴农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "新华农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "新华医院", "src": "corpus", "note": "B64 ×2"}
+{"name": "新和华侨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "新新机械厂", "src": "corpus", "note": "B64 ×2"}
+{"name": "新时代农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "新洋农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "新港办", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "新疆兵团十二师头屯河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "新疆昌吉国家农业科技园区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "新立农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "方强农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "星火日夜商店", "src": "corpus", "note": "B64 ×4"}
+{"name": "普阳农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "暖泉农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "曙光农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "曼彻斯特工厂", "src": "corpus", "note": "B59 ×2"}
+{"name": "朝廷", "src": "corpus", "note": "B60 ×12"}
+{"name": "朝阳农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "木王林厂", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "朱港实业有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "机联站", "src": "corpus", "note": "B64 ×6"}
+{"name": "李时珍医药工业园区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "杏花营农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "杨浦公安分局", "src": "corpus", "note": "B64 ×5"}
+{"name": "杨浦区政府", "src": "corpus", "note": "B64 ×2"}
+{"name": "松宜矿区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "松花江农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "枝瑚菌科", "src": "corpus", "note": "B56 ×3"}
+{"name": "查哈阳农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "柳源农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "柳行农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "柴窝堡管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "校办企业公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "核武器研究所", "src": "corpus", "note": "B59 ×2"}
+{"name": "格尔木农垦有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "格球山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "桂林华侨旅游经济区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "梅庄洼农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "梧桐河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "检察院", "src": "corpus", "note": "B64 ×2"}
+{"name": "椒江农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "槐树林特场管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "橄榄坝农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "正阳关农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "武汉中央商务区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "武汉军区", "src": "corpus", "note": "B64 ×5"}
+{"name": "武钢集团", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "武陟宁郭农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "水丰农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "水产养殖有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "水产局", "src": "corpus", "note": "B64 ×4"}
+{"name": "永丰监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "永安管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "永济监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "汉口北商贸物流枢纽区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "江北监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "江南金属制品厂", "src": "corpus", "note": "B64 ×2"}
+{"name": "江川农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "江洋农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "江滨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "江苏省国营江心沙农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "江苏省太湖采石公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "江苏省弶港农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "江苏省新曹农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "江西新茂实业公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "江西桑海集团有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "江西省瑞州监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "江西进贤经济开发区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "江西金溪工业园区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "汤原农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "汤泉农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "沈北新区示范农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "沉湖管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "沙河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "沙洋新港区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "沙洋滨江新区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "沙雅县塔河管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "沛县湖西农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "沪光灯具厂", "src": "corpus", "note": "B64 ×2"}
+{"name": "河北省人民政府", "src": "corpus", "note": "B60 ×2"}
+{"name": "河南向东机械厂", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "河南省五一农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "河南红宇机械厂", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "河南红阳机械厂", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "河輋农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "法院", "src": "corpus", "note": "B64 ×2"}
+{"name": "泗阳农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "洪河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "洪泽湖农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "洮儿河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "洼中高农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "派出所", "src": "corpus", "note": "B64 ×2"}
+{"name": "浓江农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "浙江大学", "src": "corpus", "note": "B59 ×5"}
+{"name": "浙江省立图书馆", "src": "corpus", "note": "B59 ×2"}
+{"name": "海伦农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "海关", "src": "corpus", "note": "B64 ×2"}
+{"name": "海兴县农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "海南州绿色产业发展园区管理区委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "海安县农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "海林农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "海洋红农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "海运局", "src": "corpus", "note": "B64 ×2"}
+{"name": "消革会", "src": "corpus", "note": "B64 ×2"}
+{"name": "涔澹农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "淮化集团", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "淮海农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "深州监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "清华", "src": "corpus", "note": "从地名纠正：B64 ×2"}
+{"name": "清华大学", "src": "corpus", "note": "B66 ×3"}
+{"name": "清华大学数学系", "src": "corpus", "note": "B59 ×3"}
+{"name": "清华大学研究院", "src": "corpus", "note": "B66 ×2"}
+{"name": "清华学校", "src": "corpus", "note": "B59 ×3"}
+{"name": "清水河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "渔业公司", "src": "corpus", "note": "B64 ×4"}
+{"name": "港务局", "src": "corpus", "note": "B64 ×3"}
+{"name": "湖北保康经济开发区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "湖北沙洋经济开发区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "溧阳监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "滁州高教科创城管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "滨淮农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "火星农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "火线指挥部", "src": "corpus", "note": "B64 ×6"}
+{"name": "灵武农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "炎陵县大院农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "炮司", "src": "corpus", "note": "B64 ×8"}
+{"name": "热水国营畜牧农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "燕京大学", "src": "corpus", "note": "B66 ×8"}
+{"name": "牙克石农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "物理研究所", "src": "corpus", "note": "B59 ×2"}
+{"name": "狄金森学院", "src": "corpus", "note": "B59 ×3"}
+{"name": "猴头菌科", "src": "corpus", "note": "B56 ×3"}
+{"name": "率洲农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "玉泉营农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "环本农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "现代农业园区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "玻璃机械厂", "src": "corpus", "note": "B64 ×3"}
+{"name": "理学院", "src": "corpus", "note": "B59 ×2"}
+{"name": "瑞丽农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "瑞金医院", "src": "corpus", "note": "B64 ×2"}
+{"name": "甘肃农垦集团", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "甘肃监狱企业集团公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "申新五厂", "src": "corpus", "note": "B64 ×3"}
+{"name": "留养局", "src": "corpus", "note": "B60 ×2"}
+{"name": "畜牧良种农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "畹町农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "白茅湖农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "白音塔拉农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "白马湖农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "皖河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "盈江农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "盐运司", "src": "corpus", "note": "B60 ×2"}
+{"name": "监察御史", "src": "corpus", "note": "B60 ×2"}
+{"name": "直隶总督", "src": "corpus", "note": "B60 ×2"}
+{"name": "直隶总督署", "src": "corpus", "note": "B60 ×2"}
+{"name": "省委机关", "src": "corpus", "note": "B60 ×2"}
+{"name": "省属黄海农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "看守所", "src": "corpus", "note": "从地名纠正：B64 ×2"}
+{"name": "知青农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "石杉科", "src": "corpus", "note": "B56 ×2"}
+{"name": "石松科", "src": "corpus", "note": "B56 ×4"}
+{"name": "石滩农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "磴口县农垦乌兰布和农场有限责任公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "磴口县农垦包尔盖农场有限责任公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "磴口县农垦哈腾套海农场有限责任公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "磴口县农垦巴彦套海农场有限责任公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "磴口县农垦纳林套海农场有限责任公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "示范农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "礼部", "src": "corpus", "note": "B60 ×2"}
+{"name": "福地路办", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "福建协和大学", "src": "corpus", "note": "B59 ×2"}
+{"name": "福海监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "私立北平协和医学院", "src": "corpus", "note": "B59 ×3"}
+{"name": "科学出版社", "src": "corpus", "note": "B56 ×2"}
+{"name": "移民局", "src": "corpus", "note": "B59 ×3"}
+{"name": "税务局", "src": "corpus", "note": "B64 ×2"}
+{"name": "空四军", "src": "corpus", "note": "B64 ×4"}
+{"name": "立新农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "第一看守所", "src": "corpus", "note": "B64 ×2"}
+{"name": "第二农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "粮食局", "src": "corpus", "note": "B64 ×4"}
+{"name": "紫蓬山管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "红三司", "src": "corpus", "note": "B64 ×6"}
+{"name": "红光农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "红卫兵", "src": "corpus", "note": "B64 ×4"}
+{"name": "红卫兵上海市大专院校革命委员会", "src": "corpus", "note": "B64 ×2"}
+{"name": "红卫农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "红反会", "src": "corpus", "note": "B64 ×3"}
+{"name": "红山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "红峰农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "红旗农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "红旗岭农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "红星农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "红色边疆农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "红阳农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "红革会", "src": "corpus", "note": "B64 ×16"}
+{"name": "经济开发区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "经济开发区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "绥滨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "罗平农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "罗牛山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "群力草药店", "src": "corpus", "note": "B64 ×2"}
+{"name": "老王坡农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "耿马华侨农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "联络站", "src": "corpus", "note": "B64 ×2"}
+{"name": "肥东经济开发区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "育新农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "胜利农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "色织二十四厂", "src": "corpus", "note": "B64 ×3"}
+{"name": "艺光服装店", "src": "corpus", "note": "B64 ×2"}
+{"name": "芒市遮放农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "芙蓉农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "芝加哥大学", "src": "corpus", "note": "B66 ×2"}
+{"name": "芦潮港农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "英国皇家人类学会", "src": "corpus", "note": "B66 ×2"}
+{"name": "英阿瓦提管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "茅山头企业集团", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "茶陵县红色农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "荆头山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "荣军农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "莫拐农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "莲江口监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "莲花泡农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "莲花管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "葵潭农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "蒋湖农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "蔬菜公司", "src": "corpus", "note": "B64 ×2"}
+{"name": "蕲春县仙人台茶厂", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "蕲春经济开发区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "蜂蜜山粮库有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "衡州监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "襄北农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "襄南监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "襄河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "西关农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "西南交通大学", "src": "corpus", "note": "B59 ×2"}
+{"name": "西南联大", "src": "corpus", "note": "B66 ×2"}
+{"name": "西双版纳监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "西塞山工业园区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "解放日报", "src": "corpus", "note": "B64 ×5"}
+{"name": "警备区", "src": "corpus", "note": "B64 ×11"}
+{"name": "警备区党委", "src": "corpus", "note": "B64 ×2"}
+{"name": "诸城经济开发区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "财办", "src": "corpus", "note": "B64 ×2"}
+{"name": "财政局", "src": "corpus", "note": "B64 ×11"}
+{"name": "财政部", "src": "corpus", "note": "B64 ×6"}
+{"name": "财税局", "src": "corpus", "note": "B64 ×5"}
+{"name": "财贸办", "src": "corpus", "note": "B64 ×3"}
+{"name": "财贸政治部", "src": "corpus", "note": "B64 ×4"}
+{"name": "财贸系统", "src": "corpus", "note": "B64 ×2"}
+{"name": "财贸组", "src": "corpus", "note": "B64 ×7"}
+{"name": "贺公祠", "src": "corpus", "note": "B60 ×2"}
+{"name": "赤卫队", "src": "corpus", "note": "B64 ×7"}
+{"name": "赤卫队总部", "src": "corpus", "note": "B64 ×2"}
+{"name": "赵光农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "车河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "轻工业局", "src": "corpus", "note": "B64 ×2"}
+{"name": "辽宁省北镇市高山子监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "辽河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "连云港碱厂", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "逊克农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "通辽市国有胜利农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "通道县播阳农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "道县大坪铺农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "邮电局", "src": "corpus", "note": "B64 ×2"}
+{"name": "邳城农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "都察院", "src": "corpus", "note": "B60 ×4"}
+{"name": "金平县农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "金港路办", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "金陵大学", "src": "corpus", "note": "B59 ×4"}
+{"name": "铁路局", "src": "corpus", "note": "B64 ×2"}
+{"name": "铜锣湖农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "银行", "src": "corpus", "note": "B64 ×3"}
+{"name": "锦州北山农工商总公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "锦州市果树农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "锦江饭店", "src": "corpus", "note": "从地名纠正：B64 ×3"}
+{"name": "锦河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "锦衣卫", "src": "corpus", "note": "B60 ×2"}
+{"name": "长乐山工业园管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "长春光学精密机械学院", "src": "corpus", "note": "B59 ×2"}
+{"name": "长水河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "长白山森工集团大石头林业有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "长白山森工集团敦化林业有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "长白山森工集团黄泥河林业有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "长白山生物资源开发利用研究所", "src": "corpus", "note": "B56 ×2"}
+{"name": "门源监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "闵行公安分局", "src": "corpus", "note": "B64 ×2"}
+{"name": "阳春监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "阳江监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "阿克塔什农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "阿克苏监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "阿合其农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "陇川农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "随阳农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "青先农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "青县农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "青年农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "青浦剧场", "src": "corpus", "note": "从地名纠正：B64 ×2"}
+{"name": "青浦县人武部", "src": "corpus", "note": "B64 ×4"}
+{"name": "青浦县委", "src": "corpus", "note": "B64 ×2"}
+{"name": "青锋农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "青龙山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "静安区文化馆", "src": "corpus", "note": "B64 ×2"}
+{"name": "革命委员会", "src": "corpus", "note": "B64 ×13"}
+{"name": "革委会", "src": "corpus", "note": "B64 ×3"}
+{"name": "革筹处", "src": "corpus", "note": "B64 ×2"}
+{"name": "韧革菌科", "src": "corpus", "note": "B56 ×2"}
+{"name": "饶州监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "饶河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "首都三司", "src": "corpus", "note": "B64 ×4"}
+{"name": "香兰监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "香山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "马鞍山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "高原生物研究所", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "高安市新世纪工业城管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "高新区农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "高新技术产业孵化园区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "高新技术开发区管委会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "高明监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "高淳监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "高田农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "高铁商务区办", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "鸭绿河农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "鹤山农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "麻省理工学院", "src": "corpus", "note": "B59 ×3"}
+{"name": "黄土坎农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "黄泛区农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "黄湖农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "黄羊滩农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "黎川县工业园区管理委员会", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "黑窑沟林厂", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "黑龙江北大荒农垦集团绥棱农场有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "黑龙江省双鸭山监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "黑龙江省绥棱林业局有限公司", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "黑龙江省老莱农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "黑龙江科学技术出版社", "src": "corpus", "note": "B56 ×2"}
+{"name": "龙井大苏果树农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "龙亢农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "龙图阁", "src": "corpus", "note": "B60 ×2"}
+{"name": "龙潭监狱", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "龙镇农场", "src": "admin", "note": "从地名纠正：行政区划"}
+{"name": "龙门农场", "src": "admin", "note": "从地名纠正：行政区划"}

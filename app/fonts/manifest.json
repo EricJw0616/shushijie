@@ -1,0 +1,20 @@
+{
+  "repository": "https://github.com/google/fonts",
+  "commit": "2894aab31764f10f29c421bdfd2340d3b382d384",
+  "font_url": "https://raw.githubusercontent.com/google/fonts/2894aab31764f10f29c421bdfd2340d3b382d384/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf",
+  "license_url": "https://raw.githubusercontent.com/google/fonts/2894aab31764f10f29c421bdfd2340d3b382d384/ofl/notosanssc/OFL.txt",
+  "source_sha256": "a3041811a78c361b1de50f953c805e0244951c21c5bd412f7232ef0d899af0da",
+  "files": {
+    "NotoSansSC-Regular.ttf": {
+      "weight": 400,
+      "bytes": 10595916,
+      "sha256": "a54327a70104a00a0c8fd474f8f54d9d6b54b4742beb10685875a447d2761e3f"
+    },
+    "NotoSansSC-Bold.ttf": {
+      "weight": 700,
+      "bytes": 10585592,
+      "sha256": "fe45dc43565d1603280c2e1fa84d23744022896f3d03e78e858c3b3fd7a33654"
+    }
+  },
+  "conversion": "fontTools instantiateVariableFont wght=400/700; full glyph coverage retained; family renamed BookWorld Sans SC"
+}

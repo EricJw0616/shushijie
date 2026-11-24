@@ -1,0 +1,49 @@
+{
+ "generated_at": "2026-11-13T17:56:36",
+ "total": 779,
+ "ok": 779,
+ "failed": 0,
+ "warnings": 2,
+ "by_kind": {
+  "extract": {
+   "rows": 366,
+   "ok": 366,
+   "bad": 0
+  },
+  "page": {
+   "rows": 32,
+   "ok": 32,
+   "bad": 0
+  },
+  "understanding": {
+   "rows": 150,
+   "ok": 150,
+   "bad": 0
+  },
+  "summary": {
+   "rows": 8,
+   "ok": 8,
+   "bad": 0
+  },
+  "marketing": {
+   "rows": 223,
+   "ok": 223,
+   "bad": 0
+  }
+ },
+ "failures": [],
+ "warning_items": [
+  {
+   "book": "B56",
+   "name": "书名",
+   "kind": "extract",
+   "warning": "值只有一部分在原文（段级·部分）"
+  },
+  {
+   "book": "B59",
+   "name": "书名",
+   "kind": "extract",
+   "warning": "OCR 页级定位（p5，已与书目库交叉校验）"
+  }
+ ]
+}

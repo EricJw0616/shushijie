@@ -1,0 +1,48 @@
+.project-history{min-width:0;color:#344b6a}
+.project-history-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+.project-history-heading h2,.project-history-version h2{margin:0;font-size:19px;line-height:1.6;color:#2d4565}
+.project-history-heading h2>span,.project-history-feedback h3>span{margin-left:6px;color:#8296b1;font-size:12px;font-weight:400}
+.project-history-heading p,.project-history-version p{margin:5px 0 0;color:#7b8da6;font-size:12px;line-height:1.85}
+.project-history-table{overflow:hidden;border:1px solid #dfe6f1;border-radius:12px;background:#fff}
+.project-history-columns,.project-history-row{display:grid;grid-template-columns:minmax(155px,1fr) 175px minmax(160px,1.1fr) 65px;align-items:center;gap:18px;padding:13px 20px}
+.project-history-columns{color:#8b99af;font-size:11px;background:#f7f9fd}
+.project-history-row{width:100%;min-height:78px;border:0;border-top:1px solid #e8edf5;border-radius:0;background:#fff;color:#4f6481;text-align:left;cursor:pointer}
+.project-history-row:hover{background:#f6f9ff}
+.project-history-row:focus-visible,.project-history :is(button,input,select,textarea,.project-history-document):focus-visible{outline:2px solid #7197e9;outline-offset:2px}
+.project-history-mode,.project-history-feedback-summary{display:flex;flex-direction:column;gap:5px;min-width:0}
+.project-history-mode b,.project-history-feedback-summary b{font-size:12px;font-weight:500}
+.project-history-mode small,.project-history-feedback-summary small,.project-history-feedback-summary>span{font-size:11px;color:#8997ad;line-height:1.6;overflow-wrap:anywhere}
+.project-history-row time{font-size:11px;color:#8291a8;line-height:1.8;font-variant-numeric:tabular-nums}
+.project-history-view{display:flex;justify-content:flex-end;gap:7px;color:#577acc;font-size:12px;white-space:nowrap}
+.project-history-empty{padding:44px 24px;border:1px dashed #d6e1f1;border-radius:12px;text-align:center;background:#fafdff}
+.project-history-empty h3{margin:0 0 8px;color:#456184;font-size:17px}
+.project-history-empty p{max-width:580px;margin:0 auto 20px;color:#7e90aa;font-size:13px;line-height:1.9}
+.project-history-empty>div{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.project-history-detail-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.project-history-detail-actions{display:flex;gap:8px;flex-wrap:wrap}
+.project-history-version{margin:0 0 18px}
+.project-history-snapshot{padding:18px 20px;border:1px solid #e0e7f2;border-radius:12px;background:#fff;margin-bottom:24px;min-width:0}
+.project-history-snapshot-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#8b99ad;font-size:11px;margin-bottom:12px;overflow-wrap:anywhere}
+.project-history-document{max-height:min(72vh,740px);overflow:auto;border:1px solid #e8edf5;border-radius:8px;background:#fafcff}
+.project-history-loading,.project-history-read-error p{font-size:12px;color:#8092ad;line-height:1.9;margin:8px 0 12px}
+.project-history-feedback{min-width:0;padding:21px 23px;border:1px solid #dfe7f2;border-radius:12px;background:#fff}
+.project-history-feedback h3{font-size:14px;font-weight:600;color:#405a7a;margin:0 0 13px}
+.project-history-feedback-list{display:grid;gap:12px}
+.project-history-feedback-list article{padding:14px 16px;border:1px solid #e8edf5;border-radius:9px;background:#fafcff;min-width:0;overflow-wrap:anywhere}
+.project-history-feedback-list article>div{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.project-history-feedback-list b{color:#536f94;font-size:12px;font-weight:500}
+.project-history-feedback-list time{font-size:10px;color:#95a2b6}
+.project-history-feedback-list p{margin:9px 0 0;font-size:12px;color:#7187a4;line-height:1.9}
+.project-history-channel{display:block;margin-top:6px;color:#8b9bb1;font-size:10px}
+.project-history-no-feedback,.project-history-feedback-hint{font-size:12px;line-height:1.9;color:#8b9bb2;margin:0 0 12px}
+.project-history-feedback .project-history-add-feedback{margin-top:24px;padding-top:20px;border-top:1px solid #e6ecf5}
+.project-history-form{display:grid;grid-template-columns:1fr 1fr;gap:15px 18px}
+.project-history-form label{display:flex;flex-direction:column;gap:7px;min-width:0;font-size:12px;color:#6f86a4}
+.project-history-form input,.project-history-form select,.project-history-form textarea{width:100%;min-width:0;padding:10px 12px;border:1px solid #dce5f1;border-radius:8px;background:#fbfcff;color:#3f587b;font-size:12px}
+.project-history-form textarea{resize:vertical;min-height:92px;line-height:1.85}
+.project-history-note,.project-history-form-actions{grid-column:1/-1}
+.project-history-form-actions{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.project-history-form-actions>span{font-size:11px;color:#8a9ab0;line-height:1.8}
+.project-history-form-actions .btn{flex:0 0 auto}
+@media(max-width:900px){.project-history-columns,.project-history-row{grid-template-columns:minmax(140px,1fr) 150px minmax(130px,1fr) 55px;gap:12px;padding:13px 16px}}
+@media(max-width:640px){.project-history-heading{align-items:flex-start;flex-wrap:wrap}.project-history-columns{display:none}.project-history-row{grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:15px}.project-history-row:first-of-type{border-top:0}.project-history-mode{grid-column:1;grid-row:1}.project-history-row time{grid-column:2;grid-row:1;align-self:start;text-align:right;font-size:10px}.project-history-feedback-summary{grid-column:1;grid-row:2}.project-history-view{grid-column:2;grid-row:2}.project-history-detail-heading{align-items:stretch}.project-history-detail-actions{width:100%}.project-history-detail-actions .btn{flex:1}.project-history-snapshot{padding:14px}.project-history-document{max-height:65vh}.project-history-feedback{padding:18px 16px}.project-history-form{grid-template-columns:1fr}.project-history-form-actions{align-items:stretch;flex-direction:column;gap:10px}.project-history-form-actions .btn{width:100%}.project-history .btn{height:auto;min-height:40px;white-space:normal;line-height:1.7}.project-history-empty{padding:32px 18px}}

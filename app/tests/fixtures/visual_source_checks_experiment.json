@@ -1,0 +1,248 @@
+{
+  "recorded_from": ".local/marketing-quality-20261121/source-checks-experiment/call.json",
+  "candidate": {
+    "stage": "external_production_plan",
+    "deliverable": "仅交付外部制作前的文字方案，尚未生成媒体；准确参考需在执行前提供并上传。",
+    "presentation_mode": "image",
+    "audience": "12–15岁的文学阅读者",
+    "visual_style": "柔和手绘插画风，低饱和暖沙色与夜蓝色为主，线条略带铅笔质感；整体统一为“沙漠夜谈中的画纸与想象”视觉基调，适合12–15岁文学阅读者，不采用低幼卡通化处理。",
+    "audience_adaptation": "面向12–15岁文学阅读者：画面保留“画羊—箱子—睡着绵羊”的观察线索，用画纸特写和想象画面并置，帮助观众注意同一幅画被不同人物看见的不同内容；文字标签简短，避免解释性说教，把判断空间留给观众，结尾以开放提问邀请翻书。",
+    "aspect_ratio": "9:16",
+    "references": [
+      {
+        "id": "R1",
+        "name": "《小王子》画羊片段原文与画纸构图参考",
+        "requirement": "待提供或确认画羊片段中箱子画稿的构图、飞行员与小王子相对位置、沙漠夜谈环境；须保留“箱子—里面睡着绵羊”的原文关系，不添加原文没有的角色或情节。",
+        "kind": "accurate_reference",
+        "status": "required",
+        "shot_numbers": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "id": "R2",
+        "name": "飞行员与小王子人物形象设计参考",
+        "requirement": "按文学虚构人物处理，设计飞行员与小王子在沙漠中的插画形象；不宣称真人实拍，不套用影视或他人已有形象。",
+        "kind": "design_asset",
+        "status": "to_create",
+        "shot_numbers": [
+          1,
+          2,
+          3
+        ]
+      }
+    ],
+    "shots": [
+      {
+        "number": 1,
+        "source_numbers": [
+          1
+        ],
+        "title": "画了好几次绵羊都不满意",
+        "focus": "飞行员多次画绵羊、小王子都不满意，最后潦草画出一个箱子",
+        "depiction_type": "fictional_scene",
+        "scene_mode": "split_screen",
+        "scene_description": "竖屏画面分为上下两个独立区域：上方是沙漠夜谈中飞行员递出画纸的手与几张被否定的绵羊画稿；下方是箱子画稿的特写，画纸边缘潦草。",
+        "overlay_text": "画了好几次，都不满意",
+        "asset_ids": [
+          "B58:quote:1567d069f2aac8b4a41f"
+        ],
+        "reference_ids": [
+          "R1",
+          "R2"
+        ],
+        "scene_prompt": "竖屏上下分屏插画：上半部表现沙漠夜晚中飞行员把几张画着绵羊的纸递给小王子，小王子摇头；下半部特写一张潦草画出的箱子，纸面有铅笔线条和橡皮痕迹。光线为暖色小灯与夜蓝天空对比，画面为后期文字留出上方和下方空白。"
+      },
+      {
+        "number": 2,
+        "source_numbers": [
+          1,
+          2
+        ],
+        "title": "箱子里的绵羊睡着了",
+        "focus": "小王子低头看箱子画稿，说绵羊在里面，并看见睡着的绵羊",
+        "depiction_type": "fictional_scene",
+        "scene_mode": "single_scene",
+        "scene_description": "一个独立画面：小王子低头凑近画纸，画纸上的箱子被想象为半透明，里面蜷着一只睡着的绵羊；飞行员在画面边缘看着。",
+        "overlay_text": "他看见睡着的绵羊",
+        "asset_ids": [
+          "B58:quote:1567d069f2aac8b4a41f"
+        ],
+        "reference_ids": [
+          "R1",
+          "R2"
+        ],
+        "scene_prompt": "竖屏单场景插画：沙漠夜色中，小王子低头看一张画着箱子的纸，箱子以柔和虚线或半透明方式呈现内部，里面有一只蜷着睡觉的小绵羊；小王子神情高兴，飞行员在旁略带惊讶。画面重点是小王子的视线与箱子内部，留出后期标签位置。"
+      },
+      {
+        "number": 3,
+        "source_numbers": [
+          2,
+          3
+        ],
+        "title": "同一幅画，两种看见",
+        "focus": "飞行员画的是箱子，小王子看见的是睡着的绵羊；两人因此相识",
+        "depiction_type": "concept_diagram",
+        "scene_mode": "split_screen",
+        "scene_description": "左右分屏概念画布：左侧是飞行员视角的箱子画稿，右侧是小王子视角的箱子内部睡羊；中间以同一张画纸连接，不表现真实空间横移。",
+        "overlay_text": "同一幅画，两种看见",
+        "asset_ids": [
+          "B58:quote:1567d069f2aac8b4a41f",
+          "B58:quote:d11e0008492d68831da4"
+        ],
+        "reference_ids": [
+          "R1",
+          "R2"
+        ],
+        "scene_prompt": "竖屏左右分屏概念插画：同一张画纸在中间，左半以冷静线条显示“箱子”外观，右半以温暖色调显示箱子内部睡着的绵羊；两侧分别用简洁人物剪影或半身表现飞行员与小王子。整体像阅读笔记中的对照图，留出后期文字标签位置，不生成汉字。"
+      },
+      {
+        "number": 4,
+        "source_numbers": [
+          3
+        ],
+        "title": "翻到画羊那几页，你会看见什么",
+        "focus": "邀请读者翻到画羊片段，注意自己看见的内容",
+        "depiction_type": "concept_diagram",
+        "scene_mode": "single_scene",
+        "scene_description": "独立收束画面：一本摊开的书放在沙色背景上，书页间露出箱子画稿的一角，旁边留出空白供后期提问文字；不表现具体书中页码或额外情节。",
+        "overlay_text": "你会看见什么？",
+        "asset_ids": [
+          "B58:quote:1567d069f2aac8b4a41f"
+        ],
+        "reference_ids": [
+          "R1"
+        ],
+        "scene_prompt": "竖屏静态收束画面：一本摊开的文学书放在柔和沙色背景上，书页边缘露出一张画着箱子的纸，画面简洁、留白充足，适合后期叠加一句简短提问；不生成汉字，不添加原文没有的角色或物品。"
+      }
+    ]
+  },
+  "materials": [
+    {
+      "asset_id": "B58:quote:d11e0008492d68831da4",
+      "source_book": "小王子",
+      "type": "quote",
+      "title": "我简直比茫茫大海中遭遇海难的水手更加孤立无援。",
+      "text": "我简直比茫茫大海中遭遇海难的水手更加孤立无援。",
+      "excerpt_strategy": "prefix",
+      "text_truncated": false,
+      "review_status": "review",
+      "source_quality": "usable",
+      "coverage": "已定位的原文选段；不代表完成事实核查",
+      "editor_note": "",
+      "evidence": [
+        {
+          "anchor": "B58-00-P41",
+          "quote": "我简直比茫茫大海中遭遇海难的水手更加孤立无援。"
+        }
+      ],
+      "source_context": [
+        {
+          "anchor": "B58-00-P41",
+          "chapter": "前置",
+          "quote": "我简直比茫茫大海中遭遇海难的水手更加孤立无援。所以可想而知，当有个轻微而又奇怪的声音在黎明把我叫醒时，我是多么地惊奇。这声音说：“请你……帮我画只绵羊。”“什么？”“请帮我画只绵羊……”我好像挨了雷劈似的立刻站起来。我揉了揉眼睛。我仔细地看。我看见有个非常奇怪的小孩，站在旁边严肃地望着我。这是我后来尽力给他画的肖像。但我画得当然没有他本人可爱。这不是我的错。六岁那年，我当画家的志气就已经被大人打消，我什么都没画过，除了肚皮闭上的蟒蛇和肚皮敞开的蟒蛇。我瞪大了眼睛，吃惊地看着这个突然出现的鬼魂。我离任何人类居住区都有上千英里那么远。可是这小家伙看上去不像是迷了路，也没有累得要死，更没有饥饿、口渴或者害怕的样子。他根本不像一个在周围上千英里都是无人区的沙漠中迷路的小孩。等到稍微镇定下来，我说：“可是，你在这里干嘛呢？”"
+        }
+      ],
+      "quality_warnings": []
+    },
+    {
+      "asset_id": "B58:quote:1567d069f2aac8b4a41f",
+      "source_book": "小王子",
+      "type": "quote",
+      "title": "就这样，我认识了小王子。",
+      "text": "就这样，我认识了小王子。",
+      "excerpt_strategy": "prefix",
+      "text_truncated": false,
+      "review_status": "review",
+      "source_quality": "usable",
+      "coverage": "已定位的原文选段；不代表完成事实核查",
+      "editor_note": "",
+      "evidence": [
+        {
+          "anchor": "B58-00-P43",
+          "quote": "就这样，我认识了小王子。"
+        }
+      ],
+      "source_context": [
+        {
+          "anchor": "B58-00-P43",
+          "chapter": "前置",
+          "quote": "所以我又重新画。但就像前面两幅，它也被拒绝了。“这只太老了。我想要一只能活很久的绵羊。”我不耐烦了，因为急着要去把发动机拆下来，所以潦草地画了这幅图。我随手扔给他，并说：“这是个箱子。你想要的绵羊在里面。”但让我非常意外的是，这位小评委显得很高兴。“这正是我想要的！你觉得绵羊要吃很多草吗？”“怎么啦？”“因为我住的地方非常小……”“应该够大的。我给你的这只绵羊也非常小。”他低头去看那幅画。“也不是很小啦……你来看啊！他睡着了……”就这样，我认识了小王子。Chapter 03我花了很长时间才弄清楚他是从哪里来的。小王子问了我很多问题，却似乎听不到我问他的那些。我对他的了解，是在闲聊时零碎地慢慢积累起来的。例如，当第一次看到我的飞机（我没把飞机画出来，那对我来说太复杂了）时，他问我：“那是什么东西呀？”“那不是东西。它能飞。它是飞机。是我的飞机。”"
+        }
+      ],
+      "quality_warnings": []
+    }
+  ],
+  "response": {
+    "source_checks": [
+      {
+        "fact_type": "event_order",
+        "candidate_location": "第1镜focus",
+        "candidate_quote": "飞行员多次画绵羊、小王子都不满意，最后潦草画出一个箱子",
+        "source_asset_id": "B58:quote:1567d069f2aac8b4a41f",
+        "source_field": "source_context",
+        "source_quote": "所以我又重新画。但就像前面两幅，它也被拒绝了。“这只太老了。我想要一只能活很久的绵羊。”我不耐烦了，因为急着要去把发动机拆下来，所以潦草地画了这幅图。我随手扔给他，并说：“这是个箱子。你想要的绵羊在里面。”",
+        "conclusion": "supported"
+      },
+      {
+        "fact_type": "event_order",
+        "candidate_location": "第2镜focus",
+        "candidate_quote": "小王子低头看箱子画稿，说绵羊在里面，并看见睡着的绵羊",
+        "source_asset_id": "B58:quote:1567d069f2aac8b4a41f",
+        "source_field": "source_context",
+        "source_quote": "我随手扔给他，并说：“这是个箱子。你想要的绵羊在里面。”但让我非常意外的是，这位小评委显得很高兴。“这正是我想要的！你觉得绵羊要吃很多草吗？”“怎么啦？”“因为我住的地方非常小……”“应该够大的。我给你的这只绵羊也非常小。”他低头去看那幅画。“也不是很小啦……你来看啊！他睡着了……”",
+        "conclusion": "supported"
+      },
+      {
+        "fact_type": "relationship",
+        "candidate_location": "第3镜focus",
+        "candidate_quote": "飞行员画的是箱子，小王子看见的是睡着的绵羊；两人因此相识",
+        "source_asset_id": "B58:quote:1567d069f2aac8b4a41f",
+        "source_field": "source_context",
+        "source_quote": "我随手扔给他，并说：“这是个箱子。你想要的绵羊在里面。”……他低头去看那幅画。“也不是很小啦……你来看啊！他睡着了……”就这样，我认识了小王子。",
+        "conclusion": "supported"
+      },
+      {
+        "fact_type": "event_order",
+        "candidate_location": "第3镜scene_description",
+        "candidate_quote": "左侧是飞行员视角的箱子画稿，右侧是小王子视角的箱子内部睡羊",
+        "source_asset_id": "B58:quote:1567d069f2aac8b4a41f",
+        "source_field": "source_context",
+        "source_quote": "我随手扔给他，并说：“这是个箱子。你想要的绵羊在里面。”……他低头去看那幅画。“也不是很小啦……你来看啊！他睡着了……”",
+        "conclusion": "supported"
+      },
+      {
+        "fact_type": "place",
+        "candidate_location": "第1镜scene_prompt",
+        "candidate_quote": "沙漠夜晚中飞行员把几张画着绵羊的纸递给小王子",
+        "source_asset_id": "B58:quote:d11e0008492d68831da4",
+        "source_field": "source_context",
+        "source_quote": "我离任何人类居住区都有上千英里那么远。可是这小家伙看上去不像是迷了路，也没有累得要死，更没有饥饿、口渴或者害怕的样子。他根本不像一个在周围上千英里都是无人区的沙漠中迷路的小孩。",
+        "conclusion": "supported"
+      },
+      {
+        "fact_type": "time",
+        "candidate_location": "第1镜scene_prompt",
+        "candidate_quote": "沙漠夜晚中飞行员把几张画着绵羊的纸递给小王子",
+        "source_asset_id": "B58:quote:d11e0008492d68831da4",
+        "source_field": "source_context",
+        "source_quote": "当有个轻微而又奇怪的声音在黎明把我叫醒时，我是多么地惊奇。",
+        "conclusion": "contradicted"
+      }
+    ],
+    "accepted": false,
+    "issues": [
+      {
+        "code": "time_contradiction",
+        "location": "第1镜scene_prompt",
+        "severity": "blocker",
+        "message": "候选将画羊场景设定为“沙漠夜晚”，但原文明确声音在“黎明”把飞行员叫醒，画羊对话发生在黎明之后，并非夜晚。",
+        "candidate_quote": "沙漠夜晚中飞行员把几张画着绵羊的纸递给小王子",
+        "source_basis": "B58:quote:d11e0008492d68831da4 source_context：“当有个轻微而又奇怪的声音在黎明把我叫醒时，我是多么地惊奇。”"
+      }
+    ]
+  }
+}

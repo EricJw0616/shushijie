@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>知识图谱 · 新书建图流程 SOP v0.1</title>
+<style>
+:root{
+  --bg:#F4F3EE; --panel:#fff; --ink:#20241F; --muted:#72766C; --faint:#9A9D94;
+  --line:#E6E3D9; --line2:#EFEDE5; --brand:#1E2B25; --gold:#B08D57; --gold2:#9A7434;
+  --gold-soft:#F4EBDD; --green:#3D6B4F; --green-soft:#EAF2EC; --amber:#93652A;
+  --amber-soft:#FBF0DC; --red:#A44435; --red-soft:#FAECE8; --violet:#5C4A72;
+  --shadow:0 1px 2px rgba(28,32,27,.04),0 8px 24px rgba(28,32,27,.05);
+  --serif:"Songti SC","Noto Serif SC",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;font-size:14px;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.topbar{position:sticky;top:0;z-index:30;height:54px;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;padding:0 26px}
+.brand{display:flex;align-items:center;gap:9px}
+.brand-mark{width:27px;height:27px;border-radius:7px;background:linear-gradient(145deg,#C7A566,#9A7434);color:#1E2B25;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:16px;font-weight:700}
+.brand b{font-family:var(--serif);font-size:17px;letter-spacing:1.5px}
+.crumb{font-size:12px;color:var(--muted);display:flex;gap:7px;align-items:center}
+.crumb .sep{color:#C9C5B8}
+.topbar .right{margin-left:auto;display:flex;gap:8px;align-items:center}
+.tag{font-size:10.5px;color:var(--gold2);background:var(--gold-soft);border:1px solid #EADCC2;border-radius:5px;padding:2px 8px}
+.btn{height:30px;padding:0 12px;border-radius:7px;border:1px solid var(--line);background:#fff;font-size:11.5px;color:var(--ink);display:inline-flex;align-items:center;gap:5px}
+.btn:hover{border-color:#CDB58B;color:var(--gold2)}
+
+.hero{max-width:1180px;margin:0 auto;padding:44px 32px 26px}
+.eyebrow{font-size:9.5px;letter-spacing:2px;color:var(--gold2);font-weight:600;text-transform:uppercase}
+.hero h1{font-family:var(--serif);font-size:38px;line-height:1.3;letter-spacing:.5px;margin-top:8px}
+.hero .sub{font-size:13.5px;color:var(--muted);line-height:1.95;max-width:760px;margin-top:12px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:24px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 15px;box-shadow:var(--shadow)}
+.kpi .k{font-size:10px;letter-spacing:.6px;color:var(--faint)}
+.kpi .v{font-family:var(--serif);font-size:24px;line-height:1.3;margin-top:1px}
+.kpi .v small{font-family:inherit;font-size:11px;color:var(--faint)}
+.kpi .d{font-size:10.5px;color:var(--muted);margin-top:1px}
+
+.doc{max-width:1180px;margin:0 auto;padding:14px 32px 90px}
+.sec{margin:38px 0 46px}
+.sec-h{display:flex;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:18px}
+.sec-h .no{font-family:var(--serif);font-size:12px;color:var(--gold);width:26px}
+.sec-h h2{font-size:22px;font-weight:600;letter-spacing:-.2px}
+.sec-h .en{margin-left:auto;font-size:9.5px;letter-spacing:1.5px;color:var(--faint);text-transform:uppercase}
+.lead{font-size:14px;color:#3A3F38;margin-bottom:14px;line-height:1.95}
+p{margin-bottom:10px;color:#3A3F38}
+h3{font-size:14px;font-weight:600;margin:20px 0 8px}
+h3 .dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--gold);vertical-align:3px;margin-right:7px}
+.small{font-size:12px;color:var(--muted)}
+.mono{font-family:"SF Mono",Menlo,Consolas,monospace;font-size:11.5px;background:#F7F4EC;border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:#5A5346}
+
+.callout{border-left:3px solid var(--gold);background:#FBF8F1;border-radius:0 8px 8px 0;padding:12px 16px;margin:14px 0;font-size:12.5px;line-height:1.8;color:#4A4638}
+.callout b{color:var(--ink)}
+.callout .lbl{display:block;font-size:9px;letter-spacing:1.4px;font-weight:600;color:var(--gold2);margin-bottom:3px;text-transform:uppercase}
+.callout.good{border-color:var(--green);background:#F3F8F4;color:#33473A}
+.callout.good .lbl{color:var(--green)}
+.callout.warn{border-color:var(--red);background:#FCF4F1;color:#5A3A31}
+.callout.warn .lbl{color:var(--red)}
+
+.figure{margin:18px 0 22px}
+.figure .fh{display:flex;align-items:baseline;gap:9px;margin-bottom:8px}
+.figure .fh .tag{font-size:9px;letter-spacing:1.2px;color:var(--gold2);font-weight:600;background:none;border:0;padding:0}
+.figure .fh h4{font-size:13px;font-weight:600}
+.figure .fh .r{margin-left:auto;font-size:10.5px;color:var(--faint)}
+.fig-body{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:16px 16px 10px;overflow:hidden}
+.fig-body svg{width:100%;height:auto;display:block}
+.fig-cap{font-size:11px;color:var(--faint);line-height:1.7;margin-top:7px}
+.fig-cap b{color:var(--muted);font-weight:500}
+
+.tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:12.5px;margin:12px 0 8px}
+.tbl th{background:#FAF8F2;text-align:left;font-weight:600;color:#4F5249;padding:9px 11px;border-bottom:1px solid var(--line);font-size:11.5px;white-space:nowrap}
+.tbl td{padding:9px 11px;border-bottom:1px solid var(--line2);vertical-align:top;line-height:1.65}
+.tbl tr:last-child td{border-bottom:0}
+.tbl .b{font-weight:600}
+.pill{display:inline-flex;align-items:center;padding:1px 7px;border-radius:4px;font-size:10.5px;line-height:1.7;white-space:nowrap}
+.pill.g{background:var(--green-soft);color:var(--green)}
+.pill.a{background:var(--amber-soft);color:var(--amber)}
+.pill.r{background:var(--red-soft);color:var(--red)}
+.pill.v{background:#F1ECF6;color:var(--violet)}
+.pill.n{background:#F3F1EA;color:#666A60}
+
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.step{background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px 14px;position:relative}
+.step .n{width:22px;height:22px;border-radius:50%;background:var(--gold-soft);color:var(--gold2);font-family:var(--serif);font-size:11px;display:flex;align-items:center;justify-content:center;margin-bottom:7px}
+.step b{display:block;font-size:12.5px;margin-bottom:3px}
+.step span{display:block;font-size:11px;color:var(--muted);line-height:1.65}
+.step .who{position:absolute;right:10px;top:10px;font-size:9px;color:var(--faint);border:1px solid var(--line);border-radius:3px;padding:0 4px}
+
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.card h4{font-size:12.5px;font-weight:600;margin-bottom:5px}
+.card p,.card li{font-size:11.8px;color:var(--muted);line-height:1.7}
+.card ul{padding-left:16px}
+.card li{margin-bottom:2px}
+.card .mini{font-size:9px;letter-spacing:1px;color:var(--gold2);text-transform:uppercase;margin-bottom:3px}
+
+pre{background:#1E2B25;color:#D9D2BE;border-radius:9px;padding:13px 15px;overflow:auto;font-family:"SF Mono",Menlo,Consolas,monospace;font-size:11px;line-height:1.7;margin:10px 0}
+pre .k{color:#C7A566}pre .s{color:#9DBFA3}pre .c{color:#6F7D72}
+
+.foot{border-top:1px solid var(--line);margin-top:26px;padding-top:14px;font-size:10.5px;color:var(--faint);line-height:1.8}
+@media (max-width:980px){.hero h1{font-size:30px}.kpis,.steps{grid-template-columns:repeat(2,1fr)}.cols{grid-template-columns:1fr}.doc,.hero{padding-left:20px;padding-right:20px}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><div class="brand-mark">书</div><b>书世界</b></div>
+  <div class="crumb"><span>知识图谱</span><span class="sep">/</span><b>新书建图流程 SOP</b></div>
+  <div class="right"><span class="tag">v0.1 · 2026-11-16</span><a class="btn" href="#s1">看主流程</a></div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Knowledge Graph · Build SOP</div>
+  <h1>新书进图谱：一条流程、<br>一个“没建过”的简单办法、一套复用规则</h1>
+  <p class="sub">客户不做建图决策。系统判断这本书能出什么图，内部按模板建；建好自动出现。这份 SOP 只回答三件事：新书怎么进来、第一次遇到新书型怎么办、怎样不变成“一书一建”。</p>
+  <div class="kpis">
+    <div class="kpi"><div class="k">书型模板</div><div class="v">4 <small>类</small></div><div class="d">图鉴 / 纪事 / 叙事 / 索引</div></div>
+    <div class="kpi"><div class="k">共享内核</div><div class="v">1 <small>套</small></div><div class="d">资产 / 锚点 / 边 / 质检 / 发布</div></div>
+    <div class="kpi"><div class="k">客户要确认的</div><div class="v">0 <small>步</small></div><div class="d">只选显示什么</div></div>
+    <div class="kpi"><div class="k">同型新书建图</div><div class="v">&lt;10 <small>分钟</small></div><div class="d">首次新书型 1–2 天</div></div>
+  </div>
+</section>
+
+<main class="doc">
+
+  <section class="sec" id="s1">
+    <div class="sec-h"><span class="no">01</span><h2>新书 → 图谱：主流程</h2><span class="en">New book → graph</span></div>
+    <p class="lead">解析完成不是终点。系统在入库后追加一个「建图作业」，自动判型、选模板、抽边、质检，通过才发布。<b>客户只在发布之后看到图，中间不出现任何“要不要建”的问题。</b></p>
+
+    <div class="figure">
+      <div class="fh"><span class="tag">FIG 01</span><h4>六步主流程：三处闸门，客户只见最后一步</h4><span class="r">自动为主</span></div>
+      <div class="fig-body">
+        <svg viewBox="0 0 1000 330" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="a1" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#C7B18A"/></marker></defs>
+          <!-- lanes -->
+          <g font-family="-apple-system,PingFang SC,sans-serif" font-size="9.5">
+            <rect x="20" y="20" width="760" height="20" rx="10" fill="#F4EBDD"/>
+            <text x="32" y="34" fill="#8A6633" font-weight="600">系统自动（内部）</text>
+            <rect x="790" y="20" width="190" height="20" rx="10" fill="#EAF2EC"/>
+            <text x="802" y="34" fill="#3D6B4F" font-weight="600">客户可见</text>
+          </g>
+          <!-- boxes -->
+          <g font-family="-apple-system,PingFang SC,sans-serif">
+            <rect x="20" y="70" width="140" height="76" rx="9" fill="#FBFAF6" stroke="#E6E3D9"/>
+            <text x="34" y="96" font-size="12" font-weight="600" fill="#20241F">解析完成</text>
+            <text x="34" y="114" font-size="10" fill="#72766C">段落 / 条目 / 标签</text>
+            <text x="34" y="130" font-size="10" fill="#9A9D94">原文锚点齐全</text>
+
+            <rect x="180" y="70" width="140" height="76" rx="9" fill="#FBFAF6" stroke="#E6E3D9"/>
+            <text x="194" y="96" font-size="12" font-weight="600" fill="#20241F">资产检查</text>
+            <text x="194" y="114" font-size="10" fill="#72766C">段数 / 条目 / 人物表</text>
+            <text x="194" y="130" font-size="10" fill="#9A9D94">能不能撑起一张图</text>
+
+            <rect x="340" y="70" width="140" height="76" rx="9" fill="#FBFAF6" stroke="#E6E3D9"/>
+            <text x="354" y="96" font-size="12" font-weight="600" fill="#20241F">判型 / 路由</text>
+            <text x="354" y="114" font-size="10" fill="#72766C">P11 图鉴 · P12 纪事</text>
+            <text x="354" y="130" font-size="10" fill="#9A9D94">P4 叙事 · P6 索引</text>
+
+            <rect x="500" y="70" width="140" height="76" rx="9" fill="#FBFAF6" stroke="#E6E3D9"/>
+            <text x="514" y="96" font-size="12" font-weight="600" fill="#20241F">配置 + 建图</text>
+            <text x="514" y="114" font-size="10" fill="#72766C">模板 + 一本书配置</text>
+            <text x="514" y="130" font-size="10" fill="#9A9D94">抽节点 / 边 / 证据</text>
+
+            <rect x="660" y="70" width="140" height="76" rx="9" fill="#FBFAF6" stroke="#E6E3D9"/>
+            <text x="674" y="96" font-size="12" font-weight="600" fill="#20241F">质检</text>
+            <text x="674" y="114" font-size="10" fill="#72766C">证据率 / 孤立 / 重名</text>
+            <text x="674" y="130" font-size="10" fill="#9A9D94">不过 → 候选池</text>
+
+            <rect x="820" y="70" width="160" height="76" rx="9" fill="#F4EBDD" stroke="#DFD3B8"/>
+            <text x="834" y="96" font-size="12" font-weight="600" fill="#20241F">发布 · 自动出现</text>
+            <text x="834" y="114" font-size="10" fill="#8A6633">写 kg.json</text>
+            <text x="834" y="130" font-size="10" fill="#8A6633">图谱下拉多一本</text>
+          </g>
+          <g stroke="#C7B18A" stroke-width="1.2" fill="none" marker-end="url(#a1)">
+            <line x1="160" y1="108" x2="176" y2="108"/><line x1="320" y1="108" x2="336" y2="108"/>
+            <line x1="480" y1="108" x2="496" y2="108"/><line x1="640" y1="108" x2="656" y2="108"/>
+            <line x1="800" y1="108" x2="816" y2="108"/>
+          </g>
+          <!-- gates -->
+          <g font-family="-apple-system,PingFang SC,sans-serif">
+            <path d="M250 190 l28 14 -28 14 -28 -14 z" fill="#FCF4F1" stroke="#E3BDB2"/>
+            <text x="236" y="208" font-size="9.5" fill="#A4553C">资产闸</text>
+            <path d="M730 190 l28 14 -28 14 -28 -14 z" fill="#FCF4F1" stroke="#E3BDB2"/>
+            <text x="716" y="208" font-size="9.5" fill="#A4553C">质检闸</text>
+            <path d="M900 190 l28 14 -28 14 -28 -14 z" fill="#FCF4F1" stroke="#E3BDB2"/>
+            <text x="880" y="208" font-size="9.5" fill="#A4553C">发布闸</text>
+            <g stroke="#D8C0B8" stroke-width="1" fill="none">
+              <line x1="250" y1="146" x2="250" y2="188"/><line x1="730" y1="146" x2="730" y2="188"/><line x1="900" y1="146" x2="900" y2="188"/>
+            </g>
+          </g>
+          <!-- status bar -->
+          <rect x="20" y="250" width="960" height="54" rx="8" fill="#FAF8F2" stroke="#EDE7D8"/>
+          <text x="34" y="270" font-family="-apple-system,PingFang SC,sans-serif" font-size="10.5" fill="#4F5249"><tspan font-weight="600">内部状态（作业与记录 → 建图）：</tspan>排队 → 建图中 → 已发布 / 跳过 / 失败。客户侧只看到「已发布」，不出现排队、失败、待确认。</text>
+          <text x="34" y="290" font-family="-apple-system,PingFang SC,sans-serif" font-size="10" fill="#9A9D94">同型新书：&lt;10 分钟；首次遇到新书型：1–2 天（模板 + 配置 + 试跑）；不通过质检：停在候选池，不发布。</text>
+        </svg>
+      </div>
+      <div class="fig-cap"><b>关键：</b>「解析完成」之后追加的不是一个页面动作，而是一个内部作业。作业失败不影响客户；成功才写文件、才出现在下拉里。</div>
+    </div>
+
+    <h3><span class="dot"></span>客户 / 内部各看到什么</h3>
+    <table class="tbl">
+      <thead><tr><th>阶段</th><th>客户看到</th><th>内部看到</th><th>失败时</th></tr></thead>
+      <tbody>
+        <tr><td>解析完成</td><td>图书库里有了这本书</td><td>资产检查结果</td><td>解析失败，正常报错</td></tr>
+        <tr><td>建图中</td><td><b>什么都不显示</b></td><td>作业「建图中 · 进度」</td><td>重试 / 跳过</td></tr>
+        <tr><td>质检</td><td>什么都不显示</td><td>证据率、孤立、重名</td><td>进候选池</td></tr>
+        <tr><td>发布</td><td>图谱下拉多一本</td><td>「已发布」+ 版本号</td><td>—</td></tr>
+        <tr><td>不适用（B65 这类）</td><td>图谱里没有它</td><td>「跳过 · 内容不足」</td><td>不做图</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sec" id="s2">
+    <div class="sec-h"><span class="no">02</span><h2>没构建过的书：一条简单办法</h2><span class="en">First time a type appears</span></div>
+    <p class="lead">第一次遇到没有模板的书，不要为它单独写一套代码。只做四步：判型 → 四选一模板 → 一份配置 + 20 条边试跑 → 发布或只出索引。只有四个模板都不像时，才新增模板。</p>
+
+    <div class="figure">
+      <div class="fh"><span class="tag">FIG 02</span><h4>新书型：四条路，只有一个出口需要新代码</h4><span class="r">内部流程，客户无感</span></div>
+      <div class="fig-body">
+        <svg viewBox="0 0 1000 430" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="a2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#C7B18A"/></marker></defs>
+          <g font-family="-apple-system,PingFang SC,sans-serif">
+            <rect x="390" y="20" width="220" height="50" rx="9" fill="#1E2B25"/>
+            <text x="500" y="42" text-anchor="middle" fill="#F1E7D2" font-size="12" font-weight="600">新书判型完成</text>
+            <text x="500" y="58" text-anchor="middle" fill="#9AA79B" font-size="9.5">P1–P12 + 关系证据形态</text>
+
+            <path d="M500 70 L500 96" stroke="#C7B18A" stroke-width="1.2" marker-end="url(#a2)"/>
+            <rect x="370" y="100" width="260" height="46" rx="9" fill="#FBFAF6" stroke="#E6E3D9"/>
+            <text x="500" y="120" text-anchor="middle" font-size="11.5" font-weight="600" fill="#20241F">有同型模板吗？</text>
+            <text x="500" y="136" text-anchor="middle" font-size="9.5" fill="#72766C">图鉴 / 纪事 / 叙事 / 索引</text>
+
+            <!-- yes right -->
+            <path d="M630 123 L748 123" stroke="#7E9A82" stroke-width="1.2" fill="none" marker-end="url(#a2)"/>
+            <text x="676" y="115" font-size="9.5" fill="#3D6B4F">有</text>
+            <rect x="752" y="98" width="220" height="50" rx="9" fill="#EAF2EC" stroke="#C9DCCF"/>
+            <text x="766" y="118" font-size="11" font-weight="600" fill="#3D6B4F">套用现有模板 + 本书配置</text>
+            <text x="766" y="134" font-size="9.5" fill="#5F7A66">只改字段映射，不改代码</text>
+            <path d="M862 148 L862 192" stroke="#C7B18A" stroke-width="1.2" marker-end="url(#a2)"/>
+            <rect x="752" y="196" width="220" height="46" rx="9" fill="#EAF2EC" stroke="#C9DCCF"/>
+            <text x="766" y="216" font-size="11" font-weight="600" fill="#3D6B4F">直接建图 · 自动发布</text>
+            <text x="766" y="232" font-size="9.5" fill="#5F7A66">同型书不改代码，只改配置</text>
+
+            <!-- no down -->
+            <path d="M500 146 L500 174" stroke="#C7B18A" stroke-width="1.2" marker-end="url(#a2)"/>
+            <text x="508" y="166" font-size="9.5" fill="#9A7434">没有</text>
+            <rect x="340" y="178" width="320" height="52" rx="9" fill="#FBFAF6" stroke="#E6E3D9"/>
+            <text x="500" y="198" text-anchor="middle" font-size="11.5" font-weight="600" fill="#20241F">选最接近的模板（4 选 1）</text>
+            <text x="500" y="214" text-anchor="middle" font-size="9.5" fill="#72766C">图鉴 / 纪事 / 叙事 / 索引 · 不要求完全一样</text>
+
+            <path d="M500 230 L500 258" stroke="#C7B18A" stroke-width="1.2" marker-end="url(#a2)"/>
+            <rect x="340" y="262" width="320" height="54" rx="9" fill="#FCFAF4" stroke="#DFD3B8"/>
+            <text x="500" y="282" text-anchor="middle" font-size="11.5" font-weight="600" fill="#20241F">写 1 份配置 + 跑 20 条边</text>
+            <text x="500" y="298" text-anchor="middle" font-size="9.5" fill="#8A6633">字段映射 / 类型名 / 排除词；20 条边人工试跑</text>
+
+            <!-- outcome -->
+            <path d="M500 316 L500 342" stroke="#C7B18A" stroke-width="1.2" marker-end="url(#a2)"/>
+            <rect x="330" y="346" width="340" height="54" rx="9" fill="#F4EBDD" stroke="#DFD3B8"/>
+            <text x="500" y="366" text-anchor="middle" font-size="11.5" font-weight="600" fill="#20241F">20 条边能回原文？</text>
+            <text x="500" y="382" text-anchor="middle" font-size="9.5" fill="#8A6633">能 → 发布；不能 → 只出索引，不画图</text>
+
+            <!-- rare new template -->
+            <path d="M340 204 L180 204 L180 300" stroke="#C7B18A" stroke-width="1.2" fill="none" stroke-dasharray="3 3" marker-end="url(#a2)"/>
+            <rect x="30" y="302" width="230" height="66" rx="9" fill="#FCF4F1" stroke="#E3BDB2"/>
+            <text x="44" y="322" font-size="11" font-weight="600" fill="#A4553C">四个都不像：新增模板</text>
+            <text x="44" y="338" font-size="9.5" fill="#A4553C">单独排期，2–3 天；</text>
+            <text x="44" y="352" font-size="9.5" fill="#A4553C">这是唯一要写代码的出口</text>
+
+            <!-- note -->
+            <text x="752" y="272" font-size="9.5" fill="#9A9D94">客户不参与这四步；</text>
+            <text x="752" y="287" font-size="9.5" fill="#9A9D94">失败只影响内部发布。</text>
+          </g>
+        </svg>
+      </div>
+      <div class="fig-cap"><b>「20 条边」是内部试跑：</b>不是只建 20 条就上线，而是拿 20 条关系验证「这本书能不能每条都指到原文」。能，才批量；不能，就只出索引，客户侧看不到失败。</div>
+    </div>
+
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div class="who">系统</div><b>判型</b><span>用现有 P1–P12 判型结果，不再人工重判。</span></div>
+      <div class="step"><div class="n">2</div><div class="who">系统</div><b>四选一</b><span>图鉴 / 纪事 / 叙事 / 索引，选最接近，不要求完全一样。</span></div>
+      <div class="step"><div class="n">3</div><div class="who">编辑</div><b>一份配置 + 20 条边</b><span>只写字段映射；20 条边每条能回原文。</span></div>
+      <div class="step"><div class="n">4</div><div class="who">系统</div><b>发布或索引</b><span>通过自动发布；不通过只出索引，客户无感。</span></div>
+    </div>
+
+    <div class="callout good"><span class="lbl">简单原则</span>第一次遇到新书，<b>不改内核、不写新页面、不为它单独写一套代码</b>。能套就套，套不上才加模板；模板是“书型”的，不是“书”的。</div>
+  </section>
+
+  <section class="sec" id="s3">
+    <div class="sec-h"><span class="no">03</span><h2>如何归类、怎么复用</h2><span class="en">Classify &amp; reuse</span></div>
+    <p class="lead">归类不看中图法，看「关系证据长什么样」。归类结果只决定一件事：用哪个模板、配哪些字段。新书上线时只填配置，不写代码。</p>
+
+    <h3><span class="dot"></span>四类模板，够覆盖现有书</h3>
+    <table class="tbl">
+      <thead><tr><th>书型</th><th>怎么认</th><th>节点 / 边</th><th>已建 / 待建</th></tr></thead>
+      <tbody>
+        <tr><td class="b">图鉴型</td><td>有科名 / 学名 / 别名 / 功效 / 主治字段</td><td>科 → 属 → 种；物种 → 别名 / 功效 / 主治</td><td>B56（已建）</td></tr>
+        <tr><td class="b">纪事型</td><td>有人物条目 + 身份 / 籍贯 / 事件，人物可核名</td><td>人物 → 机构 / 地点 / 事件；人物 ↔ 人物</td><td>B59（已建）</td></tr>
+        <tr><td class="b">叙事型</td><td>有明确人物、意象、情节，但没人物条目</td><td>人物 → 地点 / 意象；人物 ↔ 人物</td><td>B58（已建，人工校验）</td></tr>
+        <tr><td class="b">索引型</td><td>只有篇目 / 主题 / 引书，没有稳定关系</td><td>主题 → 故事 / 篇目 → 人物</td><td>B60 / B64 / B66 / YC（已建）</td></tr>
+      </tbody>
+    </table>
+    <p class="small">判型结果可能不完美，所以允许「最接近模板 + 配置」；不要求每本书都精准落进某一类。</p>
+
+    <h3><span class="dot"></span>复用分四级：只有最后一级才写代码</h3>
+    <div class="figure">
+      <div class="fh"><span class="tag">FIG 03</span><h4>复用阶梯：同型书只改配置，新书型才加模板</h4><span class="r">一书一建 = 失败</span></div>
+      <div class="fig-body">
+        <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg">
+          <g font-family="-apple-system,PingFang SC,sans-serif">
+            <rect x="20" y="200" width="960" height="76" rx="10" fill="#1E2B25"/>
+            <text x="40" y="226" font-size="12.5" font-weight="600" fill="#F1E7D2">内核（所有书共用）</text>
+            <text x="40" y="246" font-size="10" fill="#9AA79B">读资产 · 锚点校验 · 节点/边 schema · 去重 · 证据回查 · 质检 · 写 kg.json · 发布</text>
+            <text x="40" y="263" font-size="9.5" fill="#7E8C80">换书不改；换存储只换这一层。</text>
+
+            <rect x="20" y="130" width="960" height="58" rx="10" fill="#F4EBDD" stroke="#DFD3B8"/>
+            <text x="40" y="152" font-size="12" font-weight="600" fill="#5A4E35">模板（4 个）</text>
+            <text x="40" y="170" font-size="10" fill="#8A6633">图鉴 / 纪事 / 叙事 / 索引：定义“这类书怎么抽节点和边”。新书型才加模板（2–3 天）。</text>
+
+            <rect x="20" y="72" width="960" height="48" rx="10" fill="#FBFAF6" stroke="#E6E3D9"/>
+            <text x="40" y="93" font-size="11.5" font-weight="600" fill="#20241F">配置（每书一份，约 20 行）</text>
+            <text x="40" y="109" font-size="9.5" fill="#72766C">字段映射 / 类型名 / 排除词：同型新书只写这一份，不改模板和内核。</text>
+
+            <rect x="20" y="24" width="960" height="38" rx="10" fill="#EAF2EC" stroke="#C9DCCF"/>
+            <text x="40" y="48" font-size="11" font-weight="600" fill="#3D6B4F">书（很多本）</text>
+            <text x="140" y="48" font-size="9.5" fill="#5F7A66">同型书：0 代码；新书型：只加模板；永远不为“一本书”写一套代码。</text>
+          </g>
+        </svg>
+      </div>
+      <div class="fig-cap"><b>判断口诀：</b>同模板同字段 → 直接跑；同模板异字段 → 写配置；同模板多一种关系 → 模板加一个 variant；四个模板都不像 → 才新增模板。</div>
+    </div>
+
+    <table class="tbl">
+      <thead><tr><th style="width:120px">复用级别</th><th>什么时候</th><th>要改什么</th><th>工期</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill g">L0 直接复用</span></td><td>同书型，字段名也一致</td><td>不改，直接跑</td><td>分钟级</td></tr>
+        <tr><td><span class="pill g">L1 配置复用</span></td><td>同书型，字段名不同</td><td>只写一份配置</td><td>0.5–1 天</td></tr>
+        <tr><td><span class="pill a">L2 模板扩展</span></td><td>同书型，多一种关系或字段</td><td>模板加 variant，不动内核</td><td>1 天</td></tr>
+        <tr><td><span class="pill r">L3 新增模板</span></td><td>四个模板都不像</td><td>新增一个书型模板</td><td>2–3 天</td></tr>
+      </tbody>
+    </table>
+
+    <h3><span class="dot"></span>配置长什么样：一本书只改这一份</h3>
+    <pre><span class="c">// app/data/kg/config/B56.json —— 图鉴型，不写代码</span>
+{
+  <span class="k">"code"</span>: <span class="s">"B56"</span>,
+  <span class="k">"template"</span>: <span class="s">"illustrated"</span>,
+  <span class="k">"fields"</span>: {
+    <span class="k">"name"</span>: <span class="s">"中名"</span>,       <span class="c">// 节点主名</span>
+    <span class="k">"family"</span>: <span class="s">"科名"</span>,     <span class="c">// 分类树父节点</span>
+    <span class="k">"aliases"</span>: [<span class="s">"别名"</span>, <span class="s">"俗名"</span>],
+    <span class="k">"effects"</span>: <span class="s">"性味功效"</span>,
+    <span class="k">"indications"</span>: <span class="s">"主治用法"</span>
+  },
+  <span class="k">"rules"</span>: {
+    <span class="k">"dropFamilyMissing"</span>: <span class="k">true</span>,
+    <span class="k">"minEvidencePerEdge"</span>: 1
+  }
+}</pre>
+    <p class="small">下一本图鉴书：复制这份配置，改 <span class="mono">code</span> 和字段名，跑一次，出图。模板和内核都不动。</p>
+
+    <div class="callout warn"><span class="lbl">唯一例外</span>叙事型（B58 这类）没有人物条目，关系要人工从原文抽。自动化只能出候选，必须内部确认后再发布；<b>这个确认不给客户，也不阻塞其他书</b>。</div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="no">04</span><h2>落地顺序：先让“同型书”自动，再谈全自动</h2><span class="en">Rollout</span></div>
+    <div class="cols">
+      <div class="card"><div class="mini">P0 · 0.5–1 天</div><h4>加建图作业 + 状态</h4><p>解析完成追加 <span class="mono">kg</span> 步骤；作业与记录里显示排队 / 建图中 / 已发布 / 跳过 / 失败；客户不出现任何中间态。</p></div>
+      <div class="card"><div class="mini">P1 · 2–3 天</div><h4>内核 + 图鉴模板 + B56</h4><p>把 B59 的硬编码抽成内核与模板；B56 只写配置。B56 出图后，下一本图鉴书直接复用。</p></div>
+      <div class="card"><div class="mini">P2 · 2–3 天</div><h4>纪事 / 索引模板</h4><p>B59 抽成纪事模板；B60 / B64 走索引或时间线；同型书只改配置。</p></div>
+      <div class="card"><div class="mini">P3 · 1–2 天</div><h4>自动路由 + 发布闸门</h4><p>判型命中模板自动入队；质检通过自动发布；不通过静默跳过。全程客户无感。</p></div>
+    </div>
+    <div class="callout"><span class="lbl">判断标准</span>如果新加一本书需要改前端、改内核、或为它写一套新代码，说明归类/复用没做好；正常情况应该只写一份配置。</div>
+    <div class="foot">流程稿 v0.1 · 2026-11-16 · 配套：知识图谱工作台（深色版）· 现有已建：B59 国之脊梁、B58 小王子、B60 河北廉洁故事、B56 图鉴、B64 十年非梦、B66 乡土中国、YC 野草（7 本全部有图）</div>
+  </section>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f7fb">
+<meta name="description" content="将已出版图书转化为可追溯的内容资产，服务编辑选题与营销创作。">
+<title>书世界 · 出版内容资产平台</title>
+<link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/static/app.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/kg.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/kg_lab.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/studio.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/apps-center.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/qa.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/records.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/workflow.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/review-flow.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/project-nav.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/assist-workspace.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/project-workspace.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/manuscript-editor.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/project-history.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/marketing-entry.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/marketing-assist.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/marketing-flow.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/video-script.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/workspace-light.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/creator-match.css?v=__ASSET_V__">
+<link rel="stylesheet" href="/static/xhs-writing.css?v=__ASSET_V__">
+</head>
+<body class="studio-app">
+<a class="skip-link" href="#view">跳至主要内容</a>
+<svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><symbol id="i-dashboard" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></symbol><symbol id="i-library" viewBox="0 0 24 24"><path d="M4 4h4v16H4zM10 4h4v16h-4zM16 5l4-1 3 15-4 1z"/></symbol><symbol id="i-content" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></symbol><symbol id="i-projects" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M8 13h8M8 17h5"/></symbol><symbol id="i-campaigns" viewBox="0 0 24 24"><path d="m3 10 13-5v14L3 14v-4Z"/><path d="m6 15 2 6h3l-2-5M20 8l2-1M20 16l2 1M20 12h3"/></symbol><symbol id="i-editor" viewBox="0 0 24 24"><path d="m16 3 5 5-11 11-6 1 1-6L16 3Z"/><path d="m13 6 5 5M3 23h18"/></symbol><symbol id="i-marketing" viewBox="0 0 24 24"><path d="m12 3 2.7 6.3L21 12l-6.3 2.7L12 21l-2.7-6.3L3 12l6.3-2.7L12 3Z"/></symbol><symbol id="i-hotspot" viewBox="0 0 24 24"><path d="M13 3c1 5-3 5-2 9 2-1 3-3 3-4 5 4 7 8 4 12-3 3-9 3-12-1-3-5 2-9 7-16Z"/></symbol><symbol id="i-kg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="5" cy="5" r="2"/><circle cx="20" cy="5" r="2"/><circle cx="5" cy="20" r="2"/><circle cx="20" cy="20" r="2"/><path d="m7 7 3 3m4 4 4 4m-4-8 4-3M7 18l3-4"/></symbol><symbol id="i-upload" viewBox="0 0 24 24"><path d="M4 15v5h16v-5M12 16V3m-5 5 5-5 5 5"/></symbol><symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><circle cx="8" cy="7" r="3"/><circle cx="16" cy="17" r="3"/></symbol><symbol id="i-apps" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><path d="M17.5 14v7M14 17.5h7"/></symbol><symbol id="i-archive" viewBox="0 0 24 24"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.6"/><path d="m16 16 5 5"/></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol></defs></svg>
+<div class="shell">
+  <aside class="sidebar" id="studioSidebar" aria-label="主导航">
+    <a class="brand" href="#/dashboard" aria-label="书世界工作台">
+      <div class="brand-mark"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="m5 9 12-4 14 6-12 4Z" fill="#80E1FF"/><path d="m5 15 12-4 14 6-12 4Z" fill="#6F94FF"/><path d="m5 21 12-4 14 6-12 4Z" fill="#A5B7FF"/><path d="M5 9v12l14 6V15" fill="#6590FF" fill-opacity=".2"/></svg></div>
+      <div><b>书世界<span class="brand-spark">✦</span></b><span>出版内容资产平台</span></div>
+    </a>
+    <div class="workspace"><span class="ws-dot"></span><span class="workspace-name">果麦文化 · 工作空间</span><span class="workspace-label">本地</span></div>
+    <nav aria-label="功能导航"><div class="nav-label">内容工作空间</div>
+<button type="button" class="nav-item on" data-view="dashboard" title="工作台"><span class="ico"><svg class="icon" aria-hidden="true"><use href="#i-dashboard"></use></svg></span><span class="nav-text">工作台</span></button>
+<button type="button" class="nav-item" data-view="library" title="来源图书"><span class="ico"><svg class="icon" aria-hidden="true"><use href="#i-library"></use></svg></span><span class="nav-text">来源图书</span><span class="count" id="navBookCount">—</span></button>
+<button type="button" class="nav-item" data-view="content" title="内容成果"><span class="ico"><svg class="icon" aria-hidden="true"><use href="#i-content"></use></svg></span><span class="nav-text">内容成果</span></button>
+<button type="button" class="nav-item" data-view="records" title="工作项目"><span class="ico"><svg class="icon" aria-hidden="true"><use href="#i-projects"></use></svg></span><span class="nav-text">工作项目</span></button>
+<div id="projectNav" class="project-nav" role="group" aria-label="工作项目功能">
+<button type="button" class="project-nav-item" data-function="editorial" onclick="ProjectNav.open(this)"><span class="project-nav-dot" aria-hidden="true"></span><span>选题策划</span></button>
+<button type="button" class="project-nav-item" data-function="marketing" onclick="ProjectNav.open(this)"><span class="project-nav-dot" aria-hidden="true"></span><span>营销策划</span></button>
+</div>
+<button type="button" class="nav-item" data-view="apps" title="内容应用"><span class="ico"><svg class="icon" aria-hidden="true"><use href="#i-apps"></use></svg></span><span class="nav-text">内容应用</span></button>
+<div id="appsNav" class="project-nav" role="group" aria-label="内容应用功能"></div>
+<button type="button" class="nav-item" data-view="marketing-tools" title="营销工具"><span class="ico"><svg class="icon" aria-hidden="true"><use href="#i-campaigns"></use></svg></span><span class="nav-text">营销工具</span></button>
+<div id="marketingToolsNav" class="project-nav" role="group" aria-label="营销工具功能">
+<a class="project-nav-item" href="#/creator-match"><span class="project-nav-dot" aria-hidden="true"></span><span>图书达人匹配</span></a>
+<a class="project-nav-item" href="#/xhs-writing"><span class="project-nav-dot" aria-hidden="true"></span><span>小红书笔记</span></a>
+</div>
+<details class="nav-management" id="navManagement"><summary><svg class="icon" aria-hidden="true"><use href="#i-settings"></use></svg><span>平台管理</span><span class="nav-management-arrow" aria-hidden="true">⌄</span></summary><div class="nav-management-items">
+<button type="button" class="nav-item" data-view="tasks" title="运行任务"><span class="ico"><svg class="icon" aria-hidden="true"><use href="#i-upload"></use></svg></span><span class="nav-text">运行任务</span><span class="count" id="navTaskCount" style="display:none">—</span></button>
+<button type="button" class="nav-item" data-view="settings" title="解析设置"><span class="ico"><svg class="icon" aria-hidden="true"><use href="#i-settings"></use></svg></span><span class="nav-text">解析设置</span></button>
+<button type="button" class="nav-item" data-view="trash" title="回收站"><span class="ico"><svg class="icon" aria-hidden="true"><use href="#i-archive"></use></svg></span><span class="nav-text">回收站</span></button>
+</div></details></nav>
+    <div class="sidebar-note"><span class="note-orbit" aria-hidden="true"></span><p>让每一本书的内容<br><b>成为下一次创作的起点</b></p></div>
+    <div class="sidebar-foot"><div class="avatar">朱</div><div><b>朱老师</b><small>内容工作空间</small></div><span class="local-indicator" title="本地工作空间"></span></div>
+  </aside>
+  <button type="button" class="sidebar-overlay" tabindex="-1" aria-label="关闭导航"></button>
+  <div class="main">
+    <header class="topbar">
+      <button type="button" class="icon-btn mobile-menu" id="studioMenu" aria-controls="studioSidebar" aria-expanded="false" aria-label="打开导航"><svg class="icon" aria-hidden="true"><use href="#i-menu"></use></svg></button>
+      <div class="crumb" id="crumb"><span>工作台</span></div>
+      <div class="top-search"><svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg><input id="globalQ" aria-label="搜索图书与内容成果" placeholder="搜索图书、观点、摘录…"><kbd>⌘ K</kbd></div>
+      <button type="button" class="btn primary sm top-upload" aria-label="导入图书" onclick="openUpload()"><svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg><span>导入图书</span></button>
+      <div class="top-divider" aria-hidden="true"></div>
+      <div class="avatar top-avatar" title="当前工作空间：朱老师">朱</div>
+    </header>
+    <main class="view" id="view" tabindex="-1"></main>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div id="modalRoot"></div>
+  </div>
+</div>
+<script>window.__ASSET_V='__ASSET_V__';</script>
+<script src="/static/app.js?v=__ASSET_V__"></script>
+<script src="/static/qa.js?v=__ASSET_V__"></script>
+<script src="/static/creator-match.js?v=__ASSET_V__"></script>
+<script src="/static/xhs-writing.js?v=__ASSET_V__"></script>
+<script src="/static/manuscript-reader.js?v=__ASSET_V__"></script>
+<script src="/static/manuscript-editor.js?v=__ASSET_V__"></script>
+<script src="/static/marketing-scenes.js?v=__ASSET_V__"></script>
+<script src="/static/marketing-purpose.js?v=__ASSET_V__"></script>
+<script src="/static/video-script.js?v=__ASSET_V__"></script>
+<script src="/static/video-prompts.js?v=__ASSET_V__"></script>
+<script src="/static/marketing-review.js?v=__ASSET_V__"></script>
+<script src="/static/marketing-materials.js?v=__ASSET_V__"></script>
+<script src="/static/marketing-entry.js?v=__ASSET_V__"></script>
+<script src="/static/workspace.js?v=__ASSET_V__"></script>
+<script src="/static/project-history.js?v=__ASSET_V__"></script>
+<script src="/static/assist.js?v=__ASSET_V__"></script>
+<script src="/static/records.js?v=__ASSET_V__"></script>
+<script src="/static/review.js?v=__ASSET_V__"></script>
+<script src="/static/relation-materials.js?v=__ASSET_V__"></script>
+<script src="/static/kg.js?v=__ASSET_V__"></script>
+<script src="/static/kg_lab.js?v=__ASSET_V__"></script>
+<script>
+(function(){
+  var menu=document.getElementById('studioMenu'),sidebar=document.getElementById('studioSidebar');
+  function syncNav(){var small=window.matchMedia('(max-width:840px)').matches,open=small&&document.body.classList.contains('nav-open');sidebar.inert=small&&!open;document.querySelector('.main').inert=open;menu.setAttribute('aria-expanded',String(open));}
+  function closeNav(){document.body.classList.remove('nav-open');syncNav();}
+  menu.addEventListener('click',function(){var open=document.body.classList.toggle('nav-open');syncNav();if(open)sidebar.querySelector('.nav-item.on,.nav-item').focus();});
+  window.addEventListener('resize',syncNav);syncNav();
+  document.querySelector('.sidebar-overlay').addEventListener('click',closeNav);
+  sidebar.querySelectorAll('.nav-item').forEach(function(b){b.addEventListener('click',closeNav);});
+  sidebar.addEventListener('click',function(e){if(e.target.closest('.project-nav-item'))closeNav();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.body.classList.contains('nav-open')){closeNav();menu.focus();}});
+  window.addEventListener('hashchange',closeNav);
+})();
+</script>
+</body>
+</html>

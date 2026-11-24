@@ -1,0 +1,888 @@
+{"name": "七二七林场", "src": "admin", "note": "行政区划"}
+{"name": "七星林场", "src": "admin", "note": "行政区划"}
+{"name": "七里山园艺场", "src": "admin", "note": "行政区划"}
+{"name": "七里岗垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "万体馆", "src": "corpus", "note": "B64 ×3"}
+{"name": "万全", "src": "corpus", "note": "B60 ×2"}
+{"name": "万寿滩良种场", "src": "admin", "note": "行政区划"}
+{"name": "万峰林场", "src": "admin", "note": "行政区划"}
+{"name": "三九六林场", "src": "admin", "note": "行政区划"}
+{"name": "三县岭林场", "src": "admin", "note": "行政区划"}
+{"name": "三团机械林场", "src": "admin", "note": "行政区划"}
+{"name": "三家子种牛场", "src": "admin", "note": "行政区划"}
+{"name": "三星垸原种场", "src": "admin", "note": "行政区划"}
+{"name": "三站林场", "src": "admin", "note": "行政区划"}
+{"name": "三间房林场", "src": "admin", "note": "行政区划"}
+{"name": "上十岭综合垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "上坑源林场", "src": "admin", "note": "行政区划"}
+{"name": "上清林场", "src": "admin", "note": "行政区划"}
+{"name": "上甘山林场", "src": "admin", "note": "行政区划"}
+{"name": "下蔡林场", "src": "admin", "note": "行政区划"}
+{"name": "东亚", "src": "corpus", "note": "B59 ×2"}
+{"name": "东兴林场", "src": "admin", "note": "行政区划"}
+{"name": "东固垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "东坑林场", "src": "admin", "note": "行政区划"}
+{"name": "东宁", "src": "corpus", "note": "B56 ×27"}
+{"name": "东岭机械林场", "src": "admin", "note": "行政区划"}
+{"name": "东岳种畜场", "src": "admin", "note": "行政区划"}
+{"name": "东平林场", "src": "admin", "note": "行政区划"}
+{"name": "东径茶场", "src": "admin", "note": "行政区划"}
+{"name": "东方丝绸市场", "src": "admin", "note": "行政区划"}
+{"name": "东方红机械林场", "src": "admin", "note": "行政区划"}
+{"name": "东海岸林场", "src": "admin", "note": "行政区划"}
+{"name": "东港", "src": "corpus", "note": "B56 ×7"}
+{"name": "东湖林场", "src": "admin", "note": "行政区划"}
+{"name": "东湖水库管理站", "src": "admin", "note": "行政区划"}
+{"name": "东牯山林场", "src": "admin", "note": "行政区划"}
+{"name": "东西伯利亚", "src": "corpus", "note": "B56 ×3"}
+{"name": "东郡", "src": "corpus", "note": "B60 ×2"}
+{"name": "东风垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "东风岗林场", "src": "admin", "note": "行政区划"}
+{"name": "东风马场", "src": "admin", "note": "行政区划"}
+{"name": "两京", "src": "corpus", "note": "B60 ×2"}
+{"name": "两广", "src": "corpus", "note": "B60 ×3"}
+{"name": "中华山林场", "src": "admin", "note": "行政区划"}
+{"name": "中卫山羊选育场", "src": "admin", "note": "行政区划"}
+{"name": "中山公园", "src": "corpus", "note": "B64 ×2"}
+{"name": "中牟", "src": "corpus", "note": "B60 ×2"}
+{"name": "中牧公司山丹马场", "src": "admin", "note": "行政区划"}
+{"name": "中西林场", "src": "admin", "note": "行政区划"}
+{"name": "丰乐林场", "src": "admin", "note": "行政区划"}
+{"name": "丰库牧场", "src": "admin", "note": "行政区划"}
+{"name": "丰溪林场", "src": "admin", "note": "行政区划"}
+{"name": "丹东", "src": "corpus", "note": "B56 ×39"}
+{"name": "乌兰敖道渔场", "src": "admin", "note": "行政区划"}
+{"name": "乌兰牧场", "src": "admin", "note": "行政区划"}
+{"name": "乌拉盖牧场", "src": "admin", "note": "行政区划"}
+{"name": "乌旦塔拉林场", "src": "admin", "note": "行政区划"}
+{"name": "乌额格其牧场", "src": "admin", "note": "行政区划"}
+{"name": "乐亭", "src": "corpus", "note": "B60 ×3"}
+{"name": "乐园良种场", "src": "admin", "note": "行政区划"}
+{"name": "九台", "src": "corpus", "note": "B56 ×3"}
+{"name": "九合垸原种场", "src": "admin", "note": "行政区划"}
+{"name": "九寨沟国营牧场", "src": "admin", "note": "行政区划"}
+{"name": "九龙山马场", "src": "admin", "note": "行政区划"}
+{"name": "九龙岭林场", "src": "admin", "note": "行政区划"}
+{"name": "也木勒牧场", "src": "admin", "note": "行政区划"}
+{"name": "乳阳林场", "src": "admin", "note": "行政区划"}
+{"name": "乾安", "src": "corpus", "note": "B56 ×3"}
+{"name": "乾安鹿场", "src": "admin", "note": "行政区划"}
+{"name": "二克浅镇二里种畜场", "src": "admin", "note": "行政区划"}
+{"name": "二支河牧场", "src": "admin", "note": "行政区划"}
+{"name": "二站林场", "src": "admin", "note": "行政区划"}
+{"name": "二龙山国营林场", "src": "admin", "note": "行政区划"}
+{"name": "二龙山林场", "src": "admin", "note": "行政区划"}
+{"name": "二龙山蚕种场", "src": "admin", "note": "行政区划"}
+{"name": "云勇林场", "src": "admin", "note": "行政区划"}
+{"name": "云大", "src": "corpus", "note": "B66 ×2"}
+{"name": "云岭林场", "src": "admin", "note": "行政区划"}
+{"name": "云梯关", "src": "corpus", "note": "B60 ×3"}
+{"name": "云浮市国有水台林场", "src": "admin", "note": "行政区划"}
+{"name": "五一林场", "src": "admin", "note": "行政区划"}
+{"name": "五大连池", "src": "corpus", "note": "B56 ×5"}
+{"name": "五峰山林场", "src": "admin", "note": "行政区划"}
+{"name": "五峰铺国有林场", "src": "admin", "note": "行政区划"}
+{"name": "五常", "src": "corpus", "note": "B56 ×21"}
+{"name": "五指峰林场", "src": "admin", "note": "行政区划"}
+{"name": "五林洞林场", "src": "admin", "note": "行政区划"}
+{"name": "五泉林场", "src": "admin", "note": "行政区划"}
+{"name": "五湖渔场", "src": "admin", "note": "行政区划"}
+{"name": "五脑山林场", "src": "admin", "note": "行政区划"}
+{"name": "五里垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "五陂下垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "五马寺林场", "src": "admin", "note": "行政区划"}
+{"name": "井冈山机场", "src": "admin", "note": "行政区划"}
+{"name": "井陉", "src": "corpus", "note": "B60 ×2"}
+{"name": "京城", "src": "corpus", "note": "B60 ×5"}
+{"name": "京师", "src": "corpus", "note": "B60 ×6"}
+{"name": "京星农牧场", "src": "admin", "note": "行政区划"}
+{"name": "京都", "src": "corpus", "note": "B60 ×2"}
+{"name": "人民广场", "src": "corpus", "note": "B64 ×7"}
+{"name": "人间", "src": "corpus", "note": "YC ×2"}
+{"name": "代州", "src": "corpus", "note": "B60 ×2"}
+{"name": "仪封园艺场", "src": "admin", "note": "行政区划"}
+{"name": "任县", "src": "corpus", "note": "B60 ×2"}
+{"name": "伊克乌图布拉格牧场", "src": "admin", "note": "行政区划"}
+{"name": "伊春", "src": "corpus", "note": "B56 ×35"}
+{"name": "伊犁州平原林场", "src": "admin", "note": "行政区划"}
+{"name": "伊胡塔林场", "src": "admin", "note": "行政区划"}
+{"name": "伊通", "src": "corpus", "note": "B56 ×4"}
+{"name": "伦敦", "src": "corpus", "note": "B66 ×4"}
+{"name": "佳木斯", "src": "corpus", "note": "B56 ×3"}
+{"name": "依兰", "src": "corpus", "note": "B56 ×15"}
+{"name": "俄罗斯（西伯利亚地区）", "src": "corpus", "note": "B56 ×2"}
+{"name": "俄罗斯（远东地区）", "src": "corpus", "note": "B56 ×4"}
+{"name": "保定府", "src": "corpus", "note": "B60 ×4"}
+{"name": "信丰垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "元青山林场", "src": "admin", "note": "行政区划"}
+{"name": "克孜勒苏柯尔克孜自治州林场", "src": "admin", "note": "行政区划"}
+{"name": "克山县北联林场", "src": "admin", "note": "行政区划"}
+{"name": "克山县河北林场", "src": "admin", "note": "行政区划"}
+{"name": "克山县涌泉林场", "src": "admin", "note": "行政区划"}
+{"name": "克山县种猪场", "src": "admin", "note": "行政区划"}
+{"name": "克山县种畜场", "src": "admin", "note": "行政区划"}
+{"name": "克山县第一良种场", "src": "admin", "note": "行政区划"}
+{"name": "克山县第二良种场", "src": "admin", "note": "行政区划"}
+{"name": "八一牧场", "src": "admin", "note": "行政区划"}
+{"name": "八角岭垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "八里滩养殖场", "src": "admin", "note": "行政区划"}
+{"name": "公主岭市种猪场", "src": "admin", "note": "行政区划"}
+{"name": "公主陵牧场", "src": "admin", "note": "行政区划"}
+{"name": "六合镇黎明奶牛场", "src": "admin", "note": "行政区划"}
+{"name": "兰州路", "src": "corpus", "note": "B64 ×2"}
+{"name": "关西", "src": "corpus", "note": "B60 ×2"}
+{"name": "兴城", "src": "corpus", "note": "B56 ×4"}
+{"name": "兵团七十团中心团场", "src": "admin", "note": "行政区划"}
+{"name": "兵团农六师北塔山牧场", "src": "admin", "note": "行政区划"}
+{"name": "兵团托云牧场", "src": "admin", "note": "行政区划"}
+{"name": "兵团第十二师养禽场", "src": "admin", "note": "行政区划"}
+{"name": "兵团红星二场", "src": "admin", "note": "行政区划"}
+{"name": "兵团红星四场", "src": "admin", "note": "行政区划"}
+{"name": "兵团芳草湖总场", "src": "admin", "note": "行政区划"}
+{"name": "具茨山国家级森林公园", "src": "admin", "note": "行政区划"}
+{"name": "冀中", "src": "corpus", "note": "B59 ×4"}
+{"name": "冀南", "src": "corpus", "note": "B60 ×4"}
+{"name": "冀州", "src": "corpus", "note": "B60 ×2"}
+{"name": "内蒙古自治区五一种畜场", "src": "admin", "note": "行政区划"}
+{"name": "内蒙古自治区国有浩特陶海牧场", "src": "admin", "note": "行政区划"}
+{"name": "内蒙古额尔古纳", "src": "corpus", "note": "B56 ×3"}
+{"name": "军亭界林场", "src": "admin", "note": "行政区划"}
+{"name": "农牧渔良种场", "src": "admin", "note": "行政区划"}
+{"name": "农科院莎车农业试验站", "src": "admin", "note": "行政区划"}
+{"name": "冷水林场", "src": "admin", "note": "行政区划"}
+{"name": "凤城", "src": "corpus", "note": "B56 ×53"}
+{"name": "前七号机械林场", "src": "admin", "note": "行政区划"}
+{"name": "前进林场", "src": "admin", "note": "行政区划"}
+{"name": "前郭", "src": "corpus", "note": "B56 ×3"}
+{"name": "前郭尔罗斯蒙古族自治县国有林总场", "src": "admin", "note": "行政区划"}
+{"name": "剑桥", "src": "corpus", "note": "B59 ×2"}
+{"name": "加州", "src": "corpus", "note": "B59 ×3"}
+{"name": "勃利", "src": "corpus", "note": "B56 ×12"}
+{"name": "勒芒", "src": "corpus", "note": "B58 ×2"}
+{"name": "北安", "src": "corpus", "note": "B56 ×7"}
+{"name": "北山农林场", "src": "admin", "note": "行政区划"}
+{"name": "北平", "src": "corpus", "note": "B59 ×15"}
+{"name": "北极阁", "src": "corpus", "note": "B59 ×2"}
+{"name": "北直隶", "src": "corpus", "note": "B60 ×2"}
+{"name": "北票", "src": "corpus", "note": "B56 ×3"}
+{"name": "北美", "src": "corpus", "note": "B56 ×6"}
+{"name": "北镇", "src": "corpus", "note": "B56 ×16"}
+{"name": "区生态林场总场", "src": "admin", "note": "行政区划"}
+{"name": "十四号种畜场", "src": "admin", "note": "行政区划"}
+{"name": "十屋种牛场", "src": "admin", "note": "行政区划"}
+{"name": "十里海养殖场", "src": "admin", "note": "行政区划"}
+{"name": "半截店牧场", "src": "admin", "note": "行政区划"}
+{"name": "华州", "src": "corpus", "note": "B60 ×6"}
+{"name": "华阳河农场总场", "src": "admin", "note": "行政区划"}
+{"name": "南丰县长红垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "南云台林场", "src": "admin", "note": "行政区划"}
+{"name": "南京西路", "src": "corpus", "note": "B64 ×2"}
+{"name": "南京路", "src": "corpus", "note": "B64 ×2"}
+{"name": "南垸良种场", "src": "admin", "note": "行政区划"}
+{"name": "南山华侨茶果场", "src": "admin", "note": "行政区划"}
+{"name": "南清河郡", "src": "corpus", "note": "B60 ×2"}
+{"name": "南湖原种场", "src": "admin", "note": "行政区划"}
+{"name": "南美", "src": "corpus", "note": "B58 ×2"}
+{"name": "南通市海门区包场渔场", "src": "admin", "note": "行政区划"}
+{"name": "南通市海门区畜禽良种场", "src": "admin", "note": "行政区划"}
+{"name": "南通市海门区种羊场", "src": "admin", "note": "行政区划"}
+{"name": "南通市海门区长江芦荡养殖场", "src": "admin", "note": "行政区划"}
+{"name": "南通市海门市沿江渔场", "src": "admin", "note": "行政区划"}
+{"name": "南通市粮棉原种场", "src": "admin", "note": "行政区划"}
+{"name": "南阳", "src": "corpus", "note": "B60 ×2"}
+{"name": "南阳市黄牛良种繁育场", "src": "admin", "note": "行政区划"}
+{"name": "卡伦山林场", "src": "admin", "note": "行政区划"}
+{"name": "卢沟桥", "src": "corpus", "note": "B59 ×3"}
+{"name": "卫县", "src": "corpus", "note": "B60 ×3"}
+{"name": "卫星种畜场", "src": "admin", "note": "行政区划"}
+{"name": "原种场", "src": "admin", "note": "行政区划"}
+{"name": "县园艺场", "src": "admin", "note": "行政区划"}
+{"name": "县林场", "src": "admin", "note": "行政区划"}
+{"name": "县种畜场", "src": "admin", "note": "行政区划"}
+{"name": "县联社马场", "src": "admin", "note": "行政区划"}
+{"name": "县良种场", "src": "admin", "note": "行政区划"}
+{"name": "县苗圃场", "src": "admin", "note": "行政区划"}
+{"name": "友谊", "src": "corpus", "note": "B56 ×2"}
+{"name": "双圳林场", "src": "admin", "note": "行政区划"}
+{"name": "双城", "src": "corpus", "note": "B56 ×3"}
+{"name": "双峰林场", "src": "admin", "note": "行政区划"}
+{"name": "双桥原种场", "src": "admin", "note": "行政区划"}
+{"name": "双牌五星岭林场", "src": "admin", "note": "行政区划"}
+{"name": "双牌打鼓坪林场", "src": "admin", "note": "行政区划"}
+{"name": "双辽", "src": "corpus", "note": "B56 ×3"}
+{"name": "双鸭山林业局七一林场", "src": "admin", "note": "行政区划"}
+{"name": "双鸭山林业局七星河林场", "src": "admin", "note": "行政区划"}
+{"name": "双鸭山林业局三岔河林场", "src": "admin", "note": "行政区划"}
+{"name": "双鸭山林业局红旗林场", "src": "admin", "note": "行政区划"}
+{"name": "双鸭山林业局青龙林场", "src": "admin", "note": "行政区划"}
+{"name": "发展林场", "src": "admin", "note": "行政区划"}
+{"name": "古台山国有林场", "src": "admin", "note": "行政区划"}
+{"name": "古城", "src": "corpus", "note": "YC ×2"}
+{"name": "吉林省通化", "src": "corpus", "note": "B56 ×2"}
+{"name": "吉林省龙井", "src": "corpus", "note": "B56 ×2"}
+{"name": "同乐林场", "src": "admin", "note": "行政区划"}
+{"name": "向阳山生态林场", "src": "admin", "note": "行政区划"}
+{"name": "向阳林场", "src": "admin", "note": "行政区划"}
+{"name": "向阳湖奶牛良种场", "src": "admin", "note": "行政区划"}
+{"name": "吴中区林场", "src": "admin", "note": "行政区划"}
+{"name": "吴兴", "src": "corpus", "note": "B59 ×3"}
+{"name": "吴家山林场", "src": "admin", "note": "行政区划"}
+{"name": "吴家山街", "src": "admin", "note": "行政区划"}
+{"name": "吾宗布拉克牧场", "src": "admin", "note": "行政区划"}
+{"name": "呈贡", "src": "corpus", "note": "B66 ×4"}
+{"name": "周口店", "src": "corpus", "note": "B59 ×6"}
+{"name": "呼中", "src": "corpus", "note": "B56 ×2"}
+{"name": "呼兰", "src": "corpus", "note": "B56 ×3"}
+{"name": "呼和托哈种畜场", "src": "admin", "note": "行政区划"}
+{"name": "呼和马场", "src": "admin", "note": "行政区划"}
+{"name": "呼图壁种牛场", "src": "admin", "note": "行政区划"}
+{"name": "呼玛", "src": "corpus", "note": "B56 ×31"}
+{"name": "和龙", "src": "corpus", "note": "B56 ×16"}
+{"name": "哈拉毛都良种场", "src": "admin", "note": "行政区划"}
+{"name": "哈拉盖图农牧场", "src": "admin", "note": "行政区划"}
+{"name": "哲日根图林场", "src": "admin", "note": "行政区划"}
+{"name": "商丘市林场", "src": "admin", "note": "行政区划"}
+{"name": "喀左", "src": "corpus", "note": "B56 ×11"}
+{"name": "喀拉尕什牧场", "src": "admin", "note": "行政区划"}
+{"name": "嘉荫", "src": "corpus", "note": "B56 ×7"}
+{"name": "四川路", "src": "corpus", "note": "B64 ×2"}
+{"name": "四海山林场", "src": "admin", "note": "行政区划"}
+{"name": "园艺场", "src": "admin", "note": "行政区划"}
+{"name": "园艺试验场", "src": "admin", "note": "行政区划"}
+{"name": "国营万埠垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "国营中兴边防林场", "src": "admin", "note": "行政区划"}
+{"name": "国营御道口牧场", "src": "admin", "note": "行政区划"}
+{"name": "国营新兴县岩头林场", "src": "admin", "note": "行政区划"}
+{"name": "国营林场", "src": "admin", "note": "行政区划"}
+{"name": "国营渔场", "src": "admin", "note": "行政区划"}
+{"name": "国营湖内林场", "src": "admin", "note": "行政区划"}
+{"name": "国营狮子峰林场", "src": "admin", "note": "行政区划"}
+{"name": "国营苇场", "src": "admin", "note": "行政区划"}
+{"name": "国营莺歌海盐场", "src": "admin", "note": "行政区划"}
+{"name": "国营霸王岭林场", "src": "admin", "note": "行政区划"}
+{"name": "图们", "src": "corpus", "note": "B56 ×2"}
+{"name": "图卢兹", "src": "corpus", "note": "B58 ×4"}
+{"name": "地字种畜场", "src": "admin", "note": "行政区划"}
+{"name": "地方国营六连林场", "src": "admin", "note": "行政区划"}
+{"name": "地狱", "src": "corpus", "note": "YC ×2"}
+{"name": "地球", "src": "corpus", "note": "B58 ×9"}
+{"name": "地球同步轨道", "src": "corpus", "note": "B59 ×2"}
+{"name": "坂头防护林场", "src": "admin", "note": "行政区划"}
+{"name": "城南太平庄", "src": "corpus", "note": "B60 ×2"}
+{"name": "塔桥园艺场", "src": "admin", "note": "行政区划"}
+{"name": "塞罕坝机械林场", "src": "admin", "note": "行政区划"}
+{"name": "处州", "src": "corpus", "note": "B60 ×2"}
+{"name": "外滩", "src": "corpus", "note": "B59 ×3"}
+{"name": "外白渡桥", "src": "corpus", "note": "B64 ×3"}
+{"name": "大兴国际机场", "src": "admin", "note": "行政区划"}
+{"name": "大历林场", "src": "admin", "note": "行政区划"}
+{"name": "大口林场", "src": "admin", "note": "行政区划"}
+{"name": "大同", "src": "corpus", "note": "B60 ×2"}
+{"name": "大同山林场", "src": "admin", "note": "行政区划"}
+{"name": "大名", "src": "corpus", "note": "B60 ×2"}
+{"name": "大坪国有林场", "src": "admin", "note": "行政区划"}
+{"name": "大埔林场", "src": "admin", "note": "行政区划"}
+{"name": "大安马场", "src": "admin", "note": "行政区划"}
+{"name": "大山种羊场", "src": "admin", "note": "行政区划"}
+{"name": "大岭山林场", "src": "admin", "note": "行政区划"}
+{"name": "大岭林场", "src": "admin", "note": "行政区划"}
+{"name": "大岱林场", "src": "admin", "note": "行政区划"}
+{"name": "大平林场", "src": "admin", "note": "行政区划"}
+{"name": "大庆油田", "src": "corpus", "note": "B59 ×2"}
+{"name": "大庙口林场", "src": "admin", "note": "行政区划"}
+{"name": "大新屯储木场", "src": "admin", "note": "行政区划"}
+{"name": "大水军牧场", "src": "admin", "note": "行政区划"}
+{"name": "大沙河林场", "src": "admin", "note": "行政区划"}
+{"name": "大沩山林场", "src": "admin", "note": "行政区划"}
+{"name": "大河口林场", "src": "admin", "note": "行政区划"}
+{"name": "大洼商业渔场", "src": "admin", "note": "行政区划"}
+{"name": "大熊山国有林场", "src": "admin", "note": "行政区划"}
+{"name": "大牙克林场", "src": "admin", "note": "行政区划"}
+{"name": "大石桥市水稻良种场", "src": "admin", "note": "行政区划"}
+{"name": "大石桥市示范场", "src": "admin", "note": "行政区划"}
+{"name": "大西洋", "src": "corpus", "note": "B58 ×2"}
+{"name": "大连奶牛场", "src": "admin", "note": "行政区划"}
+{"name": "大通桥", "src": "corpus", "note": "B60 ×2"}
+{"name": "大遐畜牧场", "src": "admin", "note": "行政区划"}
+{"name": "天井山林场", "src": "admin", "note": "行政区划"}
+{"name": "天堂寨林场", "src": "admin", "note": "行政区划"}
+{"name": "天安门", "src": "corpus", "note": "B64 ×3"}
+{"name": "天安门广场", "src": "corpus", "note": "B64 ×2"}
+{"name": "天宝林场", "src": "admin", "note": "行政区划"}
+{"name": "天竺山林场", "src": "admin", "note": "行政区划"}
+{"name": "太东林场", "src": "admin", "note": "行政区划"}
+{"name": "太原", "src": "corpus", "note": "B60 ×2"}
+{"name": "太平川机械林场", "src": "admin", "note": "行政区划"}
+{"name": "太平庄", "src": "corpus", "note": "B60 ×2"}
+{"name": "太平林场", "src": "admin", "note": "行政区划"}
+{"name": "太泊湖水产养殖场", "src": "admin", "note": "行政区划"}
+{"name": "太空", "src": "corpus", "note": "B59 ×2"}
+{"name": "奇源林场", "src": "admin", "note": "行政区划"}
+{"name": "奉天", "src": "corpus", "note": "B60 ×2"}
+{"name": "奶牛场", "src": "admin", "note": "行政区划"}
+{"name": "如皋市中心沙水产养殖场", "src": "admin", "note": "行政区划"}
+{"name": "如皋市种猪场", "src": "admin", "note": "行政区划"}
+{"name": "如皋市良种场", "src": "admin", "note": "行政区划"}
+{"name": "如皋市蚕种场", "src": "admin", "note": "行政区划"}
+{"name": "妙山林场", "src": "admin", "note": "行政区划"}
+{"name": "始平", "src": "corpus", "note": "B60 ×3"}
+{"name": "威山林场", "src": "admin", "note": "行政区划"}
+{"name": "孔国乡进化种猪场", "src": "admin", "note": "行政区划"}
+{"name": "孙吴", "src": "corpus", "note": "B56 ×9"}
+{"name": "学田镇富源林场", "src": "admin", "note": "行政区划"}
+{"name": "宁夏原种场", "src": "admin", "note": "行政区划"}
+{"name": "宁安", "src": "corpus", "note": "B56 ×30"}
+{"name": "安亭车站", "src": "corpus", "note": "B64 ×2"}
+{"name": "安图", "src": "corpus", "note": "B56 ×43"}
+{"name": "安基山林场", "src": "admin", "note": "行政区划"}
+{"name": "安广猪场", "src": "admin", "note": "行政区划"}
+{"name": "安徽桐城", "src": "corpus", "note": "B60 ×2"}
+{"name": "安徽省国营十字铺茶场", "src": "admin", "note": "行政区划"}
+{"name": "安班巴格良繁场", "src": "admin", "note": "行政区划"}
+{"name": "安达", "src": "corpus", "note": "B56 ×5"}
+{"name": "安达畜牧场", "src": "admin", "note": "行政区划"}
+{"name": "宋坪林场", "src": "admin", "note": "行政区划"}
+{"name": "宋埠良种场", "src": "admin", "note": "行政区划"}
+{"name": "宏胜种畜场", "src": "admin", "note": "行政区划"}
+{"name": "宗城", "src": "corpus", "note": "B60 ×2"}
+{"name": "官塘驿林场", "src": "admin", "note": "行政区划"}
+{"name": "官山林场", "src": "admin", "note": "行政区划"}
+{"name": "定州", "src": "corpus", "note": "B60 ×3"}
+{"name": "宝格达乌拉总场", "src": "admin", "note": "行政区划"}
+{"name": "宝清", "src": "corpus", "note": "B56 ×8"}
+{"name": "宝马山林场", "src": "admin", "note": "行政区划"}
+{"name": "实验林场", "src": "admin", "note": "行政区划"}
+{"name": "宽甸", "src": "corpus", "note": "B56 ×61"}
+{"name": "密云", "src": "corpus", "note": "B60 ×2"}
+{"name": "富裕", "src": "corpus", "note": "B56 ×3"}
+{"name": "富锦", "src": "corpus", "note": "B56 ×10"}
+{"name": "富锦市国营原种场", "src": "admin", "note": "行政区划"}
+{"name": "富锦市国营果树示范场", "src": "admin", "note": "行政区划"}
+{"name": "对川茶场", "src": "admin", "note": "行政区划"}
+{"name": "寿春", "src": "corpus", "note": "B60 ×4"}
+{"name": "小佳河林场", "src": "admin", "note": "行政区划"}
+{"name": "小兴安林场", "src": "admin", "note": "行政区划"}
+{"name": "小孤山林场", "src": "admin", "note": "行政区划"}
+{"name": "小峰经济作物场", "src": "admin", "note": "行政区划"}
+{"name": "小泉子治沙站", "src": "admin", "note": "行政区划"}
+{"name": "尚志", "src": "corpus", "note": "B56 ×43"}
+{"name": "屯垦林场", "src": "admin", "note": "行政区划"}
+{"name": "山东临淄", "src": "corpus", "note": "B60 ×2"}
+{"name": "山东道", "src": "corpus", "note": "B60 ×2"}
+{"name": "山区林场", "src": "admin", "note": "行政区划"}
+{"name": "山市种奶牛场", "src": "admin", "note": "行政区划"}
+{"name": "山黄林场", "src": "admin", "note": "行政区划"}
+{"name": "岫岩", "src": "corpus", "note": "B56 ×31"}
+{"name": "岭下溪国有防护林场", "src": "admin", "note": "行政区划"}
+{"name": "岳州", "src": "corpus", "note": "B60 ×2"}
+{"name": "岷山林场", "src": "admin", "note": "行政区划"}
+{"name": "峡山林场", "src": "admin", "note": "行政区划"}
+{"name": "峻山林场", "src": "admin", "note": "行政区划"}
+{"name": "嶂山林场", "src": "admin", "note": "行政区划"}
+{"name": "工农林场", "src": "admin", "note": "行政区划"}
+{"name": "巨浪牧场", "src": "admin", "note": "行政区划"}
+{"name": "巨鹿路", "src": "corpus", "note": "B64 ×7"}
+{"name": "巩昌", "src": "corpus", "note": "B60 ×3"}
+{"name": "巴嘎乌图布拉格牧场", "src": "admin", "note": "行政区划"}
+{"name": "巴塔哥尼亚", "src": "corpus", "note": "B58 ×2"}
+{"name": "巴尔鲁克山塔斯特林场", "src": "admin", "note": "行政区划"}
+{"name": "巴彦", "src": "corpus", "note": "B56 ×6"}
+{"name": "巴彦淖尔市乌梁素海渔场", "src": "admin", "note": "行政区划"}
+{"name": "巴音沟牧场", "src": "admin", "note": "行政区划"}
+{"name": "市原种场", "src": "admin", "note": "行政区划"}
+{"name": "市良种场", "src": "admin", "note": "行政区划"}
+{"name": "布敦化牧场", "src": "admin", "note": "行政区划"}
+{"name": "布斯屯格牧场", "src": "admin", "note": "行政区划"}
+{"name": "干岔子林场", "src": "admin", "note": "行政区划"}
+{"name": "干洲垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "平山林场", "src": "admin", "note": "行政区划"}
+{"name": "平泉州", "src": "corpus", "note": "B60 ×2"}
+{"name": "并州", "src": "corpus", "note": "B60 ×5"}
+{"name": "广东省惠州市国营惠东九龙峰林场", "src": "admin", "note": "行政区划"}
+{"name": "广东省惠州市国营惠东梁化林场", "src": "admin", "note": "行政区划"}
+{"name": "广东省西江林业局良洞迳林场", "src": "admin", "note": "行政区划"}
+{"name": "广平", "src": "corpus", "note": "B60 ×2"}
+{"name": "庆安", "src": "corpus", "note": "B56 ×10"}
+{"name": "库里渔场", "src": "admin", "note": "行政区划"}
+{"name": "康保牧场", "src": "admin", "note": "行政区划"}
+{"name": "康山垦总场", "src": "admin", "note": "行政区划"}
+{"name": "康平", "src": "corpus", "note": "B56 ×2"}
+{"name": "康平路", "src": "corpus", "note": "B64 ×13"}
+{"name": "延吉", "src": "corpus", "note": "B56 ×3"}
+{"name": "延安西路33号", "src": "corpus", "note": "B64 ×5"}
+{"name": "延寿", "src": "corpus", "note": "B56 ×13"}
+{"name": "延边原种场", "src": "admin", "note": "行政区划"}
+{"name": "建平", "src": "corpus", "note": "B56 ×13"}
+{"name": "建昌", "src": "corpus", "note": "B56 ×21"}
+{"name": "开化", "src": "corpus", "note": "B60 ×2"}
+{"name": "开原", "src": "corpus", "note": "B56 ×7"}
+{"name": "开封府", "src": "corpus", "note": "B60 ×2"}
+{"name": "开弦弓", "src": "corpus", "note": "B66 ×2"}
+{"name": "引龙河林场", "src": "admin", "note": "行政区划"}
+{"name": "张掖宝瓶河牧场", "src": "admin", "note": "行政区划"}
+{"name": "彝陵州", "src": "corpus", "note": "B60 ×2"}
+{"name": "彭山公益林场", "src": "admin", "note": "行政区划"}
+{"name": "彰武", "src": "corpus", "note": "B56 ×7"}
+{"name": "忠仁镇良种场", "src": "admin", "note": "行政区划"}
+{"name": "怀仁堂", "src": "corpus", "note": "B64 ×2"}
+{"name": "恒湖垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "惠州市林场", "src": "admin", "note": "行政区划"}
+{"name": "愚园路311号", "src": "corpus", "note": "B64 ×3"}
+{"name": "扎兰屯", "src": "corpus", "note": "B56 ×24"}
+{"name": "扶余", "src": "corpus", "note": "B56 ×3"}
+{"name": "承德府", "src": "corpus", "note": "B60 ×2"}
+{"name": "抚松", "src": "corpus", "note": "B56 ×34"}
+{"name": "抚顺", "src": "corpus", "note": "B56 ×26"}
+{"name": "捺山茶场", "src": "admin", "note": "行政区划"}
+{"name": "提篮桥", "src": "corpus", "note": "B64 ×3"}
+{"name": "提蓝桥", "src": "corpus", "note": "B64 ×2"}
+{"name": "支家弄", "src": "corpus", "note": "B64 ×2"}
+{"name": "故城", "src": "corpus", "note": "B60 ×5"}
+{"name": "敖东鹿场", "src": "admin", "note": "行政区划"}
+{"name": "敦化", "src": "corpus", "note": "B56 ×13"}
+{"name": "文化广场", "src": "corpus", "note": "B64 ×15"}
+{"name": "斜桥", "src": "corpus", "note": "B64 ×4"}
+{"name": "新兴畜牧场", "src": "admin", "note": "行政区划"}
+{"name": "新华牛场", "src": "admin", "note": "行政区划"}
+{"name": "新宾", "src": "corpus", "note": "B56 ×29"}
+{"name": "新庙泡渔场", "src": "admin", "note": "行政区划"}
+{"name": "新江林场", "src": "admin", "note": "行政区划"}
+{"name": "新洲原种场", "src": "admin", "note": "行政区划"}
+{"name": "新洲垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "新滩盐场", "src": "admin", "note": "行政区划"}
+{"name": "新疆农业科学院玛纳斯县试验站", "src": "admin", "note": "行政区划"}
+{"name": "新立林场", "src": "admin", "note": "行政区划"}
+{"name": "新立良种繁育场", "src": "admin", "note": "行政区划"}
+{"name": "新荒渔场", "src": "admin", "note": "行政区划"}
+{"name": "方城大寺林场", "src": "admin", "note": "行政区划"}
+{"name": "方正", "src": "corpus", "note": "B56 ×17"}
+{"name": "日内瓦", "src": "corpus", "note": "B59 ×3"}
+{"name": "昆得仑牧场", "src": "admin", "note": "行政区划"}
+{"name": "昌吉市北部荒漠生态保护管理站", "src": "admin", "note": "行政区划"}
+{"name": "昌图", "src": "corpus", "note": "B56 ×4"}
+{"name": "昌邑", "src": "corpus", "note": "B60 ×2"}
+{"name": "明月山采育林场", "src": "admin", "note": "行政区划"}
+{"name": "明水种畜场", "src": "admin", "note": "行政区划"}
+{"name": "星球", "src": "corpus", "note": "B58 ×6"}
+{"name": "晋州", "src": "corpus", "note": "B60 ×5"}
+{"name": "曼彻斯特", "src": "corpus", "note": "B59 ×4"}
+{"name": "望峰林场", "src": "admin", "note": "行政区划"}
+{"name": "朝阳", "src": "corpus", "note": "B56 ×8"}
+{"name": "朝阳林场", "src": "admin", "note": "行政区划"}
+{"name": "朝鲁吐林场", "src": "admin", "note": "行政区划"}
+{"name": "木兰", "src": "corpus", "note": "B56 ×10"}
+{"name": "李梅林场", "src": "admin", "note": "行政区划"}
+{"name": "杜尔伯特", "src": "corpus", "note": "B56 ×4"}
+{"name": "松江府", "src": "corpus", "note": "B60 ×2"}
+{"name": "林下林场", "src": "admin", "note": "行政区划"}
+{"name": "林业站", "src": "admin", "note": "行政区划"}
+{"name": "林口", "src": "corpus", "note": "B56 ×15"}
+{"name": "林场", "src": "admin", "note": "行政区划"}
+{"name": "林甸县长青林场", "src": "admin", "note": "行政区划"}
+{"name": "林茂山林场", "src": "admin", "note": "行政区划"}
+{"name": "果林场", "src": "admin", "note": "行政区划"}
+{"name": "果树场", "src": "admin", "note": "行政区划"}
+{"name": "果树示范场", "src": "admin", "note": "行政区划"}
+{"name": "果树繁殖场", "src": "admin", "note": "行政区划"}
+{"name": "枫树山总场", "src": "admin", "note": "行政区划"}
+{"name": "柏乡", "src": "corpus", "note": "B60 ×2"}
+{"name": "查干湖渔场", "src": "admin", "note": "行政区划"}
+{"name": "查干花种畜场", "src": "admin", "note": "行政区划"}
+{"name": "柳林屯", "src": "corpus", "note": "B60 ×2"}
+{"name": "柳林林场", "src": "admin", "note": "行政区划"}
+{"name": "树新林场", "src": "admin", "note": "行政区划"}
+{"name": "桃花冲林场", "src": "admin", "note": "行政区划"}
+{"name": "桓仁", "src": "corpus", "note": "B56 ×70"}
+{"name": "桦南", "src": "corpus", "note": "B56 ×6"}
+{"name": "桦南林业局岚峰林场", "src": "admin", "note": "行政区划"}
+{"name": "桦南种畜场", "src": "admin", "note": "行政区划"}
+{"name": "桦川", "src": "corpus", "note": "B56 ×12"}
+{"name": "桦甸", "src": "corpus", "note": "B56 ×2"}
+{"name": "桦皮窑林场", "src": "admin", "note": "行政区划"}
+{"name": "梅河口", "src": "corpus", "note": "B56 ×3"}
+{"name": "棉花原种场", "src": "admin", "note": "行政区划"}
+{"name": "棋山国家森林公园", "src": "admin", "note": "行政区划"}
+{"name": "楚地", "src": "corpus", "note": "B60 ×2"}
+{"name": "正定府", "src": "corpus", "note": "B60 ×2"}
+{"name": "正江山林场", "src": "admin", "note": "行政区划"}
+{"name": "正阳林场", "src": "admin", "note": "行政区划"}
+{"name": "武安", "src": "corpus", "note": "B60 ×2"}
+{"name": "武山垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "武强", "src": "corpus", "note": "B60 ×2"}
+{"name": "武昌", "src": "corpus", "note": "B59 ×3"}
+{"name": "毛登牧场", "src": "admin", "note": "行政区划"}
+{"name": "水产养殖场", "src": "admin", "note": "行政区划"}
+{"name": "水产良种场", "src": "admin", "note": "行政区划"}
+{"name": "水产试验场", "src": "admin", "note": "行政区划"}
+{"name": "水田良种场", "src": "admin", "note": "行政区划"}
+{"name": "永安街", "src": "corpus", "note": "B64 ×2"}
+{"name": "永幸林场", "src": "admin", "note": "行政区划"}
+{"name": "汈汊湖养殖场", "src": "admin", "note": "行政区划"}
+{"name": "汉中", "src": "corpus", "note": "B60 ×2"}
+{"name": "汉阳", "src": "corpus", "note": "B60 ×2"}
+{"name": "江南道", "src": "corpus", "note": "B60 ×2"}
+{"name": "江夏", "src": "corpus", "note": "B66 ×2"}
+{"name": "江宁", "src": "corpus", "note": "B60 ×3"}
+{"name": "江村", "src": "corpus", "note": "B66 ×4"}
+{"name": "江西省良种繁殖场", "src": "admin", "note": "行政区划"}
+{"name": "江门市四堡林场", "src": "admin", "note": "行政区划"}
+{"name": "江防林场", "src": "admin", "note": "行政区划"}
+{"name": "江陵", "src": "corpus", "note": "B60 ×3"}
+{"name": "汤原", "src": "corpus", "note": "B56 ×13"}
+{"name": "汪清", "src": "corpus", "note": "B56 ×13"}
+{"name": "汾州", "src": "corpus", "note": "B60 ×2"}
+{"name": "沈北新区种畜场", "src": "admin", "note": "行政区划"}
+{"name": "沈北新区马刚林场", "src": "admin", "note": "行政区划"}
+{"name": "沙河林场", "src": "admin", "note": "行政区划"}
+{"name": "沙湖原种场", "src": "admin", "note": "行政区划"}
+{"name": "沧浪山林场", "src": "admin", "note": "行政区划"}
+{"name": "沪宁线", "src": "corpus", "note": "B64 ×2"}
+{"name": "河东", "src": "corpus", "note": "B60 ×4"}
+{"name": "河伯岭国有林场", "src": "admin", "note": "行政区划"}
+{"name": "河北容城", "src": "corpus", "note": "B60 ×2"}
+{"name": "河北正定", "src": "corpus", "note": "B60 ×2"}
+{"name": "河北涿州", "src": "corpus", "note": "B60 ×2"}
+{"name": "河北高邑", "src": "corpus", "note": "B60 ×2"}
+{"name": "河南屯林场", "src": "admin", "note": "行政区划"}
+{"name": "河尾山林场", "src": "admin", "note": "行政区划"}
+{"name": "河曲马场", "src": "admin", "note": "行政区划"}
+{"name": "河潭埠垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "河间", "src": "corpus", "note": "B60 ×3"}
+{"name": "油桐林场", "src": "admin", "note": "行政区划"}
+{"name": "沿江林场", "src": "admin", "note": "行政区划"}
+{"name": "法库", "src": "corpus", "note": "B56 ×3"}
+{"name": "波士顿", "src": "corpus", "note": "B59 ×2"}
+{"name": "泰来", "src": "corpus", "note": "B56 ×6"}
+{"name": "泽普县良种场", "src": "admin", "note": "行政区划"}
+{"name": "洛浦寺林场", "src": "admin", "note": "行政区划"}
+{"name": "洮南", "src": "corpus", "note": "B56 ×5"}
+{"name": "洲瑞林场", "src": "admin", "note": "行政区划"}
+{"name": "浙西", "src": "corpus", "note": "B60 ×2"}
+{"name": "浚仪", "src": "corpus", "note": "B60 ×3"}
+{"name": "浩口原种场", "src": "admin", "note": "行政区划"}
+{"name": "海伦市东方农牧场", "src": "admin", "note": "行政区划"}
+{"name": "海伦市董家农作物种植场", "src": "admin", "note": "行政区划"}
+{"name": "海城", "src": "corpus", "note": "B56 ×12"}
+{"name": "海林", "src": "corpus", "note": "B56 ×20"}
+{"name": "海滨", "src": "corpus", "note": "B66 ×2"}
+{"name": "海西州莫河畜牧场", "src": "admin", "note": "行政区划"}
+{"name": "涝洲鱼种场", "src": "admin", "note": "行政区划"}
+{"name": "涿郡", "src": "corpus", "note": "B60 ×3"}
+{"name": "淮南", "src": "corpus", "note": "B60 ×3"}
+{"name": "淮安", "src": "corpus", "note": "B60 ×4"}
+{"name": "淮安府", "src": "corpus", "note": "B60 ×2"}
+{"name": "淮扬", "src": "corpus", "note": "B60 ×2"}
+{"name": "深井子牧场", "src": "admin", "note": "行政区划"}
+{"name": "深圳市宝安国际机场", "src": "admin", "note": "行政区划"}
+{"name": "清华园", "src": "corpus", "note": "B59 ×7"}
+{"name": "清河林场", "src": "admin", "note": "行政区划"}
+{"name": "清河牧场", "src": "admin", "note": "行政区划"}
+{"name": "清漳", "src": "corpus", "note": "B60 ×3"}
+{"name": "清远市国营银盏林场", "src": "admin", "note": "行政区划"}
+{"name": "清远市羊角山林场", "src": "admin", "note": "行政区划"}
+{"name": "渔池湖水产场", "src": "admin", "note": "行政区划"}
+{"name": "湖东林场", "src": "admin", "note": "行政区划"}
+{"name": "滨南林场", "src": "admin", "note": "行政区划"}
+{"name": "漳浦盐场", "src": "admin", "note": "行政区划"}
+{"name": "灌西盐场", "src": "admin", "note": "行政区划"}
+{"name": "火连畈茶场", "src": "admin", "note": "行政区划"}
+{"name": "灵宝市园艺场", "src": "admin", "note": "行政区划"}
+{"name": "灵寿", "src": "corpus", "note": "B60 ×4"}
+{"name": "焦得布林场", "src": "admin", "note": "行政区划"}
+{"name": "爱华林场", "src": "admin", "note": "行政区划"}
+{"name": "爱林林场", "src": "admin", "note": "行政区划"}
+{"name": "牙克石", "src": "corpus", "note": "B56 ×36"}
+{"name": "牛场", "src": "admin", "note": "行政区划"}
+{"name": "犹比角", "src": "corpus", "note": "B58 ×2"}
+{"name": "王家庄牧场", "src": "admin", "note": "行政区划"}
+{"name": "王莽寨林场", "src": "admin", "note": "行政区划"}
+{"name": "珠日河牧场", "src": "admin", "note": "行政区划"}
+{"name": "珲春", "src": "corpus", "note": "B56 ×6"}
+{"name": "瑞昌市大德山林场", "src": "admin", "note": "行政区划"}
+{"name": "瓦房店", "src": "corpus", "note": "B56 ×13"}
+{"name": "甘坑生态林场", "src": "admin", "note": "行政区划"}
+{"name": "甘家湖牧场", "src": "admin", "note": "行政区划"}
+{"name": "甘肃省绵羊育种场", "src": "admin", "note": "行政区划"}
+{"name": "电白盐场", "src": "admin", "note": "行政区划"}
+{"name": "畜牧场", "src": "admin", "note": "行政区划"}
+{"name": "畜牧果林场", "src": "admin", "note": "行政区划"}
+{"name": "畜禽良种场", "src": "admin", "note": "行政区划"}
+{"name": "白云山林场", "src": "admin", "note": "行政区划"}
+{"name": "白四林场", "src": "admin", "note": "行政区划"}
+{"name": "白城牧场", "src": "admin", "note": "行政区划"}
+{"name": "白杨河林场", "src": "admin", "note": "行政区划"}
+{"name": "白河牧场", "src": "admin", "note": "行政区划"}
+{"name": "白石垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "白银库伦牧场", "src": "admin", "note": "行政区划"}
+{"name": "百花山林场", "src": "admin", "note": "行政区划"}
+{"name": "盐场", "src": "admin", "note": "行政区划"}
+{"name": "盖州", "src": "corpus", "note": "B56 ×13"}
+{"name": "盘山县林场", "src": "admin", "note": "行政区划"}
+{"name": "盘石岭林场", "src": "admin", "note": "行政区划"}
+{"name": "相城垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "省原种繁殖场", "src": "admin", "note": "行政区划"}
+{"name": "省双金园艺场", "src": "admin", "note": "行政区划"}
+{"name": "省天马种猪场", "src": "admin", "note": "行政区划"}
+{"name": "省属灌东盐场", "src": "admin", "note": "行政区划"}
+{"name": "省岭脚热带作物场", "src": "admin", "note": "行政区划"}
+{"name": "真定", "src": "corpus", "note": "B60 ×2"}
+{"name": "石场林场", "src": "admin", "note": "行政区划"}
+{"name": "石砬山林场", "src": "admin", "note": "行政区划"}
+{"name": "石花尖垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "磐石", "src": "corpus", "note": "B56 ×3"}
+{"name": "福州路", "src": "corpus", "note": "B64 ×4"}
+{"name": "禾斛岭垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "禾洞农林场", "src": "admin", "note": "行政区划"}
+{"name": "秀坪园艺场", "src": "admin", "note": "行政区划"}
+{"name": "种猪场", "src": "admin", "note": "行政区划"}
+{"name": "种畜场", "src": "admin", "note": "行政区划"}
+{"name": "种羊场", "src": "admin", "note": "行政区划"}
+{"name": "种蜂场", "src": "admin", "note": "行政区划"}
+{"name": "种马场", "src": "admin", "note": "行政区划"}
+{"name": "科克苏林场", "src": "admin", "note": "行政区划"}
+{"name": "穆棱", "src": "corpus", "note": "B56 ×15"}
+{"name": "立陡山良种场", "src": "admin", "note": "行政区划"}
+{"name": "笔架林场", "src": "admin", "note": "行政区划"}
+{"name": "第一良种场", "src": "admin", "note": "行政区划"}
+{"name": "第三良种场", "src": "admin", "note": "行政区划"}
+{"name": "第二良种场", "src": "admin", "note": "行政区划"}
+{"name": "第二良种繁殖场", "src": "admin", "note": "行政区划"}
+{"name": "第四良种场", "src": "admin", "note": "行政区划"}
+{"name": "粮棉原种场", "src": "admin", "note": "行政区划"}
+{"name": "索伦牧场", "src": "admin", "note": "行政区划"}
+{"name": "红亮垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "红光垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "红山林场", "src": "admin", "note": "行政区划"}
+{"name": "红岭林场", "src": "admin", "note": "行政区划"}
+{"name": "红旗奶山羊场", "src": "admin", "note": "行政区划"}
+{"name": "红旗林场", "src": "admin", "note": "行政区划"}
+{"name": "红旗饲养场", "src": "admin", "note": "行政区划"}
+{"name": "红星牧场", "src": "admin", "note": "行政区划"}
+{"name": "红桥垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "红河谷森林公园", "src": "admin", "note": "行政区划"}
+{"name": "纽约", "src": "corpus", "note": "B66 ×2"}
+{"name": "经济作物示范场", "src": "admin", "note": "行政区划"}
+{"name": "绥东镇种畜场", "src": "admin", "note": "行政区划"}
+{"name": "绥中", "src": "corpus", "note": "B56 ×15"}
+{"name": "绥化", "src": "corpus", "note": "B56 ×3"}
+{"name": "绥棱", "src": "corpus", "note": "B56 ×9"}
+{"name": "绥棱县国有林场三吉台林场", "src": "admin", "note": "行政区划"}
+{"name": "绥棱县国有林场半截河林场", "src": "admin", "note": "行政区划"}
+{"name": "绥棱县国有林场四海店林场", "src": "admin", "note": "行政区划"}
+{"name": "绥棱县国有林场阁山林场", "src": "admin", "note": "行政区划"}
+{"name": "绥棱县猪场", "src": "admin", "note": "行政区划"}
+{"name": "绥滨西林场", "src": "admin", "note": "行政区划"}
+{"name": "综合垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "绿色草原牧场", "src": "admin", "note": "行政区划"}
+{"name": "罗布泊", "src": "corpus", "note": "B59 ×4"}
+{"name": "罗汉寺", "src": "admin", "note": "行政区划"}
+{"name": "罗汉寺种畜场", "src": "admin", "note": "行政区划"}
+{"name": "罗经嶂林场", "src": "admin", "note": "行政区划"}
+{"name": "罗铺垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "羊楼洞茶场", "src": "admin", "note": "行政区划"}
+{"name": "翠雷山垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "老山林场", "src": "admin", "note": "行政区划"}
+{"name": "老莱镇宽余林场", "src": "admin", "note": "行政区划"}
+{"name": "老风口林场", "src": "admin", "note": "行政区划"}
+{"name": "耳口林场", "src": "admin", "note": "行政区划"}
+{"name": "联大", "src": "corpus", "note": "B66 ×2"}
+{"name": "肃宁", "src": "corpus", "note": "B60 ×2"}
+{"name": "肇东", "src": "corpus", "note": "B56 ×5"}
+{"name": "肥乡", "src": "corpus", "note": "B60 ×2"}
+{"name": "育林畜牧场", "src": "admin", "note": "行政区划"}
+{"name": "胜山林场", "src": "admin", "note": "行政区划"}
+{"name": "胡力海原种繁殖场", "src": "admin", "note": "行政区划"}
+{"name": "胡杨林场", "src": "admin", "note": "行政区划"}
+{"name": "腰屯林场", "src": "admin", "note": "行政区划"}
+{"name": "腾字种畜场", "src": "admin", "note": "行政区划"}
+{"name": "自治区林业厅玛纳斯平原林场", "src": "admin", "note": "行政区划"}
+{"name": "良种场", "src": "admin", "note": "行政区划"}
+{"name": "良种繁殖场", "src": "admin", "note": "行政区划"}
+{"name": "良种繁育场", "src": "admin", "note": "行政区划"}
+{"name": "芗城区奶牛场", "src": "admin", "note": "行政区划"}
+{"name": "芜园", "src": "corpus", "note": "B59 ×2"}
+{"name": "芝加哥", "src": "corpus", "note": "B66 ×2"}
+{"name": "芦源林场", "src": "admin", "note": "行政区划"}
+{"name": "花山林场", "src": "admin", "note": "行政区划"}
+{"name": "花岩溪林场", "src": "admin", "note": "行政区划"}
+{"name": "花滩林场", "src": "admin", "note": "行政区划"}
+{"name": "苍溪县良种场", "src": "admin", "note": "行政区划"}
+{"name": "苏修", "src": "corpus", "note": "B64 ×2"}
+{"name": "苏海良种场", "src": "admin", "note": "行政区划"}
+{"name": "苗圃场", "src": "admin", "note": "行政区划"}
+{"name": "茂兴湖水产养殖场", "src": "admin", "note": "行政区划"}
+{"name": "茂道吐林场", "src": "admin", "note": "行政区划"}
+{"name": "茶山林场", "src": "admin", "note": "行政区划"}
+{"name": "荆州", "src": "corpus", "note": "B60 ×2"}
+{"name": "荣山垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "药姑林场", "src": "admin", "note": "行政区划"}
+{"name": "药泉林场", "src": "admin", "note": "行政区划"}
+{"name": "莆田", "src": "corpus", "note": "B59 ×2"}
+{"name": "莎车县园艺场", "src": "admin", "note": "行政区划"}
+{"name": "莎车县国营二林场", "src": "admin", "note": "行政区划"}
+{"name": "莎车县良种繁育场", "src": "admin", "note": "行政区划"}
+{"name": "莎车县蚕种场", "src": "admin", "note": "行政区划"}
+{"name": "莎车县鱼苗场", "src": "admin", "note": "行政区划"}
+{"name": "莫力庙种羊场", "src": "admin", "note": "行政区划"}
+{"name": "萝北", "src": "corpus", "note": "B56 ×14"}
+{"name": "营口", "src": "corpus", "note": "B56 ×10"}
+{"name": "萨尔也木勒牧场", "src": "admin", "note": "行政区划"}
+{"name": "葡萄场", "src": "admin", "note": "行政区划"}
+{"name": "蓝山南岭林场", "src": "admin", "note": "行政区划"}
+{"name": "蓝山原种场", "src": "admin", "note": "行政区划"}
+{"name": "蓝山浆洞林场", "src": "admin", "note": "行政区划"}
+{"name": "蓝山荆竹林场", "src": "admin", "note": "行政区划"}
+{"name": "蓝山黄毛岭茶场", "src": "admin", "note": "行政区划"}
+{"name": "蔬菜原种场", "src": "admin", "note": "行政区划"}
+{"name": "蔴源垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "薄刀峰林场", "src": "admin", "note": "行政区划"}
+{"name": "薤山林场", "src": "admin", "note": "行政区划"}
+{"name": "虎林", "src": "corpus", "note": "B56 ×28"}
+{"name": "虹桥机场", "src": "corpus", "note": "B64 ×2"}
+{"name": "蚕种场", "src": "admin", "note": "行政区划"}
+{"name": "蠡县", "src": "corpus", "note": "B60 ×4"}
+{"name": "街津口林场", "src": "admin", "note": "行政区划"}
+{"name": "西丰", "src": "corpus", "note": "B56 ×26"}
+{"name": "西丰林场", "src": "admin", "note": "行政区划"}
+{"name": "西伯利亚", "src": "corpus", "note": "B56 ×13"}
+{"name": "西岗子试验林场", "src": "admin", "note": "行政区划"}
+{"name": "西江林场", "src": "admin", "note": "行政区划"}
+{"name": "西窑林场", "src": "admin", "note": "行政区划"}
+{"name": "西苑", "src": "corpus", "note": "B60 ×2"}
+{"name": "西藏路", "src": "corpus", "note": "B64 ×3"}
+{"name": "西郊公园", "src": "corpus", "note": "B64 ×2"}
+{"name": "贝力克牧场", "src": "admin", "note": "行政区划"}
+{"name": "贺家山原种场", "src": "admin", "note": "行政区划"}
+{"name": "贺斯格乌拉牧场", "src": "admin", "note": "行政区划"}
+{"name": "赛力克提牧场", "src": "admin", "note": "行政区划"}
+{"name": "赛城湖水产场", "src": "admin", "note": "行政区划"}
+{"name": "赵国", "src": "corpus", "note": "B60 ×2"}
+{"name": "赵州", "src": "corpus", "note": "B60 ×2"}
+{"name": "赵西垸林场", "src": "admin", "note": "行政区划"}
+{"name": "赵郡", "src": "corpus", "note": "B60 ×2"}
+{"name": "跃进马场", "src": "admin", "note": "行政区划"}
+{"name": "车上林场", "src": "admin", "note": "行政区划"}
+{"name": "辉南", "src": "corpus", "note": "B56 ×5"}
+{"name": "辛家山林业场", "src": "admin", "note": "行政区划"}
+{"name": "辰清林场", "src": "admin", "note": "行政区划"}
+{"name": "辽东", "src": "corpus", "note": "B60 ×5"}
+{"name": "辽宁省宽甸", "src": "corpus", "note": "B56 ×6"}
+{"name": "辽宁省金城原种场", "src": "admin", "note": "行政区划"}
+{"name": "辽宁省锦州市小东种畜场", "src": "admin", "note": "行政区划"}
+{"name": "辽阳", "src": "corpus", "note": "B56 ×7"}
+{"name": "达喀尔", "src": "corpus", "note": "B58 ×4"}
+{"name": "迁安", "src": "corpus", "note": "B60 ×3"}
+{"name": "远东", "src": "corpus", "note": "B56 ×21"}
+{"name": "连山林场", "src": "admin", "note": "行政区划"}
+{"name": "逊克", "src": "corpus", "note": "B56 ×6"}
+{"name": "通化", "src": "corpus", "note": "B56 ×20"}
+{"name": "通州", "src": "corpus", "note": "B60 ×3"}
+{"name": "通榆", "src": "corpus", "note": "B56 ×8"}
+{"name": "通辽", "src": "corpus", "note": "B56 ×25"}
+{"name": "通辽市国有孟根达坝牧场", "src": "admin", "note": "行政区划"}
+{"name": "通辽市国有查金台牧场", "src": "admin", "note": "行政区划"}
+{"name": "通道县地连林场", "src": "admin", "note": "行政区划"}
+{"name": "通门林场", "src": "admin", "note": "行政区划"}
+{"name": "造纸林场", "src": "admin", "note": "行政区划"}
+{"name": "道干林场", "src": "admin", "note": "行政区划"}
+{"name": "邢州", "src": "corpus", "note": "B60 ×2"}
+{"name": "邺城", "src": "corpus", "note": "B60 ×2"}
+{"name": "都昌县良种场", "src": "admin", "note": "行政区划"}
+{"name": "里昂", "src": "corpus", "note": "B58 ×3"}
+{"name": "金坛", "src": "corpus", "note": "B59 ×2"}
+{"name": "金宝屯机械化林场", "src": "admin", "note": "行政区划"}
+{"name": "金沙滩农牧场", "src": "admin", "note": "行政区划"}
+{"name": "金沙滩林场", "src": "admin", "note": "行政区划"}
+{"name": "金陵路", "src": "corpus", "note": "B64 ×2"}
+{"name": "钜鹿郡", "src": "corpus", "note": "B60 ×2"}
+{"name": "铁力", "src": "corpus", "note": "B56 ×17"}
+{"name": "铁卜加草改站", "src": "admin", "note": "行政区划"}
+{"name": "铁岭路", "src": "corpus", "note": "B64 ×2"}
+{"name": "铜拔山垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "锡金", "src": "corpus", "note": "B56 ×4"}
+{"name": "锦州", "src": "corpus", "note": "B56 ×5"}
+{"name": "镇南种羊场", "src": "admin", "note": "行政区划"}
+{"name": "镇赉", "src": "corpus", "note": "B56 ×7"}
+{"name": "长安", "src": "corpus", "note": "B60 ×2"}
+{"name": "长山余热鱼苗繁殖场", "src": "admin", "note": "行政区划"}
+{"name": "长岭种马场", "src": "admin", "note": "行政区划"}
+{"name": "长滩", "src": "admin", "note": "行政区划"}
+{"name": "长白", "src": "corpus", "note": "B56 ×36"}
+{"name": "长阳路", "src": "corpus", "note": "B64 ×3"}
+{"name": "门源种马场", "src": "admin", "note": "行政区划"}
+{"name": "阏与", "src": "corpus", "note": "B60 ×3"}
+{"name": "阔什比克良种场", "src": "admin", "note": "行政区划"}
+{"name": "阜新", "src": "corpus", "note": "B56 ×4"}
+{"name": "阳东原种场", "src": "admin", "note": "行政区划"}
+{"name": "阳东林场", "src": "admin", "note": "行政区划"}
+{"name": "阳城", "src": "corpus", "note": "B60 ×2"}
+{"name": "阳江林场东岸分场", "src": "admin", "note": "行政区划"}
+{"name": "阳江林场儒洞分场", "src": "admin", "note": "行政区划"}
+{"name": "阳江林场宝山分场", "src": "admin", "note": "行政区划"}
+{"name": "阳江林场田畔分场", "src": "admin", "note": "行政区划"}
+{"name": "阳江林场罗琴分场", "src": "admin", "note": "行政区划"}
+{"name": "阿克吐木斯克牧场", "src": "admin", "note": "行政区划"}
+{"name": "阿克达拉牧场", "src": "admin", "note": "行政区划"}
+{"name": "阿力得尔牧场", "src": "admin", "note": "行政区划"}
+{"name": "阿城", "src": "corpus", "note": "B56 ×24"}
+{"name": "阿城原种场", "src": "admin", "note": "行政区划"}
+{"name": "阿热勒托海牧场", "src": "admin", "note": "行政区划"}
+{"name": "陈巴尔虎旗哈达图国营农牧场", "src": "admin", "note": "行政区划"}
+{"name": "陈巴尔虎旗特泥河农牧场", "src": "admin", "note": "行政区划"}
+{"name": "陶村林场", "src": "admin", "note": "行政区划"}
+{"name": "集安", "src": "corpus", "note": "B56 ×22"}
+{"name": "集贤", "src": "corpus", "note": "B56 ×3"}
+{"name": "青冈县互利营林站", "src": "admin", "note": "行政区划"}
+{"name": "青冈县原种场", "src": "admin", "note": "行政区划"}
+{"name": "青冈县林场", "src": "admin", "note": "行政区划"}
+{"name": "青冈县果树场", "src": "admin", "note": "行政区划"}
+{"name": "青冈县种羊场", "src": "admin", "note": "行政区划"}
+{"name": "青冈县种马场", "src": "admin", "note": "行政区划"}
+{"name": "青口盐场", "src": "admin", "note": "行政区划"}
+{"name": "青坑林场", "src": "admin", "note": "行政区划"}
+{"name": "青山林场", "src": "admin", "note": "行政区划"}
+{"name": "青州", "src": "corpus", "note": "B60 ×2"}
+{"name": "青年垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "青苔关林场", "src": "admin", "note": "行政区划"}
+{"name": "青龙山林场", "src": "admin", "note": "行政区划"}
+{"name": "靖宇", "src": "corpus", "note": "B56 ×13"}
+{"name": "顺天府", "src": "corpus", "note": "B60 ×3"}
+{"name": "颐和园", "src": "corpus", "note": "B59 ×2"}
+{"name": "额尔古纳", "src": "corpus", "note": "B56 ×44"}
+{"name": "额里图种畜场", "src": "admin", "note": "行政区划"}
+{"name": "风水山牧场", "src": "admin", "note": "行政区划"}
+{"name": "马港口", "src": "corpus", "note": "B60 ×2"}
+{"name": "马连林场", "src": "admin", "note": "行政区划"}
+{"name": "马铃薯原种繁殖场", "src": "admin", "note": "行政区划"}
+{"name": "马鞍山羊场", "src": "admin", "note": "行政区划"}
+{"name": "高淳县傅家坛林场", "src": "admin", "note": "行政区划"}
+{"name": "高淳县团结圩良种繁育场", "src": "admin", "note": "行政区划"}
+{"name": "高淳县茶叶实验场", "src": "admin", "note": "行政区划"}
+{"name": "高邑", "src": "corpus", "note": "B60 ×3"}
+{"name": "魁星阁", "src": "corpus", "note": "B66 ×2"}
+{"name": "鸡东", "src": "corpus", "note": "B56 ×3"}
+{"name": "鸡西", "src": "corpus", "note": "B56 ×2"}
+{"name": "鸭北林场", "src": "admin", "note": "行政区划"}
+{"name": "鹤岗", "src": "corpus", "note": "B56 ×4"}
+{"name": "鹿庄粮棉原种场", "src": "admin", "note": "行政区划"}
+{"name": "鹿角山林场", "src": "admin", "note": "行政区划"}
+{"name": "麻城林店茶场", "src": "admin", "note": "行政区划"}
+{"name": "黄乐林场", "src": "admin", "note": "行政区划"}
+{"name": "黄冈", "src": "corpus", "note": "B59 ×2"}
+{"name": "黄岩", "src": "corpus", "note": "B59 ×2"}
+{"name": "黄柏岭垦殖场", "src": "admin", "note": "行政区划"}
+{"name": "黄泥洞林场", "src": "admin", "note": "行政区划"}
+{"name": "黄海森林公园", "src": "admin", "note": "行政区划"}
+{"name": "黄狮寨林场", "src": "admin", "note": "行政区划"}
+{"name": "黄袍林场", "src": "admin", "note": "行政区划"}
+{"name": "黄龙林场", "src": "admin", "note": "行政区划"}
+{"name": "黎山林场", "src": "admin", "note": "行政区划"}
+{"name": "黎阳", "src": "corpus", "note": "B60 ×5"}
+{"name": "黑龙江省伊春", "src": "corpus", "note": "B56 ×3"}
+{"name": "龙井", "src": "corpus", "note": "B56 ×3"}
+{"name": "龙河镇保安林场", "src": "admin", "note": "行政区划"}
+{"name": "龙河镇国庆林场", "src": "admin", "note": "行政区划"}
+{"name": "龙河镇茂山林场", "src": "admin", "note": "行政区划"}
+{"name": "龙河镇青色草原种畜场", "src": "admin", "note": "行政区划"}
+{"name": "龙门县密溪林场", "src": "admin", "note": "行政区划"}
+{"name": "龙门林场", "src": "admin", "note": "行政区划"}

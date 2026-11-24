@@ -1,0 +1,14 @@
+/* Fixed capability entrances are independent of any selected project. */
+.sidebar .project-nav{display:flex;flex-direction:column;gap:3px;margin:1px 0 12px 14px;padding:5px 0 2px 15px;border-left:1px solid #374b70;flex-shrink:0}
+.sidebar .project-nav-item{display:flex;align-items:center;gap:10px;width:100%;min-height:36px;border:1px solid transparent;border-radius:7px;padding:7px 10px;background:transparent;color:#9db1d0;font:inherit;font-size:12px;line-height:1.5;text-align:left;cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.sidebar .project-nav-item:hover{background:#7298ea0d;color:#ecf3ff}
+.sidebar .project-nav-item.on{background:linear-gradient(100deg,#6689e928,#6098dd12);border-color:#789af235;color:#dceaff;font-weight:550}
+.sidebar .project-nav-item .count{margin-left:auto;min-width:21px;padding:1px 5px;border-radius:5px;background:#ffffff0c;color:#abc0df;font-size:10px;text-align:center;line-height:1.6}
+.sidebar .project-nav-item.on .count{background:#86bcff20;color:#e1efff}
+.sidebar .project-nav-item .count[hidden]{display:none!important}
+.project-nav-dot{width:5px;height:5px;border-radius:50%;background:#5c7296;flex-shrink:0}
+.project-nav-item.on .project-nav-dot{background:#7fcff2;box-shadow:0 0 8px #7fcff255}
+.sidebar .project-nav-item:focus-visible{outline:2px solid #8bcfff;outline-offset:2px}
+.project-section-panel{scroll-margin-top:100px}
+.sidebar .nav-item .count[hidden]{display:none!important}
+@media(max-width:840px){.sidebar .project-nav{margin-bottom:14px}.sidebar .project-nav-item{min-height:43px;font-size:13px}}

@@ -1,0 +1,53 @@
+/* Marketing shows one task at a time; details stay behind a deliberate action. */
+.marketing-assist-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 16px;color:#536d94;font-size:13px;font-weight:600}
+.marketing-assist-material-list{display:flex;flex-direction:column;border:1px solid #e1e9f3;border-radius:12px;overflow:hidden;background:#fff}
+.marketing-assist-material{display:grid;grid-template-columns:24px minmax(0,1fr) auto;align-items:center;gap:18px;padding:21px 22px;border-bottom:1px solid #e8eef6;transition:background .15s}
+.marketing-assist-material:last-child{border-bottom:0}
+.marketing-assist-material.is-selected{background:#f5f8ff}
+.marketing-assist-number{color:#8b9fbc;font-size:12px;font-weight:600;align-self:start;padding-top:3px}
+.marketing-assist-material-copy{min-width:0}
+.marketing-assist-material-copy h3{margin:0 0 7px!important;color:#304e77;font-size:15px!important;font-weight:600;line-height:1.6}
+.marketing-assist-material-copy p{margin:0 0 8px;color:#6b80a0;font-size:13px;line-height:1.75;overflow-wrap:anywhere}
+.marketing-assist-material-copy small{display:block;color:#95a4ba;font-size:11px;line-height:1.6}
+.marketing-assist-material-actions{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.marketing-assist-material-actions .btn{min-width:76px;min-height:36px}
+.marketing-assist-material-actions .btn.marketing-assist-selected{background:#edf3ff;border:1px solid #9eb7f8;color:#4266c4}
+.marketing-assist-material-actions .btn:disabled{opacity:.5;cursor:not-allowed}
+.marketing-assist-material-actions .btn:focus-visible,.marketing-assist-more summary:focus-visible{outline:3px solid #88b1ef;outline-offset:3px}
+.marketing-assist-empty{padding:34px 16px;text-align:center;border:1px dashed #d9e4f3;border-radius:12px;background:#fafcff}
+.marketing-assist-empty p{margin:0 0 18px;font-size:13px;line-height:1.8;color:#7890b0}
+.marketing-assist-state{margin:0 0 16px;padding:13px 16px;border-radius:9px;background:#f1f5ff;color:#5575aa;font-size:13px;line-height:1.7}
+.marketing-assist-state.is-error{background:#fff7ef;color:#a37145}
+.marketing-assist-more{margin-top:18px;color:#8395b1;font-size:12px}
+.marketing-assist-more>summary{width:fit-content;cursor:pointer;min-height:32px;line-height:32px;list-style:revert}
+.marketing-assist-more>div{margin-top:6px;padding:14px 16px;border:1px solid #e5ecf6;border-radius:9px;background:#f8faff}
+.marketing-assist-more>div>p{margin:0 0 12px;line-height:1.7;color:#7e91ae}
+.marketing-assist-more .assist-scope{margin:0;background:transparent;border:0;padding:0}
+.marketing-assist-more .assist-scope p{margin:0 0 9px}
+.marketing-assist-more .assist-scope p:last-child{margin-bottom:0}
+.marketing-assist-more .assist-history{margin-top:14px}
+.marketing-assist-more .assist-gaps{margin-top:15px}
+.marketing-assist-more .assist-gaps h3{font-size:13px!important}
+.marketing-assist-more .assist-quality{margin-bottom:0}
+.marketing-assist-draft-more>div>.btn+.btn{margin-left:10px}
+.marketing-assist-generation h3{margin:0 0 7px!important;color:#345782;font-size:16px!important;line-height:1.6}
+.marketing-assist-generation p{margin:0;color:#7b90ae;font-size:13px;line-height:1.8}
+.marketing-assist-detail-context{color:#6687bb;font-size:12px;margin:0 0 8px}
+.marketing-assist-detail-review{font-size:12px;color:#7890b0;margin-top:20px;border-top:1px solid #e5ecf6;padding-top:14px}
+.marketing-assist-detail-review>summary{cursor:pointer;line-height:1.8}
+.marketing-assist-detail-review p{line-height:1.8}
+@media(max-width:760px){.marketing-assist-material{grid-template-columns:20px minmax(0,1fr);gap:11px;padding:17px 14px}.marketing-assist-material-actions{grid-column:2;justify-content:flex-start}.marketing-assist-material-actions .btn{min-height:40px}.marketing-assist-material-copy h3{font-size:14px!important}.marketing-assist-draft-more>div>.btn{margin:4px 8px 4px 0}.marketing-assist-draft-more>div>.btn+.btn{margin-left:0}}
+
+.marketing-writing-needs{margin:12px 0 22px;border:1px solid #dce5f4;border-radius:10px;background:#f8faff;padding:4px 17px}
+.marketing-writing-needs>summary{cursor:pointer;padding:9px 0;font-size:13px;line-height:1.7;color:#526986}
+.marketing-writing-needs>div{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:12px 0;border-bottom:1px solid #e7edf6}
+.marketing-writing-needs>div:last-child{border-bottom:0}
+.marketing-writing-needs p{font-size:13px;line-height:1.7;color:#526986;margin:0}
+.marketing-writing-needs .btn{flex:none}
+.marketing-revision-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-top:1px solid #e4ebf6;padding-top:18px;margin-top:24px}
+.marketing-revision-actions>span{font-size:12px;color:#8393ad;margin-right:8px}
+.marketing-legacy-notes{margin:18px 0;font-size:12px;color:#8b99ac}
+.marketing-legacy-notes summary{cursor:pointer;line-height:1.8}
+.marketing-legacy-notes>div{margin-top:12px;padding:0 12px;border-left:2px solid #e1e7f0}
+.marketing-legacy-notes p{line-height:1.8;font-size:12px}
+@media(max-width:650px){.marketing-writing-needs>div{display:block}.marketing-writing-needs .btn{margin-top:9px}}

@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "updated_at": "2026-11-17",
+  "note": "专名按书型的要求表。必备抽不到=缺陷；不需要却抽到=噪音；可选=加分。",
+  "level_note": {
+    "required": "必备：缺了算缺陷，必须补",
+    "optional": "可选：抽到算加分，没抽到不扣",
+    "noise": "不需要：抽到多半是噪音，要人工判断是否保留"
+  },
+  "categories": {
+    "place": "地名",
+    "org": "机构",
+    "org_group": "组织",
+    "object": "器物",
+    "person": "人物",
+    "animal": "动物",
+    "plant": "植物",
+    "taxon": "科属",
+    "event": "事件"
+  },
+  "implemented": ["place", "org", "object", "person", "animal", "plant", "taxon"],
+  "not_implemented": ["org_group", "event"],
+  "types": {
+    "P1": {
+      "name": "规范型",
+      "required": ["org"],
+      "optional": ["place"],
+      "noise": ["person", "animal", "plant", "object", "event"]
+    },
+    "P2": {
+      "name": "知识型",
+      "required": ["org", "object"],
+      "optional": ["person", "place", "taxon"],
+      "noise": ["plant", "animal", "event"]
+    },
+    "P3": {
+      "name": "论说型",
+      "required": ["org", "person"],
+      "optional": ["place", "object"],
+      "noise": ["animal", "plant", "event"]
+    },
+    "P4": {
+      "name": "叙事型",
+      "required": ["person"],
+      "optional": ["place", "object"],
+      "noise": ["org", "animal", "plant", "event"]
+    },
+    "P5": {
+      "name": "戏曲型",
+      "required": ["person"],
+      "optional": ["place", "object"],
+      "noise": ["org", "animal", "plant", "event"]
+    },
+    "P6": {
+      "name": "散文型",
+      "required": ["person"],
+      "optional": ["place", "object"],
+      "noise": ["animal", "plant", "event", "org_group"]
+    },
+    "P7": {
+      "name": "韵文集型",
+      "required": ["person", "place"],
+      "optional": ["plant", "animal", "object"],
+      "noise": ["org", "event"]
+    },
+    "P8": {
+      "name": "条目型",
+      "required": ["place", "animal", "plant", "object"],
+      "optional": ["person", "taxon"],
+      "noise": ["org", "event"]
+    },
+    "P9": {
+      "name": "选集笺注型",
+      "required": ["person", "place"],
+      "optional": ["org", "object"],
+      "noise": ["animal", "plant", "event"]
+    },
+    "P10": {
+      "name": "笔记志书型",
+      "required": ["place", "person", "object"],
+      "optional": ["org", "animal", "plant", "taxon"],
+      "noise": ["event"]
+    },
+    "P11": {
+      "name": "图鉴型",
+      "required": ["plant", "animal", "taxon", "place"],
+      "optional": ["object"],
+      "noise": ["person", "org", "event"]
+    },
+    "P12": {
+      "name": "纪事型",
+      "required": ["person", "org_group", "event", "place"],
+      "optional": ["org"],
+      "noise": ["plant", "animal"]
+    }
+  }
+}

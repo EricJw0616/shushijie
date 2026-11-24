@@ -1,0 +1,37 @@
+name: shushijie
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: shushijie:local
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 60s
+    env_file:
+      - path: ${BOOKWORLD_DATA_DIR:-./runtime}/app.env
+        required: false
+    environment:
+      BOOKDISTILL_ROOT: /app
+      BOOKDISTILL_OCR_PYTHON: /usr/local/bin/python
+      TZ: Asia/Shanghai
+    ports:
+      - "${BOOKWORLD_HOST:-0.0.0.0}:${BOOKWORLD_PORT:-8943}:8943"
+    volumes:
+      - "${BOOKWORLD_DATA_DIR:-./runtime}/app-data:/app/app/data:Z"
+      - "${BOOKWORLD_DATA_DIR:-./runtime}/out:/app/platform/out:Z"
+      - "${BOOKWORLD_DATA_DIR:-./runtime}/library:/app/platform/library:Z"
+      - "${BOOKWORLD_DATA_DIR:-./runtime}/config:/app/platform/config:Z"
+      - "${BOOKWORLD_DATA_DIR:-./runtime}/lexicon:/app/lexicon:Z"
+      - "${BOOKWORLD_DATA_DIR:-./runtime}/books:/app/书库分类:Z"
+    healthcheck:
+      test: ["CMD", "python", "/usr/local/bin/bookworld-healthcheck.py"]
+      interval: 30s
+      timeout: 5s
+      start_period: 40s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

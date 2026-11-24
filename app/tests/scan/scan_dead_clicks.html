@@ -1,0 +1,75 @@
+<!DOCTYPE html><meta charset="utf-8"><title>dead-click scan v2</title>
+<body><pre id="out">running…</pre>
+<script>
+const ROUTES=[['工作台','#/dashboard'],['图书库','#/library'],['知识资产','#/assets'],['图书档案','#/archive'],
+ ['全局检索','#/search'],['入库任务','#/tasks'],['书概览 B56','#/book/B56'],['书概览 B58','#/book/B58'],
+ ['知识资产页签','#/book/B56/assets'],['标签体系页签','#/book/B56/tags'],['原文页签','#/book/B56/text'],
+ ['操作记录页签','#/book/B60/records'],['应用中心','#/apps'],['解析能力','#/settings'],['回收站','#/trash']];
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function waitFor(fn,ms=8000){const t=Date.now();while(Date.now()-t<ms){try{const v=fn();if(v)return v;}catch(e){}await sleep(100);}return null;}
+
+function detect(w){
+  const out=[],seen=new Set();
+  const doc=w.document;
+  const add=(kind,cls,txt,sec)=>{const k=kind+'|'+cls+'|'+txt;if(seen.has(k))return;seen.add(k);
+    out.push(kind+'  '+cls+' 《'+txt+'》'+(sec?'  @'+sec:''));};
+  const secOf=el=>{const p=el.closest('.panel');return p?((p.querySelector('h2')||{}).textContent||'').trim().slice(0,14):''};
+  const clsOf=el=>(typeof el.className==='string'?el.className:'');
+
+  // A. 假按钮：有 onclick，但去掉 alert 之后什么都不做
+  doc.querySelectorAll('[onclick]').forEach(el=>{
+    const code=el.getAttribute('onclick')||'';
+    if(code.indexOf('alert(')<0)return;
+    const rest=code.replace(/alert\((?:[^()]|\([^()]*\))*\)/g,'').replace(/[;\s'"]/g,'');
+    if(rest.length>2)return;
+    add('A 假按钮',clsOf(el).slice(0,26),(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,26),secOf(el));
+  });
+
+  // B. 假控件：长得像 chip/tag/pill，或样式是手型，但自己与祖先都没有处理函数
+  doc.querySelectorAll('span,b,em,i,div').forEach(el=>{
+    if(['SCRIPT','STYLE'].indexOf(el.tagName)>=0)return;
+    if(el.closest('[onclick]')||el.closest('a')||el.closest('button')||el.closest('.nav-item'))return;
+    const cls=clsOf(el);
+    let cs; try{cs=w.getComputedStyle(el)}catch(e){return}
+    const chipLike=/(chip|tag|pill|badge)/i.test(cls);
+    if(!chipLike&&cs.cursor!=='pointer')return;
+    if(el.children.length)return;
+    const txt=(el.textContent||'').replace(/\s+/g,' ').trim();
+    if(!txt||txt.length>40)return;
+    add('B 假控件',cls.slice(0,26),txt.slice(0,26),secOf(el));
+  });
+
+  // C. 空按钮：没有任何动作
+  doc.querySelectorAll('button').forEach(el=>{
+    if(el.getAttribute('onclick')||el.closest('[onclick]'))return;
+    if(/tabs|nav|crumb-back|icon-btn/.test(clsOf(el)))return;
+    add('C 空按钮',clsOf(el).slice(0,26),(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,26),secOf(el));
+  });
+  return out;
+}
+
+(function(){
+  const R=[];let i=0;
+  const f=document.createElement('iframe');
+  f.style.cssText='width:1400px;height:1100px;border:0;position:absolute;left:-9999px';
+  f.src='/#/dashboard';
+  document.body.appendChild(f);
+  const w=f.contentWindow;
+  function next(){
+    if(i>=ROUTES.length){document.getElementById('out').textContent='SCAN\n'+R.join('\n')+'\nDONE';return;}
+    const r=ROUTES[i++],name=r[0],h=r[1];
+    w.location.hash=h;
+    waitFor(()=>w.document.querySelector('#view')&&w.document.querySelector('#view').children.length)
+      .then(()=>sleep(1100))
+      .then(()=>{
+        const hits=detect(w);
+        R.push('### '+name+'  ('+h+')');
+        if(!hits.length)R.push('  — 无');
+        hits.forEach(x=>R.push('  · '+x));
+        next();
+      });
+  }
+  waitFor(()=>w.document.querySelector('#view')&&w.document.querySelector('#view').children.length,20000)
+    .then(()=>sleep(1200)).then(next);
+})();
+</script></body>

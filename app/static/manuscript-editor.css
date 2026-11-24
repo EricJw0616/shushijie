@@ -1,0 +1,36 @@
+.manuscript-format-bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  padding:10px 16px;
+  border-bottom:1px solid #e6edf7;
+  background:#f7faff;
+}
+.manuscript-format-bar button,
+.manuscript-citation-picker{
+  padding:5px 9px;
+  min-height:32px;
+  border:1px solid transparent;
+  border-radius:5px;
+  background:transparent;
+  color:#365477;
+  font:inherit;
+  font-size:12px;
+  cursor:pointer;
+}
+.manuscript-citation-picker{max-width:min(100%,190px);border-color:#dae5f6;background:#fff}
+.manuscript-citation-picker[hidden]{display:none}
+.manuscript-format-bar button:hover,
+.manuscript-format-bar button:focus-visible{
+  border-color:#cdddf4;
+  background:#fff;
+}
+.manuscript-rich-input{min-height:360px;caret-color:#2e62ac}
+.manuscript-rich-input:empty::before{content:'在这里编写工作稿';color:#70839e;pointer-events:none}
+.manuscript-rich-input :is(h1,h2,h3,h4,h5,h6):not([data-draft-heading]){margin:1.35em 0 .55em;color:#263f63;line-height:1.45}
+.manuscript-rich-input :is(h1,h2,h3,h4,h5,h6):first-child{margin-top:0}
+.manuscript-rich-input .draft-citation{cursor:default;user-select:all}
+@media(max-width:700px){
+  .manuscript-format-bar{padding:8px 10px}
+  .manuscript-format-bar button{min-height:35px;padding:5px 7px}
+}

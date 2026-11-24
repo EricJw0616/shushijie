@@ -1,0 +1,40 @@
+/* A compact material queue; related projects stay behind an explicit disclosure. */
+.review-workspace>.page-head{margin-bottom:22px}
+.review-queue-count{margin:0 0 13px;font-size:12px;line-height:1.8;color:#7183a0}
+.review-material-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+.review-material-head>div{min-width:0;flex:1}
+.review-material-head>.studio-badge{flex:none}
+.review-item .review-material-title{font-size:16px;line-height:1.7;font-weight:600;color:#2d4364;margin:0 0 5px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.review-material-book{margin:0;font-size:12px;line-height:1.8;color:#7a8da8}
+.review-workspace .review-item .review-reason{padding:0;border:0;background:none;color:#647a97;margin:12px 0 16px}
+.review-material-footer{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;border-top:1px solid #edf1f8;padding-top:14px}
+.review-projects{min-width:0;flex:1;font-size:12px;color:#667e9e}
+.review-projects>summary{width:fit-content;cursor:pointer;line-height:1.8;padding:8px 0}
+.review-projects ul{list-style:none;padding:0;margin:7px 0 0;display:grid;gap:8px}
+.review-projects li{display:flex;align-items:center;justify-content:space-between;gap:14px;min-width:0;padding:8px 11px;border-radius:8px;background:#f7f9fd}
+.review-projects li>span{min-width:0;overflow-wrap:anywhere;line-height:1.7;color:#4f6687}
+.review-projects .btn{flex:none;font-size:12px}
+.review-primary-action{flex:none;margin-left:auto}
+.review-primary-action>.btn{min-height:38px;font-size:12px}
+.review-workspace .studio-empty h2{font-size:17px;color:#3e577c;margin:0 0 20px}
+.review-projects>summary:focus-visible{outline:3px solid #8cb2f1;outline-offset:3px;border-radius:4px}
+.review-complete{padding:28px;border:1px solid #cddfe9;border-radius:18px;background:linear-gradient(135deg,#f1fbfa 0,#f5f8ff 65%,#fff 100%)}
+.review-complete-head{display:flex;align-items:flex-start;gap:17px;margin-bottom:23px}
+.review-complete-mark{display:grid;place-items:center;flex:0 0 43px;width:43px;height:43px;border:1px solid #a4ded4;border-radius:13px;background:#dcf7ee;color:#188573;font-size:23px}
+.review-complete-head h2{margin:6px 0 8px;color:#233e58;font-size:23px;line-height:1.5}
+.review-complete-head p{max-width:800px;margin:0;color:#60788b;font-size:13px;line-height:1.9}
+.review-next-projects{display:grid;gap:12px}
+.review-next-project{display:flex;align-items:center;justify-content:space-between;gap:20px;min-width:0;padding:16px 20px;border:1px solid #dce6f0;border-radius:12px;background:#fff}
+.review-next-copy{min-width:0;flex:1;overflow-wrap:anywhere}
+.review-next-kind{color:#597aa3;font-size:11px;letter-spacing:.08em}
+.review-next-project h3{margin:6px 0;color:#273f5e;font-size:16px;line-height:1.65}
+.review-next-project p{margin:0;max-width:680px;color:#6a7e99;font-size:13px;line-height:1.85}
+.review-next-action{display:flex;flex:0 0 auto;flex-direction:column;align-items:flex-end;gap:7px;max-width:100%}
+.review-next-action>span{font-size:11px;color:#7a8faa}
+.review-next-action .btn{min-height:40px;height:auto;white-space:normal;line-height:1.7;text-align:center}
+.review-next-unavailable{margin-top:16px;padding:15px 17px;border:1px solid #e5d9bc;border-radius:10px;background:#fffaf0}
+.review-next-unavailable p{margin:0 0 10px;font-size:13px;line-height:1.8;color:#806b44}
+.review-next-unavailable .btn{margin-right:8px;margin-bottom:4px}
+.review-complete-footer{display:flex;justify-content:flex-end;align-items:center;flex-wrap:wrap;gap:12px;margin-top:19px;color:#7b8ca1;font-size:12px;line-height:1.8}
+@media(max-width:760px){.review-complete{padding:20px}.review-complete-head{gap:12px}.review-complete-head h2{font-size:20px}.review-complete-mark{flex-basis:35px;width:35px;height:35px;font-size:19px;border-radius:10px}.review-next-project{flex-direction:column;align-items:stretch;gap:15px;padding:17px}.review-next-action{align-items:flex-start}.review-next-action .btn{width:100%}.review-complete-footer{align-items:flex-start}.review-complete-head .eyebrow{font-size:9px;letter-spacing:.1em}}
+@media(max-width:620px){.review-material-head{gap:10px}.review-material-footer{flex-direction:column;gap:12px}.review-projects,.review-primary-action,.review-primary-action>.btn{width:100%}.review-projects li{align-items:flex-start}.review-next-project>.btn{width:100%}}

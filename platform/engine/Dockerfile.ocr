@@ -1,0 +1,31 @@
+# 可部署 OCR worker（Linux / CPU；GPU 见 README）
+# 构建（仓库根目录）：
+#   docker build -f platform/engine/Dockerfile.ocr -t bookdistill-ocr .
+# 运行：
+#   docker run --rm -v "$PWD/platform/out:/out" -v "$PWD/app/data:/data" \
+#     bookdistill-ocr --code B59 --pdf /data/...pdf --pages 5 --force \
+#     --library /data/library.json --outdir /out/B59/ocr
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libgl1 libglib2.0-0 libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY platform/engine/requirements-ocr.txt /app/requirements-ocr.txt
+RUN pip install -r /app/requirements-ocr.txt
+
+COPY platform/engine/ocr /app/ocr
+
+# 构建期预热一次，确认模型已随包打入、不依赖运行时外网
+RUN python -c "from rapidocr_onnxruntime import RapidOCR; RapidOCR()"
+
+# 非 root；输出目录用挂载卷
+RUN useradd -m -u 10001 ocr && chown -R ocr:ocr /app
+USER 10001
+
+ENTRYPOINT ["python", "-m", "ocr.cli"]

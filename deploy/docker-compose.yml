@@ -1,0 +1,43 @@
+# 同一份 compose 在 macOS（Docker Desktop）和 Linux 服务器上跑。
+# 只负责基础设施：PostgreSQL 16 + pgvector，MinIO；应用在宿主机或另起服务。
+name: bookworld
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: bookworld-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-bookworld}
+      POSTGRES_USER: ${POSTGRES_USER:-book}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-book}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
+      TZ: Asia/Shanghai
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-book} -d $${POSTGRES_DB:-bookworld}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  minio:
+    image: minio/minio:latest
+    container_name: bookworld-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-bookminio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-bookminio123}
+      TZ: Asia/Shanghai
+    ports:
+      - "${MINIO_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - miniodata:/data
+
+volumes:
+  pgdata:
+  miniodata:

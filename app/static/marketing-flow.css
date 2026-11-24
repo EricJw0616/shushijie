@@ -1,0 +1,94 @@
+/* Marketing is a sequence of focused pages; shared project forms stay mounted to preserve edits. */
+.marketing-workspace {max-width:1180px;padding-bottom:36px}
+.marketing-flow {min-width:0}
+.marketing-flow-head {display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin:4px 0 26px}
+.marketing-flow-identity {display:flex;align-items:center;gap:12px;font-size:12px;line-height:1.6;flex-wrap:wrap}
+.marketing-flow-identity #projectSceneTitle {font-weight:650;color:#4165ca;background:#eaf0ff;border:1px solid #dce6fc;padding:4px 10px;border-radius:6px}
+.marketing-project-name {color:#708099;overflow-wrap:anywhere}
+.marketing-flow-title {display:flex;align-items:center;gap:15px;margin-top:15px}
+.marketing-flow-title h1 {font-size:26px;font-weight:650;letter-spacing:-.6px;color:#263e61;margin:0;line-height:1.4}
+.marketing-flow-title>span {font-size:12px;color:#8492a9;white-space:nowrap}
+.marketing-flow-head p {font-size:13px;color:#71839d;line-height:1.8;margin:7px 0 0}
+.marketing-flow-head p:empty {display:none}
+.marketing-more {position:relative;flex:none;margin-top:3px}
+.marketing-more summary {list-style:none}
+.marketing-more summary::-webkit-details-marker {display:none}
+.marketing-more nav {position:absolute;right:0;top:38px;z-index:12;min-width:180px;padding:7px;border:1px solid #dce5f5;background:white;box-shadow:0 10px 30px #263e611a;border-radius:10px}
+.marketing-more nav .btn,.marketing-more nav a {display:block;width:100%;text-align:left;padding:10px 13px;border:none;color:#4b6182;font-size:12px;text-decoration:none;border-radius:6px}
+.marketing-more nav a:hover {background:#f1f5fe}
+.marketing-workspace .project-section-panel[hidden],.marketing-workspace [hidden] {display:none!important}
+.marketing-brief {max-width:760px;background:white;border:1px solid #dce5f4;border-radius:14px;padding:26px 30px;gap:23px}
+.marketing-brief .studio-field>span,.marketing-book-choices legend {color:#405575;font-weight:600;font-size:13px;margin-bottom:8px}
+.marketing-book-choices {border:0;margin:0;padding:0;min-width:0}
+.marketing-book-choices legend {padding:0}
+.marketing-book-choices label {display:flex;align-items:flex-start;gap:10px;padding:9px 0;font-size:13px;color:#526985;line-height:1.7}
+.marketing-book-choices input {margin-top:5px;width:15px;height:15px;accent-color:#486cf6}
+.marketing-secondary-settings {border-top:1px solid #edf1f7;padding-top:14px}
+.marketing-secondary-settings summary {color:#8090a7;font-size:12px;cursor:pointer}
+.marketing-secondary-settings .studio-field {margin-top:14px}
+.marketing-flow-footer {position:sticky;bottom:0;z-index:10;display:flex;align-items:center;gap:15px;padding:17px 20px;margin-top:26px;background:rgba(255,255,255,.97);border:1px solid #dce5f4;border-radius:12px;box-shadow:0 -4px 20px #344f7607}
+.marketing-flow-footer #marketingStepState {flex:1;font-size:12px;line-height:1.6;color:#7b8da7}
+.marketing-flow-footer .btn {white-space:nowrap}
+.marketing-save-state {display:block;margin:9px 3px;color:#93a0b2;font-size:11px;min-height:16px}
+.marketing-workspace .project-discovery {padding:0;border:none;background:transparent;box-shadow:none}
+.marketing-workspace .manuscript-workspace {border-radius:14px;overflow:hidden}
+.marketing-workspace .manuscript-body {display:block}
+.marketing-workspace .manuscript-toolbar {padding:13px 23px;min-height:55px}
+.marketing-workspace .manuscript-paper {max-width:none;border-left:0}
+.marketing-workspace .manuscript-reading {padding:30px 40px;max-width:880px;margin:0 auto;line-height:1.95}
+.marketing-workspace .manuscript-scene-views {margin:0;padding:10px 23px;border-bottom:1px solid #edf1f8;background:#fbfcff}
+.marketing-workspace .manuscript-scene-views p {margin:0}
+.marketing-workspace .manuscript-scene-bar+.muted {margin-top:7px;font-size:12px}
+.marketing-picture-card {padding:18px 0;border-bottom:1px solid #edf1f6;overflow-wrap:anywhere}
+.marketing-picture-card:first-child {padding-top:0}
+.marketing-picture-heading {display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.manuscript-reading .marketing-picture-heading h3 {margin:0;font-size:16px}
+.marketing-picture-card summary,.marketing-preview-support summary {width:fit-content;color:#4165ca;cursor:pointer;font-size:13px;padding:8px 0}
+.marketing-picture-card details p {padding:13px 15px;background:#f6f8fd;border:1px solid #e3eaf8;border-radius:8px;margin:0}
+.marketing-preview-support {margin:12px 0}
+.assist-scene-tabs[hidden] {display:none}
+.marketing-workspace .manuscript-footer {padding:10px 24px}
+.marketing-workspace .manuscript-toolbar .manuscript-actions {margin-left:auto}
+.marketing-workspace #projectDraftRelease {display:none!important}
+.marketing-review-card {padding:23px 26px;background:#fff;border:1px solid #dce5f4;border-radius:12px;margin-bottom:15px}
+.marketing-review-card h2 {font-size:16px;margin:0 0 12px;color:#355074}
+.marketing-review-heading {display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:10px}
+.marketing-review-heading h2 {margin:0}
+.marketing-review-source {display:flex;gap:16px;align-items:center;justify-content:space-between;width:100%;border:0;border-top:1px solid #edf1f6;background:transparent;font:inherit;text-align:left;padding:16px 0;cursor:pointer;color:#415b80;font-size:13px}
+.marketing-review-source span {min-width:0;overflow-wrap:anywhere}
+.marketing-review-source small {font-size:11px;color:#7d8fac;white-space:nowrap}
+.marketing-review-source:hover {color:#466bdf}
+.marketing-confirmed-sources summary {font-size:13px;color:#536c90;cursor:pointer;padding:8px 0}
+.marketing-confirmed-sources[open] summary {margin-bottom:6px}
+.marketing-review-alt {display:flex;align-items:center;gap:12px;font-size:12px;color:#8b99ad;margin-top:18px}
+.marketing-sources-heading {font-size:16px;margin:28px 0 14px}
+#marketingSourceContext {max-width:none;padding:24px 30px}
+#marketingRecovery {padding:12px 16px;background:#fff7e6;border:1px solid #f3d7a0;border-radius:10px;margin-bottom:16px;font-size:12px}
+#marketingRecovery .btn {margin-left:10px}
+.marketing-recovery-text {width:100%;box-sizing:border-box;font:inherit;line-height:1.7;padding:14px;border:1px solid #dce5f4;border-radius:10px}
+@media(max-width:700px){
+ .marketing-workspace {padding:20px 16px 18px}
+ .marketing-flow-head {gap:10px;margin-bottom:20px}
+ .marketing-flow-title {gap:10px;flex-wrap:wrap;margin-top:12px}
+ .marketing-flow-title h1 {font-size:23px}
+ .marketing-flow-head p {font-size:12px}
+ .marketing-flow-head .marketing-project-name {display:none}
+ .marketing-brief {padding:20px 18px}
+ .marketing-flow-footer {gap:10px;padding:12px;flex-wrap:wrap;bottom:8px}
+ .marketing-flow-footer #marketingStepState {order:-1;flex-basis:100%}
+ .marketing-flow-footer #marketingStepState:empty {display:none}
+ .marketing-flow-footer #marketingNext {flex:1;font-size:12px;padding:11px 10px;white-space:normal}
+ .marketing-flow-footer>.btn:first-child {font-size:12px;padding:10px 8px}
+ .marketing-workspace .manuscript-reading {padding:22px 18px}
+ .marketing-workspace .manuscript-toolbar {padding:11px 14px}
+ .marketing-workspace .manuscript-scene-views {padding:10px 14px}
+ .marketing-review-card {padding:20px 18px}
+ .marketing-review-source {align-items:flex-start}
+ .marketing-review-alt {flex-wrap:wrap}
+}
+
+.marketing-workspace #projectAssist:empty {display:none}
+.marketing-workspace .manuscript-scene-bar {justify-content:space-between}
+.marketing-workspace .manuscript-scene-bar>.btn {margin-left:auto}
+body:has(.marketing-workspace) #toast {bottom:100px}
+@media(max-width:700px){body:has(.marketing-workspace) #toast {bottom:126px}}

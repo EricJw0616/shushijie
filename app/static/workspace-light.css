@@ -1,0 +1,349 @@
+/* Direction A: a light, task-first workspace. Loaded after feature styles. */
+@font-face {font-family:Inter;src:url('/static/fonts/InterVariable.woff2') format('woff2');font-weight:100 900;font-style:normal;font-display:swap}
+:root {
+  --bg:#f5f7fb; --panel:#fff; --ink:#172033; --muted:#59677c; --faint:#657187;
+  --line:#dce3ed; --line2:#e8edf4; --brand:#172033; --brand2:#243550;
+  --gold:#325bff; --gold2:#244bd6; --gold-soft:#edf2ff; --accent:#325bff;
+  --green:#137459; --green-soft:#eaf7f1; --amber:#8c5b0c; --amber-soft:#fff5df;
+  --red:#b3374b; --red-soft:#fff0f2; --violet:#6550b1; --violet-soft:#f3effb;
+  --radius:12px; --sidebar-width:224px; --shadow:0 1px 3px #17203305;
+}
+body.studio-app {font-size:1rem;line-height:1.65;letter-spacing:0;background:var(--bg);color:var(--ink)}
+body.studio-app,input,textarea,select,button {font-family:Inter,-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+.studio-app :focus-visible {outline:2px solid var(--accent);outline-offset:3px}
+/* The main landmark can receive focus, but its perimeter is not a control. */
+.studio-app #view:focus-visible {outline:none}
+.studio-app ::selection {background:#dce5ff;color:#172033}
+
+/* A quiet navigation surface leaves the main content in charge. */
+.studio-app .sidebar {width:var(--sidebar-width);padding:25px 14px 16px;background:#edf1f7;color:var(--ink);border-right:1px solid var(--line);box-shadow:none}
+.studio-app .brand {padding:0 9px 22px;gap:11px}
+.studio-app .brand-mark {width:37px;height:39px;border-radius:10px;background:var(--accent);box-shadow:none}
+.studio-app .brand b {color:var(--ink);font-size:22px;letter-spacing:1px;font-weight:650}
+.studio-app .brand span {font-size:12px;color:var(--muted);letter-spacing:.6px;margin-top:5px}
+.studio-app .brand b .brand-spark {color:var(--accent);font-size:12px}
+.studio-app .workspace {background:#f7f9fc;border:1px solid #d8e0ed;border-radius:8px;padding:9px 8px;margin-bottom:19px;font-size:12px;gap:7px}
+.studio-app .workspace .workspace-name {color:#4e5e74}
+.studio-app .workspace .workspace-label {color:#53637c;background:#e6ecf5;font-size:12px;padding:0 4px}
+.studio-app .workspace .ws-dot {background:var(--green);box-shadow:none}
+.studio-app .sidebar nav {scrollbar-color:#c3cede transparent;gap:3px}
+.studio-app .sidebar .nav-label {font-size:12px;letter-spacing:.3px;color:#657187;padding:8px 12px}
+.studio-app .sidebar .nav-item {color:#4d5d74;font-size:14px;min-height:43px;padding:10px 12px;border-radius:8px;font-weight:450;gap:10px}
+.studio-app .sidebar .nav-item:hover {background:#e4eaf4;color:#172033}
+.studio-app .sidebar .nav-item.on {background:#dce5ff;color:#244bd6;font-weight:600;box-shadow:none}
+.studio-app .sidebar .nav-item .ico {color:#657187}
+.studio-app .sidebar .nav-item.on .ico {color:#325bff}
+.studio-app .sidebar .nav-item .count,.studio-app .sidebar .project-nav-item .count {background:#e0e7f1;color:#4e607b;font-size:12px}
+.studio-app .sidebar .nav-item.on .count {background:#cbd9ff;color:#244bd6}
+.studio-app .sidebar .project-nav {border-left-color:#cbd5e5;margin:2px 0 10px 20px;padding:4px 0 2px 10px;gap:2px}
+.studio-app .sidebar .project-nav-item {color:#59677c;font-size:13px;min-height:35px;padding:6px 9px;border-radius:6px}
+.studio-app .sidebar .project-nav-item:hover {color:#172033;background:#e4eaf4}
+.studio-app .sidebar .project-nav-item.on {color:#244bd6;background:#e0e8fb;border-color:#c6d4f4}
+.studio-app .project-nav-dot {background:#8392a9}
+.studio-app .project-nav-item.on .project-nav-dot {background:var(--accent);box-shadow:none}
+.studio-app .nav-management {margin-top:12px;padding-top:10px;border-top-color:#d3dce9}
+.studio-app .nav-management>summary {font-size:13px;color:#59677c;min-height:40px;padding:8px 12px}
+.studio-app .nav-management>summary:hover {background:#e4eaf4;color:#172033}
+.studio-app .sidebar-note {display:none}
+.studio-app .sidebar-foot {padding:15px 8px 0;margin-top:16px;border-top-color:#d3dce9}
+.studio-app .sidebar-foot b {font-size:14px;color:#172033}
+.studio-app .sidebar-foot small {font-size:12px;color:#59677c}
+.studio-app .avatar {background:#e0e8ff;color:#244bd6;border-color:#cad7f5;border-radius:9px;font-size:13px}
+.studio-app .local-indicator {background:var(--green)}
+.studio-app .main {margin-left:var(--sidebar-width)}
+.studio-app .topbar {height:64px;padding:0 32px;background:#ffffffed;border-bottom-color:var(--line);gap:15px;backdrop-filter:blur(12px)}
+.studio-app .crumb {font-size:13px;color:var(--muted)}
+.studio-app .top-search {width:300px;max-width:32vw}
+.studio-app .top-search input {height:38px;font-size:13px;background:#f5f7fb;border-color:var(--line);padding-right:48px;color:var(--ink)}
+.studio-app .top-search input::placeholder {color:#657187}
+.studio-app .top-search kbd {font-size:11px;color:#657187;top:9px}
+.studio-app .topbar .top-upload {height:38px;font-size:13px;padding:0 12px}
+.studio-app .topbar .top-avatar {font-size:12px}
+.studio-app .view {padding:28px 32px 56px;max-width:1560px}
+
+/* Shared hierarchy, controls and legible metadata. */
+.studio-app .page-head {margin-bottom:24px}
+.studio-app .page-head h1 {font-size:28px;color:var(--ink);font-weight:650;letter-spacing:-.6px}
+.studio-app .page-head p {font-size:14px;color:var(--muted);line-height:1.8}
+.studio-app .eyebrow {font-size:12px;letter-spacing:.1em;color:#596c94;font-weight:600;margin-bottom:7px}
+.studio-app .btn {font-size:14px;min-height:38px;height:auto;padding:8px 13px;border-radius:8px;color:#34435b;border-color:#ccd6e5;background:#fff;line-height:1.4;box-shadow:none}
+.studio-app .btn:hover {background:#f4f7fc;border-color:#a7b9e2;box-shadow:none}
+.studio-app .btn.primary,.studio-app .btn.gold {background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:none}
+.studio-app .btn.primary:hover,.studio-app .btn.gold:hover {background:#244bd6;border-color:#244bd6}
+.studio-app .btn.ghost {background:transparent;color:#455a7d}
+.studio-app .btn.ghost:hover {background:#eaf0ff;border-color:#c9d7f5}
+.studio-app .btn.sm {font-size:13px;min-height:34px;padding:7px 11px}
+.studio-app .btn.xs {font-size:12px;min-height:30px;padding:5px 9px}
+.studio-app .muted,.studio-app .faint {font-size:13px;color:var(--muted)}
+.studio-app :is(.pill,.status,.badge,.studio-badge,.asset-type) {font-size:12px;line-height:1.6}
+.studio-app :is(.panel,.studio-card,.records-panel,.book-hero,.marketing-entry-scene) {border-radius:12px;border-color:var(--line);box-shadow:none}
+.studio-app :is(.panel-head h2,.studio-section-head h2) {font-size:18px;color:var(--ink)}
+.studio-app :is(.panel-head .sub,.panel-head a,.studio-section-head>span) {font-size:13px;color:var(--muted)}
+.studio-app :is(.field label,.studio-field>span) {font-size:14px;color:#45546a}
+.studio-app :is(.field input,.field select,.studio-field input,.studio-field select,.studio-field textarea,.filters .search input,.studio-toolbar input,.studio-toolbar select) {font-size:14px;color:var(--ink);border-color:#ccd6e5;background:#fff;border-radius:8px;min-height:38px}
+.studio-app input::placeholder,.studio-app textarea::placeholder {color:#6c788a}
+.studio-app :is(.filters,.studio-toolbar) {gap:10px}
+.studio-app :is(.table,.table .bookcell b) {font-size:14px}
+.studio-app .table th {font-size:12px;color:#59677c;background:#f5f7fb;padding:11px 14px;letter-spacing:0}
+.studio-app .table td {padding:12px 14px}
+.studio-app :is(.table .bookcell span,.table-foot,.kpi .k,.kpi .d) {font-size:12px;color:#59677c}
+.studio-app .table tbody tr:hover,.studio-app .table tbody tr:hover td {background:#f4f7ff}
+.studio-app .tabs button,.studio-app .studio-tabs button {font-size:14px}
+.studio-app .empty,.studio-app .loading {font-size:14px;color:#59677c}
+.studio-app .modal-card {border-radius:14px;box-shadow:0 20px 70px #17203329}
+.studio-app .modal-card h2 {font-size:22px}
+.studio-app .modal-x {width:34px;height:34px}
+.studio-app .toast {font-size:14px;background:#172033;color:#fff;border-color:#34435b}
+
+/* Task-first dashboard: current data, compact metrics, projects in the first screen. */
+.dash-workspace {min-width:0}
+.dash-head {display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:20px}
+.dash-head h1 {font-size:28px;line-height:1.4;color:var(--ink);letter-spacing:-.6px}
+.dash-head p {font-size:14px;color:var(--muted);margin-top:7px}
+.dash-head .head-actions {gap:8px}
+.dash-metrics {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 0;margin-bottom:25px}
+.dash-metric {display:flex;align-items:baseline;justify-content:flex-start;gap:10px;border:0;border-right:1px solid var(--line);background:transparent;padding:0 22px;min-width:0;color:var(--ink);text-align:left;font:inherit;cursor:pointer;flex-wrap:wrap}
+.dash-metric:first-child {padding-left:0}
+.dash-metric:last-child {border-right:0}
+.dash-metric:hover .dash-metric-value {color:var(--accent)}
+.dash-metric-value {font-size:25px;line-height:1.3;letter-spacing:-.7px;font-weight:600;font-variant-numeric:tabular-nums}
+.dash-metric-label {font-size:13px;color:var(--muted)}
+.dash-layout {display:grid;grid-template-columns:minmax(0,1.85fr) minmax(290px,1fr);gap:26px;align-items:start}
+.dash-projects,.dash-sidebar {min-width:0}
+.dash-section-head {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.dash-section-head h2 {font-size:18px;font-weight:600;color:var(--ink)}
+.dash-section-head>span {font-size:12px;color:var(--muted)}
+.dash-project-list {background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.dash-project-row {display:flex;align-items:center;gap:18px;padding:20px 18px;border-bottom:1px solid var(--line2);min-width:0;transition:background .15s}
+.dash-project-row:last-child {border-bottom:0}
+.dash-project-row:hover {background:#f7f9ff}
+.dash-project-main {flex:1;min-width:0}
+.dash-project-top {display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:8px}
+.dash-project-main h3 {font-size:16px;font-weight:600;color:var(--ink);line-height:1.6;overflow-wrap:anywhere}
+.dash-project-summary {font-size:14px;color:#59677c;margin-top:5px;line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dash-project-meta {display:flex;gap:13px;flex-wrap:wrap;font-size:12px;color:#657187;margin-top:9px}
+.dash-project-actions {flex-shrink:0}
+.dash-sidebar {display:grid;gap:16px}
+.dash-panel {background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px}
+.dash-panel .dash-section-head h2 {font-size:16px}
+.dash-panel-note,.dash-panel>p {font-size:13px;color:var(--muted);line-height:1.8;margin:8px 0 14px}
+.dash-review {border-top:3px solid var(--accent)}
+.dash-review[data-state=unavailable] {border-top-color:var(--amber)}
+.dash-review>.btn {width:100%}
+.dash-asset-list {display:grid}
+.dash-asset-row {display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line2);background:transparent;padding:10px 0;font:inherit;font-size:14px;color:#34435b;cursor:pointer}
+.dash-asset-row:last-child {border-bottom:0}
+.dash-asset-row:hover {color:var(--accent)}
+.dash-asset-row b,.dash-asset-row strong {font-size:14px;font-weight:550;font-variant-numeric:tabular-nums;color:var(--ink)}
+.dash-runtime[data-state=attention] {border-color:#e2cda5;background:#fffcf5}
+.dash-runtime-counts {display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:#4e5e74}
+.dash-runtime-counts b {font-size:18px;color:var(--ink);font-variant-numeric:tabular-nums;margin-right:3px}
+.dash-runtime .dash-panel-note {font-size:12px}
+.dash-runtime-counts [data-tone=warning],.dash-runtime-counts [data-tone=warning] b {color:var(--amber)}
+.dash-runtime-counts [data-tone=danger],.dash-runtime-counts [data-tone=danger] b {color:var(--red)}
+.dash-empty {padding:32px 24px}
+.dash-empty h3 {font-size:18px;margin-bottom:8px}
+.dash-empty p {font-size:14px;color:var(--muted)}
+.dash-review-item {overflow-wrap:anywhere}
+
+/* Project lists: less framing, larger names, readable state and dates. */
+.studio-app .records-toolbar {padding:17px 20px;gap:16px}
+.studio-app .records-function-history h2 {font-size:17px;color:var(--ink)}
+.studio-app .records-function-history p {font-size:13px;color:var(--muted)}
+.studio-app .records-search-field input {font-size:14px;height:38px;background:#f8faff;border-color:var(--line)}
+.studio-app .records-filters {flex-wrap:wrap;background:#edf1f7;border-radius:8px}
+.studio-app .records-filters button {font-size:13px;padding:7px 11px;color:#59677c;min-height:35px}
+.studio-app .records-filters button.on {color:#244bd6;box-shadow:none}
+.studio-app .records-filters button span {font-size:12px;color:var(--muted)}
+.studio-app .records-caption,.studio-app .records-pagination {font-size:13px;color:var(--muted);padding:12px 20px}
+.studio-app .records-column-head {font-size:12px;letter-spacing:0;color:#59677c;background:#f5f7fb}
+.studio-app .project-record-row {padding-top:15px;padding-bottom:15px;min-height:80px}
+.studio-app .record-project-title {font-size:15px;line-height:1.6}
+.studio-app .record-project-goal {font-size:13px;color:#59677c}
+.studio-app .record-kind {font-size:12px}
+.studio-app .record-kind.editorial {color:#3658b4;background:#edf2ff}
+.studio-app .record-kind.marketing {color:#226c72;background:#eaf7f7}
+.studio-app .record-stage,.studio-app .record-counts,.studio-app .record-open {font-size:13px}
+.studio-app .record-stage small,.studio-app .record-counts small,.studio-app .record-date {font-size:12px;color:#59677c}
+.studio-app .record-stage-label {color:#59677c}
+.studio-app .record-tone-ready {color:#137459}
+.studio-app .record-tone-running {color:#244bd6}
+.studio-app .record-tone-error {color:#b3374b}
+.studio-app .record-tone-review {color:#8c5b0c}
+.studio-app .record-open {color:#244bd6}
+
+/* Content and creation screens share the same type hierarchy. */
+.studio-app .asset-card h3,.studio-app .project-card h3 {font-size:17px;color:var(--ink)}
+.studio-app .asset-preview {font-size:16px;line-height:1.85;color:#34435b}
+.studio-app :is(.asset-evidence,.asset-evidence small,.project-card-meta,.studio-note,.studio-pagination) {font-size:13px;color:#59677c}
+.studio-app .studio-card>p:where(:not(.asset-preview)) {font-size:14px;color:#59677c}
+.studio-app :is(.marketing-entry-heading p,.marketing-entry-scene p,.marketing-entry-book-group p,.marketing-audience-hint) {font-size:14px;color:#59677c}
+.studio-app .marketing-entry-heading h1 {font-size:28px;color:var(--ink)}
+.studio-app .marketing-entry-form input,.studio-app .marketing-entry-form select,.studio-app .marketing-entry-form textarea {font-size:16px}
+.studio-app :is(.marketing-entry-form .studio-field>span,.marketing-entry-book-group legend,.marketing-entry-books label) {font-size:14px;color:#45546a}
+.studio-app :is(.marketing-entry-step,.marketing-entry-back,.marketing-entry-more,.marketing-entry-form-footer [data-draft-note]) {font-size:13px;color:#59677c}
+.studio-app .project-workspace-head h1 {font-size:24px;color:var(--ink)}
+.studio-app :is(.project-identity,.project-name-row .btn,.project-head-tools #projectSaveState) {font-size:13px;color:#59677c}
+.studio-app .project-local-tab {font-size:14px;color:#59677c}
+.studio-app .project-local-tab.on {color:#244bd6;border-bottom-color:#325bff}
+.studio-app .project-intent {background:#fff;border-color:var(--line);border-radius:12px;box-shadow:none}
+.studio-app .project-intent:before {background:var(--accent)}
+.studio-app .project-intent-label {font-size:13px;color:#59677c}
+.studio-app .project-intent-goal p {font-size:14px;color:#45546a}
+.studio-app .project-workspace .project-next-step p {font-size:14px;color:#59677c}
+.studio-app .project-workspace .project-next-step h2 {font-size:16px;color:var(--ink)}
+.studio-app .project-workspace .project-next-step>.btn {font-size:13px}
+.studio-app .apps-qa-feature {background:#fff;border-color:var(--line);border-radius:14px;box-shadow:none;min-height:280px;padding:30px}
+.studio-app .apps-qa-copy>p,.studio-app .apps-center .app-card p {font-size:14px;color:#59677c}
+.studio-app .apps-qa-copy>.btn {background:var(--accent);box-shadow:none;font-size:14px}
+.studio-app .apps-core {animation:none}
+.studio-app :is(.apps-feature-meta,.apps-section-title>span,.apps-api-details summary small,.apps-planned span) {font-size:12px;color:#59677c}
+.studio-app .apps-api-details summary b {font-size:14px}
+.studio-app .apps-center .app-card:hover {transform:none;box-shadow:none;border-color:#a7b9e2}
+
+.studio-app .relations-heading p {font-size:15px}
+.relations-choices {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:960px}
+.relations-choice {
+  display:flex;flex-direction:column;align-items:flex-start;padding:24px;border:1px solid var(--line);
+  border-radius:14px;background:var(--panel);color:var(--ink);text-decoration:none;
+}
+.relations-choice:hover {border-color:#a7b9e2;background:#fcfdff;color:var(--ink);text-decoration:none}
+.relations-icon {display:grid;place-items:center;width:42px;height:42px;border-radius:10px;background:var(--gold-soft);color:var(--gold2)}
+.relations-icon .icon {width:21px;height:21px}
+.relations-choice h2 {font-size:18px;margin:14px 0 6px;color:var(--ink)}
+.relations-choice p {font-size:14px;line-height:1.8;color:var(--muted)}
+.relations-choice .relations-example {font-size:13px;margin:8px 0 18px}
+.relations-cta {display:flex;justify-content:space-between;width:100%;margin-top:auto;padding-top:12px;border-top:1px solid var(--line2);font-size:14px;font-weight:600;color:var(--gold2)}
+@media(max-width:680px) {
+  .relations-choices {grid-template-columns:1fr;gap:12px}
+  .relations-choice {padding:19px}
+}
+.relation-material {margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;line-height:1.6}
+.relation-material p,.relation-material-note {margin:6px 0;color:var(--muted)}
+.relation-material [hidden] {display:none}
+.relation-material form {display:grid;justify-items:start;gap:8px;margin-top:10px}
+.relation-material label {width:100%;display:grid;gap:4px}
+.relation-material :is(select,input) {
+  width:100%;min-height:36px;padding:6px 8px;border:1px solid var(--line);border-radius:6px;
+  color:var(--ink);background:var(--panel);font-size:14px;
+}
+.relation-material-actions,.project-material-tools {display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.relation-material [data-relation-picker]>.relation-material-actions {margin-top:8px}
+.relation-material [role="status"] {color:var(--green)}
+.relation-material .relation-material-error {color:var(--red)}
+.studio-app .kg-panel .relation-material {border-color:var(--line)}
+.studio-app .kg-panel :is(.relation-material p,.relation-material-note) {color:var(--muted)}
+.studio-app .kg-panel .relation-material [role="status"] {color:var(--green)}
+.studio-app .kg-panel .relation-material .relation-material-error {color:var(--red)}
+.project-material-tools {justify-content:flex-end}
+.marketing-workspace #project-panel-materials > .project-material-tools {margin-bottom:8px}
+@media(max-width:1180px) {
+  .kl-aside:has([data-relation-evidence]) {display:block;position:static;grid-column:2}
+}
+@media(max-width:860px) {
+  .kl-aside:has([data-relation-evidence]) {grid-column:1}
+}
+
+/* The question workspace uses its own controls and palette. */
+.studio-app .qa-app {--qa-ink:#172033;--qa-muted:#59677c;--qa-blue:#325bff;--qa-border:#dce3ed}
+.studio-app .qa-hero {min-height:140px;background:none;border-radius:12px;margin-top:10px}
+.studio-app .qa-hero:before,.studio-app .qa-constellation {display:none}
+.studio-app .qa-hero h1 {color:var(--ink);font-size:26px}
+.studio-app .qa-hero p {color:var(--muted);font-size:14px}
+.studio-app :is(.qa-button,.qa-send,.qa-scope-button,.qa-suggestion,.qa-composer-followup .qa-send) {font-size:12px!important;min-height:32px}
+.studio-app .qa-button-small,.studio-app .qa-source-open {font-size:12px!important}
+.studio-app .qa-send {background:var(--accent);box-shadow:none}
+.studio-app .qa-send:not(:disabled):hover {transform:none;box-shadow:none;background:#244bd6}
+.studio-app .qa-composer {background:#fff;border-color:var(--line);border-radius:12px;box-shadow:none}
+.studio-app .qa-composer textarea,.studio-app .qa-answer-prose {font-size:14px;line-height:1.75}
+.studio-app :is(.qa-back,.qa-page-label,.qa-kicker,.qa-book-chip,.qa-book-more,.qa-scope-auto,.qa-input-hint,.qa-composer-note,.qa-service-status,.qa-local-note,.qa-evidence-intro,.qa-evidence-for,.qa-source-chapter,.qa-turn-scope,.qa-answer-source-count,.qa-promise span) {font-size:12px;color:#59677c}
+.studio-app .qa-composer textarea::placeholder {color:#657187}
+.studio-app .qa-example strong {font-size:14px;color:var(--ink)}
+.studio-app .qa-example>span:not(.qa-example-icon):not(.qa-example-arrow) {font-size:12px;color:var(--muted)}
+.studio-app .qa-source-title,.studio-app .qa-source-card blockquote {font-size:14px;color:#45546a}
+.studio-app .qa-evidence {top:80px;max-height:calc(100vh - 104px);border-color:var(--line)}
+.studio-app .qa-evidence-empty p {font-size:13px;color:#59677c}
+.studio-app .manuscript-outline {top:80px}
+.studio-app :is(.manuscript-reading,.manuscript-rich-input) {font-size:16px;line-height:1.9}
+.studio-app .manuscript-reading p {font-size:inherit}
+
+/* The graph keeps a navy canvas; its source-reading drawer uses the workspace palette. */
+.studio-app .kg-panel .muted,.studio-app .kg-panel .faint {color:var(--muted)}
+.studio-app .kglab-page {height:calc(100vh - 64px)}
+@media (max-width:1180px) {
+  .studio-app .view {padding:24px}
+  .studio-app .topbar {padding:0 24px}
+  .dash-layout {grid-template-columns:minmax(0,1.5fr) minmax(260px,1fr);gap:18px}
+  .dash-project-row {align-items:flex-start;flex-wrap:wrap;padding:17px}
+  .dash-project-main {flex-basis:100%}
+  .dash-project-actions {margin-left:auto}
+  .dash-metric {padding:0 13px;gap:6px}
+  .dash-panel {padding:17px}
+  .studio-app .records-toolbar {flex-wrap:wrap}
+}
+@media (max-width:980px) {
+  .dash-layout {grid-template-columns:1fr}
+  .dash-sidebar {grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dash-project-row {flex-wrap:nowrap;align-items:center}
+  .dash-project-main {flex-basis:auto}
+  .studio-app .top-search {width:245px;max-width:28vw}
+}
+@media (max-width:840px) {
+  :root {--sidebar-width:244px}
+  .studio-app .main {margin-left:0}
+  .studio-app .sidebar {padding:23px 16px 16px}
+  .studio-app .sidebar .nav-item {min-height:44px}
+  .studio-app .sidebar .project-nav-item {min-height:40px}
+  .studio-app .topbar {height:64px;padding:0 18px;gap:10px}
+  .studio-app .top-search {width:230px;max-width:none}
+  .studio-app .topbar .top-upload {width:38px;padding:0;flex-shrink:0}
+  .studio-app .topbar .top-upload span {display:none}
+  .studio-app .view {padding:24px 22px 44px}
+}
+@media (max-width:620px) {
+  .studio-app .topbar {padding:0 14px}
+  .studio-app .top-search {width:auto;max-width:none;flex:1;min-width:0}
+  .studio-app .top-search input {font-size:14px;padding-right:10px}
+  .studio-app .top-search kbd {display:none}
+  .studio-app .crumb {display:none}
+  .studio-app .view {padding:21px 16px 40px}
+  .studio-app .page-head h1,.dash-head h1 {font-size:25px}
+  .studio-app .btn {white-space:normal}
+  .dash-head {gap:14px;margin-bottom:18px}
+  .dash-head .head-actions {width:100%}
+  .dash-head .head-actions .btn {flex:1}
+  .dash-metrics {grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 0;padding:15px 0;margin-bottom:22px}
+  .dash-metric:nth-child(odd) {padding-left:0}
+  .dash-metric:nth-child(even) {border-right:0}
+  .dash-metric-value {font-size:23px}
+  .dash-metric-label {font-size:12px}
+  .dash-project-row {flex-wrap:wrap;padding:16px 14px;gap:12px}
+  .dash-project-main {flex-basis:100%}
+  .dash-project-summary {font-size:14px}
+  .dash-project-actions {margin-left:0}
+  .dash-sidebar {grid-template-columns:1fr}
+  .dash-section-head h2 {font-size:18px}
+  .studio-app .records-toolbar {padding:14px;display:block}
+  .studio-app .records-filters {justify-content:flex-start;gap:4px}
+  .studio-app .records-filters button {flex:0 1 auto;font-size:13px}
+  .studio-app .record-project-title {font-size:14px;white-space:normal}
+  .studio-app .record-date {font-size:12px;white-space:normal;max-width:112px}
+  .studio-app .record-stage {font-size:13px}
+  .studio-app .project-workspace-head h1 {font-size:21px}
+  .studio-app .records-caption,.studio-app .records-pagination {padding:12px 14px;font-size:12px}
+  .studio-app .records-pagination .btn {font-size:12px}
+  .studio-app .marketing-entry-form.studio-card {padding:22px 18px}
+  .studio-app .qa-topline {flex-wrap:wrap}
+  .studio-app .qa-scope-row,.studio-app .qa-composer-bottom {flex-wrap:wrap}
+  .studio-app .qa-top-actions {margin-left:auto}
+  .studio-app .qa-hero {min-height:150px;padding:18px 0}
+  .studio-app .qa-hero h1 {font-size:26px}
+  .studio-app .qa-send {margin-left:auto}
+}
+@media (pointer:coarse) {
+  .studio-app .btn,.studio-app .records-filters button,.studio-app .project-local-tab {min-height:44px}
+  .studio-app :is(input,textarea,select) {font-size:16px}
+}
+@media (prefers-reduced-motion:reduce) {
+  .studio-app *, .studio-app *::before, .studio-app *::after {scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
