@@ -8,6 +8,7 @@ services:
         DEBIAN_MIRROR: ${BOOKWORLD_DEBIAN_MIRROR:-https://deb.debian.org/debian}
         DEBIAN_SECURITY_MIRROR: ${BOOKWORLD_DEBIAN_SECURITY_MIRROR:-https://deb.debian.org/debian-security}
         PIP_INDEX_URL: ${BOOKWORLD_PYPI_INDEX:-https://pypi.org/simple}
+        PIP_INSTALL_INDEX_URL: ${BOOKWORLD_PYPI_INSTALL_INDEX:-}
     image: shushijie:local
     init: true
     restart: unless-stopped

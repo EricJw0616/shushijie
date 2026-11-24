@@ -22,7 +22,9 @@ WORKDIR /app
 COPY app/requirements.txt /tmp/app-requirements.txt
 COPY platform/engine/requirements-ocr.txt /tmp/ocr-requirements.txt
 COPY requirements-pg.txt /tmp/pg-requirements.txt
-RUN pip install --no-cache-dir -r /tmp/app-requirements.txt -r /tmp/ocr-requirements.txt -r /tmp/pg-requirements.txt \
+# This override changes only the Python dependency layer, keeping the OS cache.
+ARG PIP_INSTALL_INDEX_URL=
+RUN pip install --index-url "${PIP_INSTALL_INDEX_URL:-$PIP_INDEX_URL}" --no-cache-dir -r /tmp/app-requirements.txt -r /tmp/ocr-requirements.txt -r /tmp/pg-requirements.txt \
     && python -c "from rapidocr_onnxruntime import RapidOCR; RapidOCR()" \
     && rm -f /tmp/*-requirements.txt
 
