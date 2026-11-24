@@ -1,5 +1,9 @@
 FROM python:3.11-slim-bookworm
 
+ARG DEBIAN_MIRROR=https://deb.debian.org/debian
+ARG DEBIAN_SECURITY_MIRROR=https://deb.debian.org/debian-security
+ARG PIP_INDEX_URL=https://pypi.org/simple
+
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
@@ -7,7 +11,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     BOOKDISTILL_OCR_PYTHON=/usr/local/bin/python \
     TZ=Asia/Shanghai
 
-RUN apt-get update \
+RUN python -c "import os,pathlib; p=pathlib.Path('/etc/apt/sources.list.d/debian.sources'); s=p.read_text(); s=s.replace('http://deb.debian.org/debian-security',os.environ['DEBIAN_SECURITY_MIRROR']).replace('http://deb.debian.org/debian',os.environ['DEBIAN_MIRROR']); p.write_text(s)" \
+    && apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update \
     && apt-get install -y --no-install-recommends gosu libgl1 libglib2.0-0 libgomp1 tzdata \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --gid 10001 bookworld \

@@ -26,6 +26,8 @@ docker compose up -d --build
 
 当前服务器部署约定：代码 `/opt/shushijie`，持久数据 `/opt/shushijie-data`，端口 `8943`。仓库根目录未跟踪的 `.env` 设置 `BOOKWORLD_DATA_DIR`、`BOOKWORLD_HOST`、`BOOKWORLD_PORT`；实际模型配置存放在数据目录的 `app.env`，不进入 Git 或镜像。
 
+首次构建下载较慢时，可在根目录 `.env` 配置公共镜像地址 `BOOKWORLD_DEBIAN_MIRROR`、`BOOKWORLD_DEBIAN_SECURITY_MIRROR`、`BOOKWORLD_PYPI_INDEX`；默认使用官方源。构建参数只用于公共依赖镜像，不应包含访问令牌。
+
 ```sh
 docker compose ps
 docker compose logs --tail=100 app
