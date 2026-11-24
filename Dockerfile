@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     TZ=Asia/Shanghai
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends gosu libgl1 libglib2.0-0 libgomp1 \
+    && apt-get install -y --no-install-recommends gosu libgl1 libglib2.0-0 libgomp1 tzdata \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --gid 10001 bookworld \
     && useradd --uid 10001 --gid bookworld --create-home bookworld

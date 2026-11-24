@@ -6,8 +6,8 @@ import urllib.request
 
 headers = {}
 user, password = os.environ.get('BOOKDISTILL_USER'), os.environ.get('BOOKDISTILL_PASS')
-if user and password:
-    encoded = base64.b64encode((user + ':' + password).encode()).decode()
+if user:
+    encoded = base64.b64encode((user + ':' + (password or '')).encode()).decode()
     headers['Authorization'] = 'Basic ' + encoded
 opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 request = urllib.request.Request('http://127.0.0.1:8943/api/version', headers=headers)
