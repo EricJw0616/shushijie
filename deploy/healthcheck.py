@@ -13,5 +13,5 @@ opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 request = urllib.request.Request('http://127.0.0.1:8943/api/version', headers=headers)
 with opener.open(request, timeout=3) as response:
     data = json.load(response)
-    if response.status != 200 or not data.get('version'):
+    if response.status != 200 or not data.get('ok') or not data.get('v'):
         raise SystemExit(1)
