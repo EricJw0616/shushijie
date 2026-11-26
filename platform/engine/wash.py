@@ -162,7 +162,7 @@ def _source_pages(layout_path):
         return {}
 
 
-def build(text, book_code, outline, layout_path=None):
+def build(text, book_code, outline, layout_path=None, *, continuous_body=False):
     """text: 原文；outline: [(篇名, 起始行下标)]，下标基于 clean_lines 口径。
     返回 (segments, stats)。"""
     lines = ST.source_lines(text)
@@ -194,6 +194,8 @@ def build(text, book_code, outline, layout_path=None):
                 index += 1
                 result = {'id': f'{book_code}-{number:02d}-P{index:02d}', '篇': chapter,
                           '篇序': number, '段': index, '字数': len(HAN.findall(txt)), '文本': txt}
+                if continuous_body and not marks:
+                    result['source_kind'] = 'body'
                 if has_pages:
                     result['source_page'] = block[0][0]
                     if number == 0 and marks:
@@ -225,7 +227,7 @@ def build(text, book_code, outline, layout_path=None):
     # 前置内容（封面、序、目录）：第一个篇界之前
     head_end = marks[0][0] if marks else len(lines)
     if head_end > 0:
-        add_segments('前置', 0, lines[:head_end])
+        add_segments('正文' if continuous_body and not marks else '前置', 0, lines[:head_end])
 
     for k, (start, nm) in enumerate(marks):
         end = marks[k + 1][0] if k + 1 < len(marks) else len(lines)

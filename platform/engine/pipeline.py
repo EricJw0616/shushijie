@@ -125,6 +125,9 @@ def _pname_quality(segs, structure=''):
     """
     body = [s for s in segs if s.get('篇序', 0) > 0]
     if not body:
+        if structure == 'body_only':
+            return {'可用率': None, '正文段数': len(segs), '性质': '按段定位',
+                    '说明': '短材料未检测到章节标题，可按原文段落核对和引用。'}
         # 两种零段的成因完全不同，必须分开报：
         #   '无正文'    —— 文件本身没有可切正文（空文件、纯目录、解码失败）
         #   '切不开'    —— 有正文，但底本没有任何可用的结构标记，全落进前置段。
@@ -216,15 +219,24 @@ def _people_plan(text, people):
     """
     # 必须用 structure 自己的行表来定位：它和 outline() 用的是同一份 lines，
     # 自己 split('\n') 会因为空行/页标记错位，把篇界挪到别的段上。
-    lines = ST.lines_of(text)
+    lines = ST.source_lines(text)
+    has_pages = bool(ST.PAGE.search(text))
     found, seen = [], set()
     for person in people:
         name = person.get('name') or ''
         if not name or name in seen:
             continue
-        key = ('姓名：' + name).replace(' ', '')
-        for i, (_pno, s) in enumerate(lines):
-            if key in (s or '').replace(' ', ''):
+        key = ST.norm(name)
+        for i, (pno, line, block) in enumerate(lines):
+            if has_pages and person.get('page') and pno != person['page']:
+                continue
+            label = re.fullmatch(r'姓名[：:]\s*(.*)', ST.norm(line))
+            if not label:
+                continue
+            value = label[1]
+            if not value and i + 1 < len(lines) and lines[i + 1][2] == block:
+                value = ST.norm(lines[i + 1][1])
+            if value == key:
                 seen.add(name)
                 found.append((i, name))
                 break
@@ -278,9 +290,12 @@ def run_one(path, code, proto_override=None):
         if ppl_plan:
             plan = ppl_plan
     outline = ST.outline(text, plan)
+    continuous_body = (not outline and not algo_punct and not toc_info['删除行数']
+                       and ST.continuous_short_body(text))
 
     # ---------- 3 清洗切段 ----------
-    segs, wst = W.build(text, code, [(nm, i) for nm, i, _ in outline], layout_path=layout_path)
+    segs, wst = W.build(text, code, [(nm, i) for nm, i, _ in outline], layout_path=layout_path,
+                        continuous_body=continuous_body)
     for sg in segs:
         sg['锚点'] = f"{code}·{sg['篇']}·P{sg['段']:02d}"
         sg['书'] = name
@@ -372,7 +387,7 @@ def run_one(path, code, proto_override=None):
         # 若篇名是「第3章」占位符，等于没有回溯路径。
         # 必须把「书本身没篇名」与「我们没抽到篇名」分开报 ——
         # 前者是书的属性（四世同堂原作者只分节不写标题），后者是工程缺陷。
-        '篇名质量': _pname_quality(segs, plan.get('mode', '')),
+        '篇名质量': _pname_quality(segs, 'body_only' if continuous_body else plan.get('mode', '')),
         '篇数': wst['npian'], '段数': wst['nseg'],
         '汉字_原文': wst['src_han'], '汉字_切段': wst['seg_han'],
         '保留率': wst['retention'],

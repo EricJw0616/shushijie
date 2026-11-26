@@ -71,6 +71,87 @@ class SourceReviewTests(unittest.TestCase):
         return {'code': 'B69', 'asset_id': a['id'], 'anchor': segment['anchor'],
                 'revision': segment['revision'], 'confirmed': True}
 
+    def test_text_and_word_use_uploaded_document_without_pdf_pages(self):
+        from docx import Document
+        for source_format, label, text in (
+                ('txt', 'TXT', '社区借阅日为每周三。'),
+                ('docx', 'Word', '阅览区每周五开放。')):
+            with self.subTest(source_format=source_format):
+                original = os.path.join(self.tmp.name, 'original.' + source_format)
+                if source_format == 'txt':
+                    with open(original, 'w', encoding='utf-8') as handle:
+                        handle.write('社区服务\n' + text)
+                else:
+                    doc = Document()
+                    doc.add_paragraph('开放安排')
+                    doc.add_paragraph(text)
+                    doc.save(original)
+                self.rows[0].update(文本=text, source_page=None, source_layout_suspect=True,
+                                    source_layout_issue='ocr_review', source_ocr_status='review')
+                self.rows[0].pop('source_review', None)
+                self.write_sources()
+                self.marketing['items']['keywords']['value'][0]['evidence'][0]['quote'] = text
+                self.write('marketing.json', self.marketing)
+                record = {'code': 'B69', 'book': '核对图书', 'source_format': source_format}
+                with patch.object(store, 'get_record', return_value=record), \
+                        patch.object(store, 'original_source', return_value=original):
+                    context = R.get_context('B69', self.asset()['id'])
+                    segment = context['pending_segments'][0]
+                    self.assertTrue(segment['can_verify'])
+                    self.assertEqual(segment['document_label'], label)
+                    self.assertEqual(segment['document_excerpt'], text)
+                    self.assertEqual(segment['pdf_url'], '')
+                    result = R.verify(self.body())
+                    self.assertFalse(result['changed'])
+                    self.assertTrue(R.get_context('B69', self.asset()['id'])['can_proceed'])
+
+    def test_repeated_source_text_remains_unverified(self):
+        original = os.path.join(self.tmp.name, 'original.txt')
+        repeated = self.rows[0]['文本']
+        with open(original, 'w', encoding='utf-8') as handle:
+            handle.write(repeated + '\n' + repeated)
+        record = {'code': 'B69', 'book': '核对图书', 'source_format': 'txt'}
+        with patch.object(store, 'get_record', return_value=record), \
+                patch.object(store, 'original_source', return_value=original):
+            context = R.get_context('B69', self.asset()['id'])
+            segment = context['pending_segments'][0]
+            self.assertFalse(segment['can_verify'])
+            self.assertEqual(segment['document_excerpt'], '')
+            with self.assertRaisesRegex(ValueError, '唯一定位'):
+                R.verify(self.body())
+
+    def test_stock_number_repairs_are_backed_up_and_invalidate_evidence_without_manual_credit(self):
+        self.rows[2]['文本'] = '获年度科技奖励。'
+        self.write_sources()
+        self.marketing['items']['keywords']['value'][2]['evidence'][0]['quote'] = '获年度科技奖励。'
+        self.write('marketing.json', self.marketing)
+        path = os.path.join(self.folder, 'segments.jsonl')
+        segment_sha256, pdf_sha256 = R._file_hash(path), R._file_hash(self.pdf)
+        items = [{'anchor': self.rows[2]['id'], 'page': 2, 'current_page': 2,
+                  'before': '获年度科技奖励。', 'after': '获2000年度科技奖励。'}]
+        with patch.object(store, 'list_jobs', return_value=[]):
+            result = R.apply_number_repairs('B69', segment_sha256, pdf_sha256, items)
+            with self.assertRaises(R.SourceChanged):
+                R.apply_number_repairs('B69', segment_sha256, pdf_sha256, items)
+        self.assertEqual(result['applied'], 1)
+        self.assertEqual(R._file_hash(result['backup']), segment_sha256)
+        _, _, _, segments = R._load('B69')
+        self.assertEqual(segments[2][1]['文本'], items[0]['after'])
+        self.assertFalse(segments[2][1].get('source_review'))
+        self.assertTrue(self.asset('正文')['stale'])
+
+    def test_stock_number_repair_rejects_prose_rewrites_before_backup(self):
+        self.rows[2]['文本'] = '获年度科技奖励。'
+        self.write_sources()
+        path = os.path.join(self.folder, 'segments.jsonl')
+        before = R._file_hash(path)
+        items = [{'anchor': self.rows[2]['id'], 'page': 2, 'current_page': 2,
+                  'before': '获年度科技奖励。', 'after': '获奖时间不详。'}]
+        with patch.object(store, 'list_jobs', return_value=[]), self.assertRaises(R.SourceChanged):
+            R.apply_number_repairs('B69', before, R._file_hash(self.pdf), items)
+        self.assertEqual(R._file_hash(path), before)
+        self.assertFalse(os.path.exists(os.path.join(self.data, 'source_backups')))
+
     def test_context_gives_full_text_original_page_and_readonly_state(self):
         self.marketing['items']['keywords']['value'][0]['evidence'].append(
             {'seg': self.rows[2]['id'], 'quote': '正常引用的正文'})

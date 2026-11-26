@@ -121,7 +121,16 @@ def _quality(job_id, code):
     outline = store.read_jsonl(os.path.join(folder, 'outline.jsonl'))
     rows = store.read_jsonl(os.path.join(folder, 'cards.jsonl'))
     _, dropped, why = cards.verify(rows, segs)
-    audit = tocclean.audit(segs, outline)
+    book = E.book_json(code)
+    source_text = ''
+    source_name = os.path.basename((book or {}).get('源文件') or '')
+    if source_name.endswith('.txt'):
+        try:
+            with open(os.path.join(E.RAW, source_name), encoding='utf-8') as source:
+                source_text, _ = tocclean.clean(source.read())
+        except (OSError, UnicodeError):
+            pass
+    audit = tocclean.audit(segs, outline, source_text)
     issues = []
     if not segs:
         issues.append('没有可核验的正文段落')
@@ -133,7 +142,6 @@ def _quality(job_id, code):
               'segments': len(segs), 'cards': len(rows), 'invalid_anchors': dropped,
               'structure': audit, 'issues': issues}
     store.write_json(os.path.join(folder, 'quality.json'), report)
-    book = E.book_json(code)
     if book:
         book['结构审计'] = audit
         book['质量状态'] = report['status']

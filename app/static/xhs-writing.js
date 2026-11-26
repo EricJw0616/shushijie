@@ -1,7 +1,18 @@
 'use strict';
 
 window.XhsWriting = (() => {
-  const brief = {title: '', materials: '', audience: '', instructions: '', count: 1};
+  const blankBrief = () => ({title: '', materials: '', audience: '', instructions: '', count: 1});
+  const brief = blankBrief();
+  const keptDrafts = new Map();
+  let storageScope = '';
+  let scopeRevision = 0;
+  let appliedCode = '';
+  let editedBrief = false;
+  let jobToResume = null;
+  let saveTimer = null;
+  let saveMessage = '';
+  let saveError = false;
+  let refreshSave = () => {};
   const materialLimit = 16000;
   const imageLimit = 220 * 1024;
   const referenceLimit = 5;
@@ -18,6 +29,120 @@ window.XhsWriting = (() => {
   let pending = '';
   let error = '';
   let refresh = () => {};
+
+  function validCode(code) {
+    return typeof code === 'string' && /^[A-Za-z0-9_-]{1,24}$/.test(code);
+  }
+
+  function workspaceStorageScope() {
+    return 'bookworld.xhs-writing.v1:' + location.origin + ':' +
+      (document.querySelector('.workspace-name')?.textContent || 'local');
+  }
+
+  function draftKey(code = appliedCode) {
+    return storageScope + (code ? ':book:' + code : ':manual');
+  }
+
+  function draftHasWork() {
+    return Boolean(notes.length || jobToResume || cover || references.length ||
+      editedBrief && (brief.title || brief.materials || brief.audience || brief.instructions || brief.count !== 1));
+  }
+
+  function tabHasDraftWork() {
+    const scope = workspaceStorageScope();
+    if (scope === storageScope && draftHasWork()) return true;
+    const currentKey = scope === storageScope ? draftKey() : '';
+    const isDraftKey = key => key !== currentKey && (key === scope + ':manual' || key.startsWith(scope + ':book:'));
+    function hasWork(value) {
+      try { return Boolean(JSON.parse(value)?.hasWork); } catch (_) { return false; }
+    }
+    for (const [key, value] of keptDrafts) {
+      if (isDraftKey(key) && hasWork(value)) return true;
+    }
+    try {
+      for (let index = 0; index < sessionStorage.length; index++) {
+        const key = sessionStorage.key(index);
+        if (isDraftKey(key) && !keptDrafts.has(key) && hasWork(sessionStorage.getItem(key))) return true;
+      }
+    } catch (_) {}
+    return false;
+  }
+
+  // Browsers use the same confirmation event for close, reload and full navigation.
+  addEventListener('beforeunload', event => {
+    if (!tabHasDraftWork()) return;
+    event.preventDefault();
+    event.returnValue = true;
+  });
+
+  function setSaveMessage(message, failed = false) {
+    if (saveMessage === message && saveError === failed) return;
+    saveMessage = message;
+    saveError = failed;
+    refreshSave();
+  }
+
+  function saveDraft() {
+    clearTimeout(saveTimer);
+    saveTimer = null;
+    if (!storageScope) return;
+    // Job results are already in notes. Avoid storing a second copy.
+    const status = generation && {...generation, notes: undefined, savedCount: generation.notes?.length ?? generation.savedCount};
+    const serialized = JSON.stringify({brief, cover, references, imports, notes, active, bookSource,
+      generatedFrom, generation: status, jobToResume, editedBrief, hasWork: draftHasWork()});
+    const key = draftKey();
+    try {
+      sessionStorage.setItem(key, serialized);
+      sessionStorage.setItem(storageScope + ':current', appliedCode);
+      keptDrafts.delete(key);
+      setSaveMessage('已保存到当前标签页，刷新可恢复。关闭前请保留重要资料和笔记。');
+    } catch (_) {
+      keptDrafts.set(key, serialized);
+      setSaveMessage('当前草稿尚未保存到标签页。刷新前请复制笔记和重要资料。', true);
+    }
+  }
+
+  function scheduleSave() {
+    clearTimeout(saveTimer);
+    if (!saveError) setSaveMessage('正在保存草稿…');
+    saveTimer = setTimeout(saveDraft, 300);
+  }
+
+  addEventListener('pagehide', () => { if (saveTimer !== null) saveDraft(); });
+
+  function loadDraft(code) {
+    const key = draftKey(code);
+    let saved;
+    try { saved = JSON.parse(keptDrafts.get(key) ?? sessionStorage.getItem(key) ?? 'null'); }
+    catch (_) { saved = null; }
+    appliedCode = code;
+    const initial = blankBrief();
+    for (const name of Object.keys(initial)) {
+      const value = saved?.brief?.[name];
+      if (typeof value === typeof initial[name]) initial[name] = value;
+    }
+    Object.assign(brief, initial);
+    editedBrief = saved?.editedBrief === true;
+    generatedFrom = typeof saved?.generatedFrom?.title === 'string' && typeof saved?.generatedFrom?.materials === 'string'
+      ? saved.generatedFrom : null;
+    notes = generatedFrom && Array.isArray(saved?.notes)
+      ? saved.notes.filter(note => typeof note?.title === 'string' && typeof note.body === 'string' &&
+        Array.isArray(note.tags) && Array.isArray(note.evidence)) : [];
+    active = Number.isInteger(saved?.active) && notes[saved.active] ? saved.active : 0;
+    const validImage = image => typeof image?.name === 'string' && typeof image.data === 'string' &&
+      /^data:image\/(?:jpeg|png|webp);base64,/i.test(image.data);
+    cover = validImage(saved?.cover) ? saved.cover : null;
+    references = Array.isArray(saved?.references) ? saved.references.filter(validImage).slice(0, referenceLimit) : [];
+    imports.splice(0, imports.length, ...(Array.isArray(saved?.imports) ? saved.imports.filter(item => typeof item?.name === 'string') : []));
+    bookSource = saved?.bookSource === 'manual' ? 'manual' : 'library';
+    generation = saved?.generation || null;
+    const job = saved?.jobToResume;
+    jobToResume = /^[a-f0-9]{32}$/.test(job?.id || '') && typeof job.snapshot?.title === 'string' &&
+      typeof job.snapshot?.materials === 'string' && Number.isInteger(job.observedNotes) ? job : null;
+    error = '';
+    setSaveMessage(saved ? '已恢复当前标签页草稿。关闭前请保留重要资料和笔记。' : '');
+    return Boolean(saved);
+  }
 
   function characters(value, countSpaces = false) {
     const visible = countSpaces ? value.trim() : value.replace(/\s/g, '');
@@ -100,6 +225,16 @@ window.XhsWriting = (() => {
   }
 
   function render(host) {
+    const namespace = workspaceStorageScope();
+    if (storageScope !== namespace) {
+      if (saveTimer !== null) saveDraft();
+      storageScope = namespace;
+      scopeRevision += 1;
+      pending = '';
+      let lastCode;
+      try { lastCode = sessionStorage.getItem(namespace + ':current'); } catch (_) {}
+      loadDraft(validCode(lastCode) ? lastCode : '');
+    }
     host.innerHTML = `<div class="xhs-screen">
       <header class="page-head xhs-head">
         <div><h1>小红书笔记</h1><p>网页可写文案、核对资料、获取配图建议并导出 Markdown。</p></div>
@@ -155,6 +290,7 @@ window.XhsWriting = (() => {
               <input name="audience" maxlength="400" placeholder="例如想找亲子共读故事的家长"></label>
             <label class="xhs-field"><span>创作要求 <small>选填</small></span>
               <textarea name="instructions" rows="2" maxlength="1500" placeholder="例如突出送礼场景，语气轻松，保留悬念"></textarea></label>
+            <p class="xhs-field-message" data-save-status role="status" hidden></p>
             <div class="xhs-form-actions">
               <div class="xhs-count">
                 <label for="xhs-count">生成篇数</label>
@@ -184,7 +320,8 @@ window.XhsWriting = (() => {
         <img alt="">
       </dialog>
     </div>`;
-    const form = host.querySelector('.xhs-form');
+    const screen = host.querySelector('.xhs-screen');
+    const form = screen.querySelector('.xhs-form');
     const fileInput = form.querySelector('[data-material-file]');
     const importButton = form.querySelector('[data-import]');
     const importStatus = form.querySelector('[data-import-status]');
@@ -212,21 +349,29 @@ window.XhsWriting = (() => {
     const failuresList = host.querySelector('[data-note-failures]');
     const downloadButton = host.querySelector('[data-download]');
     const generateButton = form.querySelector('button[type="submit"]');
+    const saveStatus = form.querySelector('[data-save-status]');
     const count = form.elements.count;
     const decrease = form.querySelector('[data-count-step="-1"]');
     const increase = form.querySelector('[data-count-step="1"]');
     let bookListLoaded = false;
     let bookListLoading = false;
     let books = [];
-    let chosenCode = '';
+    let chosenCode = appliedCode;
     let bookRequest = 0;
     let importing = false;
     let loadingImages = false;
-    for (const [name, value] of Object.entries(brief)) form.elements[name].value = value;
+    function fillForm() {
+      for (const [name, value] of Object.entries(brief)) form.elements[name].value = value;
+      syncCount();
+    }
+    fillForm();
     form.addEventListener('input', (event) => {
       const field = event.target;
-      if (Object.hasOwn(brief, field.name)) brief[field.name] = field.name === 'count' ? Number(field.value) : field.value;
+      if (!Object.hasOwn(brief, field.name)) return;
+      brief[field.name] = field.name === 'count' ? Number(field.value) : field.value;
+      editedBrief = true;
       if (field === count) syncCount();
+      scheduleSave();
     });
 
     function syncCount() {
@@ -242,7 +387,6 @@ window.XhsWriting = (() => {
         if (button.disabled) count.focus();
       });
     }
-    syncCount();
 
     function showMessage(node, message, failed = false) {
       node.textContent = message;
@@ -250,14 +394,35 @@ window.XhsWriting = (() => {
       node.classList.toggle('xhs-field-error', failed);
     }
 
+    refreshSave = () => { if (screen.isConnected) showMessage(saveStatus, saveMessage, saveError); };
+    refreshSave();
+
+    function changeBookAllowed() {
+      if (!pending && !importing && !loadingImages) return true;
+      toast('请等本次写作或文件处理完成后再切换图书。', true);
+      return false;
+    }
+
+    function refreshDraft() {
+      fillForm();
+      paintBookSource();
+      paintImports();
+      paintImages();
+      paintNote();
+      paintStatus();
+      showMessage(importStatus, '');
+      showMessage(mediaStatus, '');
+      if (imageDialog.open) imageDialog.close();
+    }
+
     async function loadNativeStatus() {
       try {
         const result = await readJson(await fetch('/api/xhs-writing/native'), '暂时无法检查桌面版。');
-        if (!host.isConnected) return;
+        if (!screen.isConnected) return;
         nativeButton.disabled = !result.available;
         showMessage(nativeStatus, result.available ? '' : result.reason || '当前环境无法启动桌面版。');
       } catch (err) {
-        if (host.isConnected) showMessage(nativeStatus, err.message, true);
+        if (screen.isConnected) showMessage(nativeStatus, err.message, true);
       }
     }
 
@@ -266,13 +431,13 @@ window.XhsWriting = (() => {
       showMessage(nativeStatus, '正在打开桌面版…');
       try {
         const result = await post('/api/xhs-writing/native/open', {});
-        if (!host.isConnected) return;
+        if (!screen.isConnected) return;
         showMessage(nativeStatus, '');
         toast(result.message || '已打开桌面版。');
       } catch (err) {
-        if (host.isConnected) showMessage(nativeStatus, err.message, true);
+        if (screen.isConnected) showMessage(nativeStatus, err.message, true);
       } finally {
-        if (host.isConnected) nativeButton.disabled = false;
+        if (screen.isConnected) nativeButton.disabled = false;
       }
     });
     loadNativeStatus();
@@ -295,12 +460,12 @@ window.XhsWriting = (() => {
       showMessage(libraryStatus, '正在加载书库…');
       try {
         const result = await readJson(await fetch('/api/books'), '无法加载书库，请重试。');
-        if (!host.isConnected) return;
+        if (!screen.isConnected) return;
         books = (result.books || []).filter(book => book.code && book.book);
         bookListLoaded = true;
         paintBookList();
       } catch (err) {
-        if (!host.isConnected) return;
+        if (!screen.isConnected) return;
         showMessage(libraryStatus, err.message, true);
         libraryRetry.hidden = false;
       } finally {
@@ -340,8 +505,20 @@ window.XhsWriting = (() => {
 
     for (const button of sourceButtons) {
       button.addEventListener('click', () => {
-        bookSource = button.dataset.bookSource;
-        paintBookSource();
+        const nextSource = button.dataset.bookSource;
+        if (nextSource === 'manual' && appliedCode) {
+          if (!changeBookAllowed()) return;
+          saveDraft();
+          loadDraft('');
+          bookSource = nextSource;
+          refreshDraft();
+          saveDraft();
+          resumeSavedJob();
+        } else {
+          bookSource = nextSource;
+          paintBookSource();
+          scheduleSave();
+        }
         (bookSource === 'library' ? bookSearch : form.elements.title).focus();
       });
     }
@@ -371,14 +548,15 @@ window.XhsWriting = (() => {
 
     async function loadBookPreview(button) {
       const token = ++bookRequest;
-      chosenCode = button.dataset.bookCode;
+      const code = button.dataset.bookCode;
+      chosenCode = code;
       for (const item of bookList.querySelectorAll('[data-book-code]')) item.setAttribute('aria-pressed', String(item === button));
       focusBookOption(button);
       libraryPreview.hidden = true;
       showMessage(libraryStatus, '正在读取图书资料…');
       try {
         const book = await readJson(await fetch('/api/xhs-writing/book?code=' + encodeURIComponent(chosenCode)), '无法读取这本书的资料。');
-        if (token !== bookRequest || !host.isConnected) return;
+        if (token !== bookRequest || !screen.isConnected) return;
         libraryPreview.innerHTML = `<h4 tabindex="-1">${esc(book.title)}</h4>
           ${book.materials ? `<details><summary>预览可用资料</summary><p class="xhs-library-text">${esc(book.materials)}</p></details>` : '<p class="xhs-field-message">这本书暂无可用资料。</p>'}
           ${book.truncated ? '<p class="xhs-field-message">已截取较长的书库资料。</p>' : ''}
@@ -390,28 +568,37 @@ window.XhsWriting = (() => {
         libraryPreview.hidden = false;
         showMessage(libraryStatus, '');
         if (document.activeElement === button) libraryPreview.querySelector('h4').focus();
-        const useTitle = libraryPreview.querySelector('[data-use-title]');
-        function applyTitle() {
-          brief.title = form.elements.title.value = book.title.slice(0, 200).replace(/[\uD800-\uDBFF]$/, '');
-          useTitle.disabled = true;
+        function useBook(withMaterials) {
+          if (!validCode(code) || !changeBookAllowed()) return;
+          let restored = false;
+          if (code !== appliedCode) {
+            saveDraft();
+            restored = loadDraft(code);
+          }
+          if (!brief.title) brief.title = book.title.slice(0, 200).replace(/[\uD800-\uDBFF]$/, '');
+          if (withMaterials && !brief.materials.trim()) {
+            brief.materials = book.materials.slice(0, materialLimit).replace(/[\uD800-\uDBFF]$/, '');
+          }
+          bookSource = 'library';
+          refreshDraft();
+          saveDraft();
+          showMessage(libraryStatus, restored ? '已恢复这本书的创作资料和草稿。' :
+            withMaterials ? '已打开这本书的创作资料。' : '已打开这本书的创作草稿。');
+          (withMaterials ? form.elements.materials : form.elements.title).focus();
+          resumeSavedJob();
         }
-        useTitle.addEventListener('click', () => {
-          applyTitle();
-          showMessage(libraryStatus, '已填入书名，仍可手动编辑。');
-          form.elements.title.focus();
-        });
-        libraryPreview.querySelector('[data-use-materials]')?.addEventListener('click', event => {
-          applyTitle();
-          const {added, truncated} = appendMaterials(book.materials);
-          event.currentTarget.disabled = added;
-          const message = added ? '已填入书名并追加资料。' + (truncated ? '超出上限的内容已截取。' : '') : '已填入书名。资料已达上限，调整后可重新追加。';
-          showMessage(libraryStatus, message, !added);
-          if (added) form.elements.materials.focus();
-        });
+        libraryPreview.querySelector('[data-use-title]').addEventListener('click', () => useBook(false));
+        libraryPreview.querySelector('[data-use-materials]')?.addEventListener('click', () => useBook(true));
         const useCover = libraryPreview.querySelector('[data-use-cover]');
-        if (useCover) useCover.addEventListener('click', () => adoptBookCover(book, useCover));
+        if (useCover) useCover.addEventListener('click', () => {
+          if (appliedCode !== code) {
+            showMessage(libraryStatus, '先使用这本书的书名或资料，再选择封面。', true);
+            return;
+          }
+          adoptBookCover(book, useCover);
+        });
       } catch (err) {
-        if (token !== bookRequest || !host.isConnected) return;
+        if (token !== bookRequest || !screen.isConnected) return;
         showMessage(libraryStatus, err.message + ' 可切换或重新选择图书。', true);
         chosenCode = '';
         button.setAttribute('aria-pressed', 'false');
@@ -436,7 +623,7 @@ window.XhsWriting = (() => {
       imports.length = 0;
       paintImports();
       for (const [index, file] of files.entries()) {
-        if (!host.isConnected) return;
+        if (!screen.isConnected) return;
         showMessage(importStatus, `正在提取文件（${index + 1}/${files.length}）…`);
         try {
           if (!/\.(txt|md|markdown|docx|pdf)$/i.test(file.name)) throw new Error('文件类型不受支持。');
@@ -444,19 +631,24 @@ window.XhsWriting = (() => {
           const data = new FormData();
           data.append('file', file);
           const imported = await readJson(await fetch('/api/xhs-writing/materials', {method: 'POST', body: data}), '无法提取文件，请重试。');
-          if (!host.isConnected) return;
+          if (!screen.isConnected) return;
           if (!imported.text?.trim()) throw new Error('没有可追加的文字。');
           const {added, truncated} = appendMaterials(imported.text);
+          if (added) {
+            editedBrief = true;
+            scheduleSave();
+          }
           if (!added) throw new Error('图书资料已达上限，未追加文字。');
           imports.push({name: imported.filename || file.name, message: imported.truncated || truncated ? '已追加，较长内容已截取' : '已追加到图书资料'});
         } catch (err) {
-          if (!host.isConnected) return;
+          if (!screen.isConnected) return;
           imports.push({name: file.name, message: err.message, failed: true});
         }
         paintImports();
       }
       showMessage(importStatus, '');
       importing = importButton.disabled = false;
+      saveDraft();
       paintStatus();
     });
 
@@ -492,14 +684,15 @@ window.XhsWriting = (() => {
         if (!response.ok) throw new Error('无法读取书库封面。');
         const blob = await response.blob();
         const image = await prepareImage(blob, book.title + ' · 书库封面');
-        if (!host.isConnected) return;
+        if (!screen.isConnected) return;
         cover = image;
+        saveDraft();
         showMessage(mediaStatus, '已使用书库封面。');
       } catch (err) {
         showMessage(mediaStatus, err.message, true);
       } finally {
         button.disabled = false;
-        if (host.isConnected) imageBusy(false);
+        if (screen.isConnected) imageBusy(false);
       }
     }
 
@@ -517,14 +710,15 @@ window.XhsWriting = (() => {
         }
         try {
           const image = await prepareImage(file, file.name);
-          if (!host.isConnected) return;
+          if (!screen.isConnected) return;
           if (replaceCover) cover = image;
           else references.push(image);
+          scheduleSave();
         } catch (err) {
           problems.push(`${file.name}：${err.message}`);
         }
       }
-      if (!host.isConnected) return;
+      if (!screen.isConnected) return;
       showMessage(mediaStatus, problems.join(' '), Boolean(problems.length));
       imageBusy(false);
     }
@@ -548,6 +742,7 @@ window.XhsWriting = (() => {
       if (!remove || loadingImages) return;
       if (remove.dataset.removeImage === 'cover') cover = null;
       else references.splice(Number(remove.dataset.removeImage), 1);
+      saveDraft();
       showMessage(mediaStatus, '已移除图片。');
       paintImages();
       (remove.dataset.removeImage === 'cover' ? coverPick : referencesPick).focus();
@@ -616,14 +811,16 @@ window.XhsWriting = (() => {
       }
 
       updateCounts();
-      title.addEventListener('input', () => { note.title = title.value; updateCounts(); });
-      body.addEventListener('input', () => { note.body = body.value; updateCounts(); closeEditor(); });
+      title.addEventListener('input', () => { note.title = title.value; updateCounts(); scheduleSave(); });
+      body.addEventListener('input', () => { note.body = body.value; updateCounts(); closeEditor(); scheduleSave(); });
       tags.addEventListener('input', () => {
         note.tags = [...new Set(tags.value.split(/[\s,，、]+/).map(tag => tag.replace(/^#+/, '')).filter(Boolean))];
+        scheduleSave();
       });
       results.querySelectorAll('[data-note-index]').forEach(button => {
         button.addEventListener('click', () => {
           active = Number(button.dataset.noteIndex);
+          scheduleSave();
           paintNote();
           paintStatus();
           results.querySelector('[aria-pressed="true"]').focus();
@@ -659,20 +856,22 @@ window.XhsWriting = (() => {
         event.preventDefault();
         if (!selection || pending) return;
         const target = selection;
-        await request('正在修改选中文字…', async () => {
+        await request('正在修改选中文字…', async (isCurrent) => {
           const response = await post('/api/xhs-writing/revise', {
             title: generatedFrom.title, materials: generatedFrom.materials,
             note: {title: note.title, body: note.body, tags: note.tags},
             selection: target, instructions: editor.elements.instructions.value.trim(),
           });
+          if (!isCurrent()) return;
           note.body = (target.before + response.replacement + target.after).replace(/\r\n?/g, '\n');
+          saveDraft();
           closeEditor();
         });
       });
     }
 
     function paintStatus() {
-      const completed = generation?.notes?.length || 0;
+      const completed = generation?.notes?.length ?? generation?.savedCount ?? 0;
       const failures = generation?.failures || [];
       const resultLine = generation && ['done', 'partial'].includes(generation.status) ? `已生成 ${completed} / ${generation.count} 篇。`
         : generation?.status === 'failed' && !completed && notes.length ? '已保留此前的草稿。' : '';
@@ -687,7 +886,7 @@ window.XhsWriting = (() => {
     }
 
     refresh = (redraw) => {
-      if (!host.isConnected) return;
+      if (!screen.isConnected) return;
       if (redraw) paintNote();
       paintStatus();
     };
@@ -705,64 +904,101 @@ window.XhsWriting = (() => {
       const snapshot = {...rest, count: count.valueAsNumber, title: title.trim(), materials: materials.trim()};
       await generate(snapshot, {...snapshot, ...(cover ? {cover: cover.data} : {}), references: references.map(item => item.data)});
     });
+    resumeSavedJob();
   }
 
   async function generate(snapshot, payload) {
     generation = null;
-    await request('正在提交写作任务…', async () => {
-      let job = await post('/api/xhs-writing/jobs', payload);
-      if (!job.id) throw new Error('未收到写作任务编号，请重试。');
-      let observedNotes = 0;
-      let failuresInARow = 0;
-      for (;;) {
-        generation = job;
-        const newNotes = job.notes || [];
-        const changed = newNotes.length > observedNotes;
-        if (changed) {
-          if (observedNotes === 0) {
-            active = 0;
-            generatedFrom = snapshot;
-            notes = [];
-          }
-          notes.push(...newNotes.slice(observedNotes).map(note => ({...note, body: note.body.replace(/\r\n?/g, '\n')})));
-          observedNotes = newNotes.length;
-        }
-        if (['done', 'partial', 'failed'].includes(job.status)) break;
-        const processed = Number.isInteger(job.completed) ? job.completed : observedNotes;
-        const phase = job.status === 'queued' ? '任务等待中' : '正在撰写并核对资料';
-        pending = `${phase}，已生成 ${observedNotes} / ${job.count} 篇${processed > observedNotes ? `（已处理 ${processed} 篇）` : ''}。`;
-        refresh(changed);
-        for (;;) {
-          await new Promise(resolve => setTimeout(resolve, 1500));
-          try {
-            job = await readJson(await fetch('/api/xhs-writing/jobs/' + encodeURIComponent(job.id)), '暂时无法读取写作进度。');
-            failuresInARow = 0;
-            break;
-          } catch (err) {
-            failuresInARow += 1;
-            if (failuresInARow >= 4) throw new Error(err.message + ' 已获取的草稿仍可查看或导出。');
-            pending = '连接暂时中断，正在重试…';
-            refresh(false);
-          }
-        }
-      }
-      if (job.status === 'failed') throw new Error(job.error || '这次未生成可用草稿。');
+    jobToResume = null;
+    saveDraft();
+    await request('正在提交写作任务…', async (isCurrent) => {
+      const job = await post('/api/xhs-writing/jobs', payload);
+      if (!isCurrent()) return;
+      if (!/^[a-f0-9]{32}$/.test(job.id || '')) throw new Error('未收到写作任务编号，请重试。');
+      await trackJob(job, snapshot, 0, isCurrent);
     });
   }
 
+  function resumeSavedJob() {
+    if (!jobToResume || pending) return;
+    const {id, snapshot, observedNotes} = jobToResume;
+    return request('正在恢复上次写作任务…', async (isCurrent) => {
+      const response = await fetch('/api/xhs-writing/jobs/' + encodeURIComponent(id));
+      if (!isCurrent()) return;
+      if (response.status === 404) {
+        jobToResume = null;
+        saveDraft();
+        throw new Error('上次写作任务已结束或过期，已保存的草稿仍可查看。');
+      }
+      const job = await readJson(response, '暂时无法恢复写作进度。');
+      await trackJob(job, snapshot, observedNotes, isCurrent);
+    });
+  }
+
+  async function trackJob(job, snapshot, observedNotes, isCurrent) {
+    const id = job.id;
+    let failuresInARow = 0;
+    while (isCurrent()) {
+      generation = job;
+      const newNotes = job.notes || [];
+      const changed = newNotes.length > observedNotes;
+      if (changed) {
+        if (observedNotes === 0) {
+          active = 0;
+          generatedFrom = snapshot;
+          notes = [];
+        }
+        notes.push(...newNotes.slice(observedNotes).map(note => ({...note, body: note.body.replace(/\r\n?/g, '\n')})));
+        observedNotes = newNotes.length;
+      }
+      const terminal = ['done', 'partial', 'failed'].includes(job.status);
+      jobToResume = terminal ? null : {id, snapshot, observedNotes};
+      saveDraft();
+      if (terminal) {
+        refresh(changed);
+        break;
+      }
+      const processed = Number.isInteger(job.completed) ? job.completed : observedNotes;
+      const phase = job.status === 'queued' ? '任务等待中' : '正在撰写并核对资料';
+      pending = phase + '，已生成 ' + observedNotes + ' / ' + job.count + ' 篇' +
+        (processed > observedNotes ? '（已处理 ' + processed + ' 篇）' : '') + '。';
+      refresh(changed);
+      for (;;) {
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        if (!isCurrent()) return;
+        try {
+          job = await readJson(await fetch('/api/xhs-writing/jobs/' + encodeURIComponent(id)), '暂时无法读取写作进度。');
+          failuresInARow = 0;
+          break;
+        } catch (err) {
+          if (!isCurrent()) return;
+          failuresInARow += 1;
+          if (failuresInARow >= 4) throw new Error(err.message + ' 已获取的草稿仍可查看或导出。');
+          pending = '连接暂时中断，正在重试…';
+          refresh(false);
+        }
+      }
+    }
+    if (job.status === 'failed') throw new Error(job.error || '这次未生成可用草稿。');
+  }
+
   async function request(message, action) {
+    const revision = scopeRevision;
+    const isCurrent = () => revision === scopeRevision;
     error = '';
     pending = message;
     refresh(false);
     let redraw = false;
     try {
-      await action();
+      await action(isCurrent);
       redraw = true;
     } catch (err) {
-      error = err.message;
+      if (isCurrent()) error = err.message;
     } finally {
-      pending = '';
-      refresh(redraw);
+      if (isCurrent()) {
+        pending = '';
+        refresh(redraw);
+      }
     }
   }
 

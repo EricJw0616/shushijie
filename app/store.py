@@ -878,17 +878,18 @@ def get_segment_at(code, anchor, radius=2):
     }
 
 
-def original_pdf(code):
+def original_source(code, formats):
     if not is_code(code):
         return None
     record = load_library()['books'].get(code)
-    if not record or record.get('status') == 'failed' or record.get('source_format') != 'pdf':
+    source_format = (record or {}).get('source_format')
+    if not record or record.get('status') in ('deleted', 'failed') or source_format not in formats:
         return None
 
     def find(job_id):
         if not re.fullmatch(r'\d{8}-\d{6}-[a-f0-9]{6}', str(job_id or '')):
             return None
-        path = os.path.join(UPLOADDIR, job_id, 'original.pdf')
+        path = os.path.join(UPLOADDIR, job_id, 'original.' + source_format)
         if os.path.islink(path) or not os.path.isfile(path):
             return None
         if os.path.commonpath((os.path.realpath(UPLOADDIR), os.path.realpath(path))) != os.path.realpath(UPLOADDIR):
@@ -910,6 +911,8 @@ def original_pdf(code):
     return None
 
 
+def original_pdf(code):
+    return original_source(code, ('pdf',))
 
 
 # ── 五类专名 ─────────────────────────────────────────────────────

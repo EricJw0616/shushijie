@@ -6,6 +6,7 @@ import os
 import re
 
 import engine_bridge as E
+from marketing import evidence_basis
 
 OUT = E.OUT
 PURPOSES = {'': '沿用现有具体目标', 'inform': '知识传播', 'reading': '引导阅读',
@@ -128,10 +129,14 @@ def book_profile(book):
                 continue
             text = str(value.get('text') or value.get('keyword') or '').strip()
             if text:
+                reason = str(value.get('reason') or '')
+                evidence = value.get('evidence') or item.get('evidence') or []
+                basis = str(value.get('basis') or '未标注')
+                if key not in ('summary', 'keywords'):
+                    basis = evidence_basis(key, text, reason, basis, evidence)
                 rows.append({'text': text[:650 if key == 'summary' else 240],
-                             'basis': str(value.get('basis') or '未标注')[:60],
-                             'reason': str(value.get('reason') or '')[:240],
-                             'evidence': _evidence(value.get('evidence') or item.get('evidence'))})
+                             'basis': basis[:60], 'reason': reason[:240],
+                             'evidence': _evidence(evidence)})
         if rows:
             profile['fields'].append({'field': key, 'name': str(item.get('name') or key),
                                       'status': str(item.get('status') or 'needs_review'),
@@ -331,6 +336,7 @@ def review_instruction():
             '时长和字数只能用于编写预算，不能声称已实际测得配音速度；缺少录音不免除明显密度问题的检查。'
             '按writing_notes核对篇幅；候选提供的body_and_cta_characters或narration_characters为系统统计的汉字及字母数字字符数，不含标点空白。'
             '“约”允许合理浮动，只有明显违背要求且影响使用时列length_mismatch，指出要求和实际统计，优先删重复与旁支，不能机械截断。'
+            '稿件明显违反用户明确指定的表达风格、并影响使用时，列style_mismatch；普通措辞偏好只提示。'
             'body与cta作为完整正文一起看，不把同一结尾的两次提问误当两个必要环节；同义重复导致明显超篇幅或挤占核心内容时应定向删减。'
             '若channel_delivery.type=social_note，note_body与ending才是发布正文，cards是给制作人员的配图方案。'
             '逐张核对purpose、subject、scene_prompt、overlay_text与引用来源，检查是否有明确内容、贴合观众和一致风格；'
@@ -344,7 +350,7 @@ def review_instruction():
             '相对阶段、职责角色和待观察反馈是合法计划，不需要假定已有日期、预算、岗位人员或效果数据。'
             '不能因这些未知信息而否定可执行的相对安排，也不能接受无来源的排期承诺、预算或增长目标。'
             '只有影响本次使用的具体问题才提出，禁止空泛建议。每项最多180字，最多4项，位置写到段落或字段。'
-            '输出JSON：{"accepted":true,"issues":[{"code":"role_conflict或purpose_drift或ungrounded或audience_mismatch或book_mismatch或content_gap或length_mismatch或audience_value_gap",'
+            '输出JSON：{"accepted":true,"issues":[{"code":"role_conflict或purpose_drift或ungrounded或audience_mismatch或book_mismatch或content_gap或length_mismatch或style_mismatch或audience_value_gap",'
             '"message":"具体问题及定向修复要求","location":"段落或字段","severity":"blocker或warning",'
             '"candidate_quote":"blocker必填，候选中连续逐字原句","source_basis":"blocker必填，材料ID及支持原句或明确任务约束"}]}。'
             'warning的candidate_quote与source_basis为选填，无需填写时可省略。'

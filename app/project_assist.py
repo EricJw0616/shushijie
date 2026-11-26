@@ -98,6 +98,8 @@ def _topic_angle_task_issue(run, project):
 
 def _public(run, project, cache=None):
     run = _effective(run)
+    run.pop('_recovery_candidate', None)
+    run.pop('_edited_candidate', None)
     applied = (project.get('applied_generations') or {}).get(run['id']) or {}
     source_reason = _source_issue(run, cache=cache, project=project) or marketing_context.stale_reason(run['snapshot'])
     is_current_draft = bool(applied and
@@ -109,6 +111,8 @@ def _public(run, project, cache=None):
         reason = ('应用后项目已有修订，本记录保留原生成版本' if applied else
                   '项目说明、材料选择或正文已修改，请基于当前项目重新生成')
     reason = source_reason or reason
+    if reason:
+        run.pop('recovery_draft', None)
     run.update(stale=bool(reason), stale_reason=reason, applied=bool(applied),
                is_current_draft=is_current_draft, source_stale=bool(source_reason),
                source_stale_reason=source_reason, **applied)
@@ -242,6 +246,21 @@ def enqueue(pid, body):
         p = projects._read(pid)
         if body.get('revision') != p['revision']:
             raise assets.Conflict('项目已更新，请保存并刷新后重新生成')
+        recovery_run_id = body.get('recovery_run_id')
+        edited_candidate = None
+        recovery_edit_hash = ''
+        if 'recovery_run_id' in body or 'recovery_draft' in body:
+            if capability != 'draft' or p.get('kind') != 'marketing':
+                raise ValueError('这项任务没有可修改的初稿。')
+            original = _read(pid, recovery_run_id)
+            public = _public(original, p)
+            candidate = original.get('_recovery_candidate')
+            if original.get('status') != 'failed' or not candidate:
+                raise ValueError('这份记录没有可修改的初稿。')
+            if not public.get('recovery_draft'):
+                raise assets.Conflict(public.get('stale_reason') or '项目或来源已变化，请重新生成。')
+            edited_candidate = engine.edit_recovery_candidate(candidate, body.get('recovery_draft'))
+            recovery_edit_hash = assets.digest(edited_candidate)
         if capability == 'video_prompts':
             if body.get('confirmed') is not True or not str(p.get('draft') or '').strip():
                 raise ValueError('请先保存口播稿，并确认后再生成提示词。')
@@ -258,14 +277,20 @@ def enqueue(pid, body):
                     continue
                 if capability == 'video_prompts' and old['snapshot'].get('presentation_mode') != body['presentation_mode']:
                     continue
+                if (old.get('recovered_from') != recovery_run_id or
+                        old.get('recovery_edit_hash', '') != recovery_edit_hash):
+                    raise assets.Conflict('本项目已有稿件任务正在处理，请等待完成。')
                 return {'running': True, 'job': store.get_job(old['job_id']), 'run': old}
-        if capability == 'video_prompts':
+        if edited_candidate is not None:
+            snapshot = copy.deepcopy(original['snapshot'])
+        elif capability == 'video_prompts':
             snapshot = engine.build_video_prompts_input(copy.deepcopy(p), body['presentation_mode'])
             snapshot['confirmed_at'] = store.now()
         else:
             snapshot = engine.build_input(copy.deepcopy(p), capability, book_codes=book_codes)
         snapshot.update(project_id=pid, capability=capability)
-        snapshot['request_book_codes'] = sorted(set(book_codes))
+        if edited_candidate is None:
+            snapshot['request_book_codes'] = sorted(set(book_codes))
         snapshot.setdefault('profile_version', engine.PROFILE_VERSION)
         input_hash = engine.fingerprint(p)
         snapshot['input_hash'] = input_hash
@@ -279,6 +304,9 @@ def enqueue(pid, body):
                'profile_version': snapshot['profile_version'], 'created_at': store.now(),
                'sequence': __import__('time').time_ns(), 'started_at': None, 'finished_at': None,
                'error': '', 'snapshot': snapshot, 'result': None, 'markdown': ''}
+        if edited_candidate is not None:
+            run.update(recovered_from=recovery_run_id, recovery_edit_hash=recovery_edit_hash,
+                       _edited_candidate=edited_candidate)
         store.write_json(_path(run_id), run)
     return {'started': True, 'job': job, 'run': _public(run, p)}
 
@@ -292,7 +320,10 @@ def execute_job(job_id):
     if run['status'] == 'done':
         store.update_job(job_id, status='done', progress=100, finished_at=run['finished_at'])
         return
-    label = {'recommend': '发现可用材料', 'draft': '生成项目讨论稿', 'video_prompts': '根据已确认口播生成提示词'}[run['capability']]
+    edited_candidate = run.get('_edited_candidate')
+    label = '重新检查修改后的初稿' if edited_candidate is not None else {
+        'recommend': '发现可用材料', 'draft': '生成项目讨论稿', 'video_prompts': '根据已确认口播生成提示词'
+    }[run['capability']]
     steps = [{'key': 'prepare', 'label': '读取固定版本的任务与材料', 'status': 'done', 'progress': 10},
              {'key': 'generate', 'label': label, 'status': 'running', 'progress': 85},
              {'key': 'validate', 'label': '验证引用并保存生成记录', 'status': 'pending', 'progress': 100}]
@@ -303,9 +334,13 @@ def execute_job(job_id):
         store.update_job(job_id, progress=max(10, min(90, int(percent))))
         if detail:
             store.append_job_log(job_id, str(detail)[:800])
+    engine = None
     try:
         engine = _engine()
-        result = engine.execute(run['snapshot'], progress=progress)
+        if edited_candidate is not None:
+            result = engine.execute(run['snapshot'], progress=progress, edited_candidate=edited_candidate)
+        else:
+            result = engine.execute(run['snapshot'], progress=progress)
         if not isinstance(result, dict):
             raise ValueError('生成结果格式无效')
         ids = result.get('asset_ids') or result.get('cited_asset_ids') or []
@@ -316,6 +351,7 @@ def execute_job(job_id):
         markdown = engine.render_markdown(result, run['snapshot']) if run['capability'] in ('draft', 'video_prompts') else ''
         if run['capability'] in ('draft', 'video_prompts') and not str(markdown).strip():
             raise ValueError('生成内容为空')
+        run.pop('_edited_candidate', None)
         run.update(status='done', finished_at=store.now(), result=result, markdown=markdown)
         store.write_json(_path(run['id']), run)
         for step in steps:
@@ -324,7 +360,10 @@ def execute_job(job_id):
                          result={'project_id': run['project_id'], 'run_id': run['id'], 'capability': run['capability']})
     except Exception as exc:
         _record_failure_diagnostics(run, exc)
+        run.pop('_edited_candidate', None)
         run.update(status='failed', finished_at=store.now(), error=str(exc)[:1500])
+        if isinstance(exc, getattr(engine, 'RecoverableDraftError', ())):
+            run.update(recovery_draft=exc.fields, _recovery_candidate=exc.candidate, review_issues=exc.issues)
         store.write_json(_path(run['id']), run)
         steps[1]['status'] = 'failed'
         steps[2]['status'] = 'skipped'

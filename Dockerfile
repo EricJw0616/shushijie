@@ -34,6 +34,7 @@ COPY --chown=10001:10001 platform/config /opt/bookworld-defaults/config
 COPY --chown=10001:10001 lexicon /opt/bookworld-defaults/lexicon
 COPY --chown=10001:10001 .workbuddy/skills /app/.workbuddy/skills
 COPY --chown=10001:10001 *.md /app/
+COPY --chown=10001:10001 scripts/backfill_source_pages.py scripts/plan_source_repairs.py /app/scripts/
 COPY deploy/entrypoint.sh /usr/local/bin/bookworld-entrypoint
 COPY deploy/healthcheck.py /usr/local/bin/bookworld-healthcheck.py
 RUN chmod 755 /usr/local/bin/bookworld-entrypoint \

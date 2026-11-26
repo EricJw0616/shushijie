@@ -78,16 +78,22 @@ window.CreatorMatch = (() => {
     return shortlists.get(key);
   }
 
+  function persistShortlist(key, saved) {
+    try {
+      localStorage.setItem(storagePrefix + key, JSON.stringify(saved));
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
   function toggleSave(key, match) {
     const saved = shortlist(key);
     const index = saved.findIndex(item => item.handle === match.handle);
     const added = index < 0;
     if (added) saved.push(match);
     else saved.splice(index, 1);
-    let persistent = true;
-    try { localStorage.setItem(storagePrefix + key, JSON.stringify(saved)); }
-    catch (_) { persistent = false; }
-    return {added, persistent};
+    return {added, persistent: persistShortlist(key, saved)};
   }
 
   function screenHtml() {
@@ -540,7 +546,7 @@ window.CreatorMatch = (() => {
       const {result} = draft;
       const key = result?.key;
       const title = result ? displayTitle(result.values.title) : '';
-      const audience = result?.values.audience;
+      const audience = draft.tab === 'results' ? result?.values.audience : '';
       resultAudience.hidden = !audience;
       resultAudience.textContent = audience ? `目标受众 · ${audience}` : '';
       action('results').setAttribute('aria-pressed', String(draft.tab === 'results'));
@@ -549,12 +555,16 @@ window.CreatorMatch = (() => {
       const searchingEmptyResults = searchInEmptyResults();
       resultsPanel.setAttribute('aria-busy', String(draft.tab === 'results' && Boolean(result?.loading || (searchingEmptyResults && search.state === 'loading'))));
       if (draft.tab === 'shortlist') {
-        context.textContent = title ? `${title}的备选达人` : '按书保存备选达人';
-        const saved = shortlist(key);
-        const refreshed = new Map((result?.matches || []).filter(contentEvidence).map(match => [match.handle, match]));
+        const selectedKey = shortlistKey(draft);
+        const selectedTitle = displayTitle(draft.selectedBook?.book || draft.title);
+        context.textContent = selectedKey ? selectedTitle + '的备选达人' : '按书保存备选达人';
+        const saved = shortlist(selectedKey);
+        const matches = result?.key === selectedKey ? result.matches || [] : [];
+        const refreshed = new Map(matches.filter(contentEvidence).map(match => [match.handle, match]));
         resultsBody.innerHTML = saved.length
-          ? `<div class="cm-cards">${saved.map((match, index) => cardHtml(refreshed.get(match.handle) || match, key, draft.expanded, index, true)).join('')}</div>`
-          : stateHtml('还没有备选达人', '在匹配结果中选择“加入备选”，即可在这里继续核验。');
+          ? '<div class="cm-cards">' + saved.map((match, index) =>
+            cardHtml(refreshed.get(match.handle) || match, selectedKey, draft.expanded, index, true)).join('') + '</div>'
+          : stateHtml('还没有备选达人', selectedKey ? '在匹配结果中选择“加入备选”，即可在这里继续核验。' : '请先选择图书或填写书名。');
         return;
       }
       if (!result) {
@@ -616,15 +626,17 @@ window.CreatorMatch = (() => {
       workNotice.hidden = !draft.workNotice;
     };
     function renderWorkSearch() {
-      const search = draft.workSearch;
+      const selectedKey = draft.tab === 'shortlist' ? shortlistKey(draft) : draft.result?.key;
+      const search = !selectedKey || draft.workSearch?.bookKey === selectedKey ? draft.workSearch : null;
       const loading = search?.state === 'loading';
+      const matching = draft.result?.loading && draft.result.key === selectedKey;
       for (const button of root.querySelectorAll('[data-cm-action="search-works"]')) {
         const handle = button.dataset.handle || '';
         const active = search?.handle === handle;
         const waiting = loading && search.waitingHandle === handle && !active;
         const inline = button.closest('.cm-card')?.querySelector('[data-cm-card-search]');
         const message = active ? search.message : waiting ? '已有作品查询在进行，请等当前查询完成。' : '';
-        button.setAttribute('aria-disabled', String(loading || Boolean(draft.result?.loading)));
+        button.setAttribute('aria-disabled', String(loading || Boolean(matching)));
         button.textContent = loading && active ? '正在查找…' : '自动查作品';
         if (inline) {
           inline.hidden = !message;
@@ -682,6 +694,18 @@ window.CreatorMatch = (() => {
       }
     }
 
+    function refreshSelectedShortlist() {
+      if (draft.tab !== 'shortlist' || !root.isConnected) return;
+      const search = draft.workSearch;
+      if (search?.shortlistKey && search.shortlistKey !== shortlistKey(draft)) {
+        search.controller?.abort();
+        draft.workSearch = null;
+      }
+      draft.expanded.clear();
+      renderResults();
+      renderWorkSearch();
+    }
+
     async function pickBook(code, row) {
       closeBookDropdown();
       if (code === draft.bookCode && !draft.bookError && !draft.pendingBook) {
@@ -695,6 +719,7 @@ window.CreatorMatch = (() => {
         title: row?.book || '', synopsis: '', bookError: '', pendingBook: selection, libraryAudience: null,
       });
       draft.paintForm();
+      refreshSelectedShortlist();
       try {
         const detail = await jget(`/api/book?${new URLSearchParams({code})}`);
         if (draft.pendingBook !== selection) return;
@@ -711,6 +736,7 @@ window.CreatorMatch = (() => {
         if (draft.pendingBook === selection) {
           draft.pendingBook = null;
           draft.paintForm();
+          refreshSelectedShortlist();
           if (draft.workSearch?.waitingFor === 'book') {
             draft.workSearch = null;
             draft.paintWorkSearch();
@@ -808,19 +834,24 @@ window.CreatorMatch = (() => {
     async function searchWorks(trigger, afterLocalMiss = false) {
       const base = draft.result;
       const handle = trigger.dataset.handle || '';
+      const selectedKey = draft.tab === 'shortlist' && handle ? shortlistKey(draft) : '';
+      const snapshot = !selectedKey || base?.key === selectedKey ? base : null;
+      const bookKey = snapshot?.key ?? shortlistKey(draft);
       if (draft.workSearch?.state === 'loading') {
-        draft.workSearch.waitingHandle = handle;
-        draft.paintWorkSearch();
-        revealWorkSearch(trigger);
-        return;
+        if (draft.workSearch.bookKey === bookKey) {
+          draft.workSearch.waitingHandle = handle;
+          draft.paintWorkSearch();
+          revealWorkSearch(trigger);
+          return;
+        }
+        draft.workSearch.controller?.abort();
       }
-      const snapshot = base;
-      const waitingFor = base?.loading ? 'match' : !snapshot && draft.pendingBook ? 'book' : '';
+      const waitingFor = snapshot?.loading ? 'match' : !snapshot && draft.pendingBook ? 'book' : '';
       if (waitingFor) {
         const message = waitingFor === 'book'
           ? '正在读取书库图书信息，请等读取完成后再查作品。'
           : '正在匹配图书，请等匹配完成后再查作品。';
-        draft.workSearch = {handle, state: 'waiting', waitingFor, message};
+        draft.workSearch = {handle, state: 'waiting', waitingFor, message, shortlistKey: selectedKey, bookKey};
         draft.paintWorkSearch();
         revealWorkSearch(trigger);
         return;
@@ -830,7 +861,7 @@ window.CreatorMatch = (() => {
         const message = snapshot
           ? '上次匹配缺少书名或简介。请补齐图书信息，点击「匹配达人」后再查作品。'
           : '请先填写书名和内容简介，再自动查找作品。';
-        draft.workSearch = {handle, state: 'input', inputField: !values.title ? 'title' : 'synopsis', message};
+        draft.workSearch = {handle, state: 'input', inputField: !values.title ? 'title' : 'synopsis', message, shortlistKey: selectedKey, bookKey};
         draft.paintWorkSearch();
         revealWorkSearch(trigger);
         return;
@@ -838,13 +869,15 @@ window.CreatorMatch = (() => {
       const name = trigger.closest('.cm-card')?.querySelector('.cm-card-title')?.textContent;
       const topic = name ? `「${name}」的` : '与这本书相关的';
       const search = {
-        handle, state: 'loading', controller: new AbortController(),
+        handle, shortlistKey: selectedKey, bookKey, state: 'loading', controller: new AbortController(),
         message: afterLocalMiss ? '资料库里的作品没有命中。正在按本书主题查找公开作品，并核对发布账号。' : `正在查找${topic}公开作品，并核对出处。可能需要几十秒。`,
       };
       draft.workSearch = search;
       draft.paintWorkSearch();
       revealWorkSearch(trigger);
-      const submitted = {values, key: snapshot?.key ?? shortlistKey(draft, values), sample: snapshot?.sample ?? draft.sample};
+      const submitted = {values, key: bookKey, sample: snapshot?.sample ?? draft.sample};
+      const stillCurrent = () => draft.workSearch === search && draft.result === base &&
+        (!selectedKey || selectedKey === shortlistKey(draft));
       const progressTimer = window.setTimeout(() => {
         if (draft.workSearch !== search || search.state !== 'loading') return;
         search.message = `仍在查找${topic}公开作品，请稍候。`;
@@ -860,7 +893,7 @@ window.CreatorMatch = (() => {
           const message = typeof data.error === 'string' && data.error !== 'not found' ? data.error : '公开作品查询暂不可用，可稍后重试。';
           throw new Error(message);
         }
-        if (draft.workSearch !== search || draft.result !== base) return;
+        if (!stillCurrent()) return;
         const matching = matchResponse(data);
         const notice = typeof data.search_notice === 'string' ? data.search_notice : '';
         search.reason = data.search_reason;
@@ -879,7 +912,7 @@ window.CreatorMatch = (() => {
           return;
         }
         if (targeted) {
-          const current = base?.matches || [];
+          const current = snapshot?.matches || [];
           matching.matches = current.some(match => match.handle === targeted.handle)
             ? current.map(match => match.handle === targeted.handle ? targeted : match)
             : [...current, targeted];
@@ -887,10 +920,23 @@ window.CreatorMatch = (() => {
         search.state = data.search_state === 'indexed' ? 'indexed' : 'found';
         search.message = notice || (search.state === 'indexed' ? '已按现有作品资料重新匹配。' : '已按查到的公开作品更新匹配结果。');
         const focused = document.activeElement === trigger;
-        draft.result = {...submitted, ...matching};
-        draft.workNotice = '';
-        draft.paintWorkNotice();
-        draft.paintResults(draft.result, false);
+        if (selectedKey && targeted) {
+          const saved = shortlist(selectedKey);
+          const index = saved.findIndex(match => match.handle === handle);
+          if (index >= 0) {
+            saved[index] = targeted;
+            persistShortlist(selectedKey, saved);
+          }
+        }
+        if (selectedKey && base?.key !== selectedKey) {
+          renderResults();
+          renderWorkSearch();
+        } else {
+          draft.result = {...submitted, ...matching};
+          draft.workNotice = '';
+          draft.paintWorkNotice();
+          draft.paintResults(draft.result, false);
+        }
         if (focused && !trigger.isConnected && root.isConnected) {
           const refreshed = Array.from(resultsBody.querySelectorAll('[data-cm-action="search-works"]')).find(button => button.dataset.handle === handle);
           const nextTrigger = refreshed || action('search-works');
@@ -898,7 +944,7 @@ window.CreatorMatch = (() => {
           revealWorkSearch(nextTrigger);
         }
       } catch (error) {
-        if (draft.workSearch !== search || draft.result !== base) return;
+        if (!stillCurrent()) return;
         search.state = 'error';
         search.message = error instanceof TypeError || !error?.message
           ? '无法连接作品查询服务，可稍后重试。' : error.message;
@@ -999,6 +1045,7 @@ window.CreatorMatch = (() => {
         audienceMode: 'manual', libraryAudience: null, aiAudienceStale: false,
       });
       draft.paintForm();
+      refreshSelectedShortlist();
       if (autoRun) runMatch(scroll);
     }
 
@@ -1018,7 +1065,10 @@ window.CreatorMatch = (() => {
         draft.sample = false;
         root.querySelector('[data-cm-sample-label]').hidden = true;
       }
-      if (input.name === 'title') input.setCustomValidity('');
+      if (input.name === 'title') {
+        input.setCustomValidity('');
+        if (!draft.bookCode) refreshSelectedShortlist();
+      }
       if (draft.aiAudience && JSON.stringify(bookInputs(draft)) !== JSON.stringify(draft.aiAudience.values)) {
         invalidateAiAudience();
         renderAudience();
@@ -1089,6 +1139,7 @@ window.CreatorMatch = (() => {
           renderLibrary();
           renderAudience();
           renderSubmit();
+          refreshSelectedShortlist();
           getField('title').focus();
           break;
         case 'retry-library': loadLibrary(); renderBookList(); break;
@@ -1138,7 +1189,7 @@ window.CreatorMatch = (() => {
         }
         case 'save': {
           const inShortlist = draft.tab === 'shortlist';
-          const key = draft.result?.key;
+          const key = inShortlist ? shortlistKey(draft) : draft.result?.key;
           const candidates = inShortlist ? shortlist(key) : draft.result?.matches || [];
           const handle = button.dataset.handle;
           const index = candidates.findIndex(item => item.handle === handle);

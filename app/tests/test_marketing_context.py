@@ -9,6 +9,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import marketing_context as M
 import projects as P
 import project_intelligence as I
+import marketing
+import marketing_state
 
 
 class MarketingContextTests(unittest.TestCase):
@@ -75,6 +77,34 @@ class MarketingContextTests(unittest.TestCase):
         self.assertIn('已更新',M.stale_reason(snapshot))
         self.assertEqual(snapshot['marketing_context']['books'][0]['fields'][0]['values'][0]['text'],'研究人员')
         self.assertEqual(M.stale_reason({}),'')
+
+    def test_explicit_reader_labels_require_a_direct_statement_for_new_and_stored_rows(self):
+        values = [
+            ('喜欢虚构日常故事的读者', '推断可能感兴趣', '测试范围为虚构日常故事', '推断'),
+            ('亲子家庭', '由题材而来', '这本书写了树林动物', '推断'),
+            ('亲子家庭', '原文有明确说明', '本书适合亲子家庭。', '原文明示'),
+            ('中学生', '据原文', '本书不适合中学生。', '推断'),
+            ('中学生', '据原文', '本书适合中学生？', '推断'),
+        ]
+        judgments = [dict(text=claim, reason=reason, quote=quote, seg='p'+str(i), basis='原文明示')
+                     for i, (claim, reason, quote, _) in enumerate(values)]
+        rows = [{'id': row['seg'], '文本': row['quote']} for row in judgments]
+        with patch.object(marketing, '_rows', return_value=rows), patch.object(marketing, '_book', return_value={}), \
+             patch.object(marketing, 'build_input', return_value=('测试正文', 4)), \
+             patch.object(marketing, '_call_json', side_effect=[{}, {'audience': judgments}]):
+            generated = marketing.build('test')
+        expected = [row[-1] for row in values]
+        self.assertEqual([r['basis'] for r in generated['items']['audience']['value']], expected)
+        legacy = {'items': {'audience': {'value': [dict(r, evidence=[{'seg': r['seg'], 'quote': r['quote']}])
+                                                   for r in judgments]}}}
+        with patch.object(marketing_state.store, 'read_json', return_value=legacy), \
+             patch.object(marketing_state.store, 'marketing_flags', return_value={}), \
+             patch.object(M, '_load', return_value=(legacy, 'legacy')):
+            current = marketing_state.raw_rows('test')
+            profile = M.book_profile({'code': 'test', 'book': '测试来源'})
+        self.assertEqual([r['basis'] for r in current], expected)
+        self.assertEqual([r['basis'] for r in profile['fields'][0]['values']], expected[:4])
+        self.assertTrue(all(r['evidence'] for r in current))
 
     def test_narration_capacity_fixes_requested_duration_before_model_generation(self):
         for notes, seconds in [('约30秒，竖屏',30),('一分钟科普',60),('半分钟',30),

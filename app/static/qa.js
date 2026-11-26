@@ -31,6 +31,10 @@ window.BookQA=(function(){
   function books(){return arr(Q.status?.books);}
   function categoryBooks(){const code=Q.current?.clc_code||'';return books().filter(b=>!code||b.clc_code===code);}
   function selectedBooks(){const codes=Q.current?.book_codes||[];return categoryBooks().filter(b=>!codes.length||codes.includes(b.code));}
+  function searchableCount(book){return count(book.searchable_segments??book.segments);}
+  function searchableBooks(){return selectedBooks().filter(b=>searchableCount(b)>0);}
+  function canAsk(){return !!Q.status?.ready&&searchableBooks().length>0;}
+  function sourceLink(book){return '#/book/'+encodeURIComponent(book.code)+'/overview';}
   function categoryName(code){return text(arr(Q.status?.classifications).find(c=>c.code===code)?.name)||(code==='unclassified'?'未分类':code);}
   function sessionScope(s){return scopeLabel(s.book_codes)+(s.clc_code?' · '+categoryName(s.clc_code):'');}
   function bookTitle(code){return text(books().find(b=>b.code===code)?.title)||code;}
@@ -51,10 +55,15 @@ window.BookQA=(function(){
   function statusHtml(){
     if(Q.statusError)return '<div class="qa-notice qa-notice-error" role="alert"><span>'+e(Q.statusError)+'</span>'+action('重新连接','refresh',{},'qa-button-small')+'</div>';
     if(!Q.status)return '<div class="qa-service-status" role="status"><span class="qa-status-dot"></span>正在读取可用图书…</div>';
-    if(!Q.status.ready)return '<div class="qa-notice"><span>暂无可检索的图书内容，先完成图书解析，再来提问。</span><a href="#/library">查看来源图书 '+icon('chevron')+'</a></div>';
-    const scoped=selectedBooks();
-    if(!scoped.length)return '<div class="qa-notice" role="status">当前分类或选书范围内暂无可提问图书，请调整范围。</div>';
-    return '<div class="qa-service-status"><span class="qa-status-dot qa-status-ready"></span><span>'+scoped.length+' 本图书可检索</span><span class="qa-status-separator">·</span><span>'+scoped.reduce((total,b)=>total+count(b.segments),0).toLocaleString('zh-CN')+' 段原文可回查</span>'+(Q.status.model_ready===false?'<span class="qa-status-limited">当前提供原文检索，回答服务待连接</span>':'')+'</div>';
+    const scoped=selectedBooks(), ready=searchableBooks();
+    const unavailable=scoped.filter(b=>!searchableCount(b));
+    const book=unavailable.length===1?unavailable[0]:null;
+    const link=book?'<a href="'+e(sourceLink(book))+'">检查来源 '+icon('chevron')+'</a>':'<a href="#/library">查看来源图书 '+icon('chevron')+'</a>';
+    if(!ready.length){
+      const reason=book?.unavailable_reason||(scoped.length?'当前选书暂无符合问答条件的正文。':'当前分类或选书范围内暂无可提问图书，请调整范围。');
+      return '<div class="qa-notice" role="status"><span>'+e(reason)+'</span>'+link+'</div>';
+    }
+    return '<div class="qa-service-status"><span class="qa-status-dot qa-status-ready"></span><span>'+ready.length+' 本图书可检索</span><span class="qa-status-separator">·</span><span>'+ready.reduce((total,b)=>total+searchableCount(b),0).toLocaleString('zh-CN')+' 段原文可回查</span>'+(unavailable.length?'<span class="qa-status-limited">'+unavailable.length+' 本暂无可检索正文</span>':'')+(Q.status.model_ready===false?'<span class="qa-status-limited">当前提供原文检索，回答服务待连接</span>':'')+'</div>';
   }
   function scopeChips(){
     const codes=Q.current.book_codes,clc=Q.current.clc_code||'',categories=arr(Q.status?.classifications).filter(c=>c.book_count>0||c.code===clc);
@@ -70,13 +79,13 @@ window.BookQA=(function(){
     Q.host?.querySelector('[data-qa-clc]')?.focus();
   }
   function composer(followup){
-    const send='<button type="submit" class="qa-send" aria-label="发送问题"'+(busy()||!Q.status?.ready||!selectedBooks().length||!Q.draft.trim()?' disabled':'')+'><span>'+(busy()?'处理中':followup?'发送':'开始提问')+'</span>'+icon('arrow')+'</button>';
+    const send='<button type="submit" class="qa-send" aria-label="发送问题"'+(busy()||!canAsk()||!Q.draft.trim()?' disabled':'')+'><span>'+(busy()?'处理中':followup?'发送':'开始提问')+'</span>'+icon('arrow')+'</button>';
     const hint='<span class="qa-input-hint">'+(busy()?'正在处理，请稍候':'Enter 发送 · Shift + Enter 换行')+'</span>';
     if(followup)return '<form class="qa-composer qa-composer-followup" data-qa-form><div class="qa-followup-toolbar"><label for="qaQuestion">继续追问</label><span class="qa-followup-context">'+(Q.current.turns.some(hasAnswer)?'接着上面的回答提问':'继续当前话题')+'</span>'+scopeChips()+'</div><div class="qa-followup-input"><textarea id="qaQuestion" name="question" rows="1" maxlength="1200" placeholder="输入你还想了解的问题…"'+(busy()?' readonly':'')+'>'+e(Q.draft)+'</textarea>'+send+'</div><div class="qa-followup-footer">'+hint+action(icon('plus')+'新话题','new',{},'qa-topic-new',busy())+'</div></form>';
     return '<form class="qa-composer" data-qa-form>'+scopeChips()+'<label class="qa-sr-only" for="qaQuestion">输入你的问题</label><textarea id="qaQuestion" name="question" rows="3" maxlength="1200" placeholder="你想从书中了解什么？例如：这些书怎样理解人与自然的关系？"'+(busy()?' readonly':'')+'>'+e(Q.draft)+'</textarea><div class="qa-composer-bottom">'+hint+send+'</div></form><p class="qa-composer-note">答案依据所选图书生成，重要判断请结合原文核对。</p>';
   }
   function examples(){
-    const scoped=selectedBooks();const first=scoped[0]?.title;
+    const scoped=searchableBooks();const first=scoped[0]?.title;
     const samples=[{icon:'spark',label:'解释一个概念',desc:'输入概念，理解书中的含义',selection:'[填入概念]',q:(first?'《'+first+'》中，':'所选图书中，')+'“[填入概念]”是什么意思？请结合原文解释。'},{icon:'quote',label:'找到原文依据',desc:'输入主题，查找相关原文',selection:'[填入主题]',q:'请从所选图书中找出与“[填入主题]”有关的原文，并注明出处。'},{icon:'compare',label:'比较不同观点',desc:'围绕共同主题，比较书中观点',selection:'[填入共同主题]',q:'所选图书对“[填入共同主题]”有哪些不同观点？请分别提供原文依据。'}];
     const concept=scoped.find(b=>text(b.sample_question)),quote=scoped.find(b=>text(b.sample_quote_question));
     if(concept)Object.assign(samples[0],{q:concept.sample_question,desc:concept.sample_question,selection:''});
@@ -96,22 +105,29 @@ window.BookQA=(function(){
     }).join('');
   }
   function turnHtml(t,index){
-    if(t.status!=='pending'&&!hasAnswer(t))return '';
     const notice=materialNotice(t);
     let body='';
     if(t.status==='pending')body='<div class="qa-thinking" role="status"><span class="qa-thinking-mark">'+icon('spark')+'</span><div><strong>正在检索图书并整理回答</strong><span>完成后会展示回答和可核对的出处，请稍候。</span></div><span class="qa-thinking-dots" aria-hidden="true"><i></i><i></i><i></i></span></div>';
-    else body='<div class="qa-answer-label"><span class="qa-answer-mark">'+icon('spark')+'</span><strong>回答</strong></div><div class="qa-answer-prose">'+answerText(t.answer,t)+'</div>'+(notice?'<p class="qa-answer-note">'+e(notice)+'</p>':'')+(libraryChanged(t)?'<p class="qa-answer-note qa-library-update">'+libraryUpdateNotice+'</p>':'')+'<div class="qa-answer-actions">'+action(icon('copy')+'复制回答','copy',{turn:t.id},'qa-button-small')+(t.sources.length?action(icon('book')+'查看 '+t.sources.length+' 处依据','sources',{turn:t.id},'qa-button-small'):'')+action(icon('trash')+'删除问答','deleteTurn',{turn:t.id},'qa-button-small qa-delete-turn',busy())+'</div>';
+    else if(hasAnswer(t))body='<div class="qa-answer-label"><span class="qa-answer-mark">'+icon('spark')+'</span><strong>回答</strong></div><div class="qa-answer-prose">'+answerText(t.answer,t)+'</div>'+(notice?'<p class="qa-answer-note">'+e(notice)+'</p>':'')+(libraryChanged(t)?'<p class="qa-answer-note qa-library-update">'+libraryUpdateNotice+'</p>':'')+'<div class="qa-answer-actions">'+action(icon('copy')+'复制回答','copy',{turn:t.id},'qa-button-small')+(t.sources.length?action(icon('book')+'查看 '+t.sources.length+' 处依据','sources',{turn:t.id},'qa-button-small'):'')+action(icon('trash')+'删除问答','deleteTurn',{turn:t.id},'qa-button-small qa-delete-turn',busy())+'</div>';
+    else {
+      const message=t.status==='error'?t.error:notice;
+      body='<div class="qa-answer-note" role="status">'+e(message||(t.sources.length?'已找到原文，暂无法完成回答。':'这次没有得到足够依据。可以调整问题或选书范围。'))+'</div>'+
+        (t.sources.length?sourceCards(t):'')+
+        '<div class="qa-answer-actions">'+action('修改问题','editQuestion',{turn:t.id},'qa-button-small',busy())+
+        (t.status==='error'||t.retryable===true?action('重试','retry',{turn:t.id},'qa-button-small',busy()):'')+
+        action(icon('trash')+'删除此条','deleteTurn',{turn:t.id},'qa-button-small qa-delete-turn',busy())+'</div>';
+    }
     return '<article class="qa-turn" id="qaTurn-'+e(t.id)+'"><div class="qa-question"><span class="qa-question-number">'+String(index+1).padStart(2,'0')+'</span><div><h2>'+e(t.question)+'</h2><span class="qa-turn-scope">'+e(sessionScope(Q.current))+(t.scope?.book_count!=null?' · '+count(t.scope.book_count)+' 本':'')+'</span></div></div><div class="qa-answer">'+body+'</div></article>';
   }
   function transcriptHtml(turns){
-    const visible=turns.filter(t=>t.status==='pending'||hasAnswer(t));
+    const visible=turns.filter((t,i)=>i===turns.length-1||hasAnswer(t));
     return visible.map((t,i)=>{
       if(i===visible.length-1)return turnHtml(t,i);
       const label='已回答';
       return '<details class="qa-previous-turn" data-qa-previous="'+e(t.id)+'"'+(Q.expandedTurns.includes(t.id)?' open':'')+'><summary><span class="qa-previous-number">'+String(i+1).padStart(2,'0')+'</span><span class="qa-previous-question">'+e(t.question)+'</span><span class="qa-previous-status">'+label+'</span><span class="qa-previous-hint">展开</span>'+action(icon('trash')+'<span class="qa-sr-only">删除问答：'+e(t.question)+'</span>','deleteTurn',{turn:t.id},'qa-delete-summary',busy())+'</summary>'+turnHtml(t,i)+'</details>';
     }).join('');
   }
-  function sourceCards(turn){if(!hasAnswer(turn))return '';return turn.sources.map(s=>'<article class="qa-source-card'+(Q.selectedSource===s.id?' is-selected':'')+'" id="qaSource-'+s.id+'" tabindex="-1"><div class="qa-source-title"><span class="qa-source-number">'+s.id+'</span><strong>'+e(s.book||s.code)+'</strong></div><p class="qa-source-chapter">'+e([s.title,s.chapter].filter(Boolean).join(' · ')||'原文片段')+'</p><blockquote>'+e(s.quote)+'</blockquote>'+action('查看上下文 '+icon('chevron'),'context',{turn:turn.id,source:s.id},'qa-source-open',!s.anchor||!s.code)+'</article>').join('');}
+  function sourceCards(turn){return turn.sources.map(s=>'<article class="qa-source-card'+(Q.selectedSource===s.id?' is-selected':'')+'" id="qaSource-'+s.id+'" tabindex="-1"><div class="qa-source-title"><span class="qa-source-number">'+s.id+'</span><strong>'+e(s.book||s.code)+'</strong></div><p class="qa-source-chapter">'+e([s.title,s.chapter].filter(Boolean).join(' · ')||'原文片段')+'</p><blockquote>'+e(s.quote)+'</blockquote>'+action('查看上下文 '+icon('chevron'),'context',{turn:turn.id,source:s.id},'qa-source-open',!s.anchor||!s.code)+'</article>').join('');}
   function suggestions(){const t=Q.current?.turns.at(-1);if(!hasAnswer(t)||busy()||!t.suggestions.length)return '';return '<div class="qa-followup-suggestions"><span>继续探索</span>'+t.suggestions.slice(0,3).map(q=>action(e(q)+' <span aria-hidden="true">↗</span>','example',{question:q},'qa-suggestion')).join('')+'</div>';}
   function draw(){
     Q.deletion=null;
@@ -138,7 +154,7 @@ window.BookQA=(function(){
   async function openScope(){
     await refresh(8000);if(!active()||busy())return;
     const codes=Q.current.book_codes,available=categoryBooks(),classified=!!Q.current.clc_code;
-    openDialog('scope','选择提问范围','<p class="qa-dialog-description">'+(Q.current.turns.length?'更换范围后会开始新对话，当前记录会保留。':'选择需要参考的图书，让回答更贴近你的问题。')+(classified?' 当前分类：'+e(categoryName(Q.current.clc_code))+'。':'')+'</p><label class="qa-scope-all"><input type="checkbox" data-qa-all'+(!codes.length?' checked':'')+'><span><strong>'+(classified?'本类全部图书':'全部图书')+'</strong><small>'+(classified?'自动包含之后新入库的同类图书':'自动包含之后新解析入库的图书')+'</small></span><span class="qa-choice-count">'+available.length+'</span></label><div class="qa-book-options">'+available.map(b=>'<label class="qa-book-option"><input type="checkbox" value="'+e(b.code)+'" data-qa-book'+(!codes.length||codes.includes(b.code)?' checked':'')+'><span>'+icon('book')+'</span><strong>'+e(b.title)+'</strong><small>'+count(b.segments).toLocaleString('zh-CN')+' 段</small></label>').join('')+(!available.length?'<p class="qa-dialog-description">当前分类暂无可提问图书，请选择其他分类。</p>':'')+'</div><p class="qa-scope-error" role="alert"></p><div class="qa-dialog-footer">'+action('应用范围','applyScope',{},'qa-button-primary')+'</div>');
+    openDialog('scope','选择提问范围','<p class="qa-dialog-description">'+(Q.current.turns.length?'更换范围后会开始新对话，当前记录会保留。':'选择需要参考的图书，让回答更贴近你的问题。')+(classified?' 当前分类：'+e(categoryName(Q.current.clc_code))+'。':'')+'</p><label class="qa-scope-all"><input type="checkbox" data-qa-all'+(!codes.length?' checked':'')+'><span><strong>'+(classified?'本类全部图书':'全部图书')+'</strong><small>'+(classified?'自动包含之后新入库的同类图书':'自动包含之后新解析入库的图书')+'</small></span><span class="qa-choice-count">'+available.length+'</span></label><div class="qa-book-options">'+available.map(b=>'<label class="qa-book-option"><input type="checkbox" value="'+e(b.code)+'" data-qa-book'+(!codes.length||codes.includes(b.code)?' checked':'')+'><span>'+icon('book')+'</span><strong>'+e(b.title)+'</strong><small>'+(searchableCount(b)?searchableCount(b).toLocaleString('zh-CN')+' 段':'待处理来源')+'</small></label>').join('')+(!available.length?'<p class="qa-dialog-description">当前分类暂无可提问图书，请选择其他分类。</p>':'')+'</div><p class="qa-scope-error" role="alert"></p><div class="qa-dialog-footer">'+action('应用范围','applyScope',{},'qa-button-primary')+'</div>');
   }
   function applyScope(){const d=Q.host.querySelector('dialog'),all=d.querySelector('[data-qa-all]').checked,codes=all?[]:[...d.querySelectorAll('[data-qa-book]:checked')].map(x=>x.value);if(!all&&!codes.length){d.querySelector('.qa-scope-error').textContent='请至少选择一本图书，或选择全部图书。';return;}const changed=JSON.stringify([...codes].sort())!==JSON.stringify([...Q.current.book_codes].sort());closeDialog();if(changed){if(Q.current.turns.length)fresh(codes,Q.current.clc_code||'');else Q.current.book_codes=codes;save();draw();}focusInput();}
   function openHistory(){
@@ -186,7 +202,7 @@ window.BookQA=(function(){
     return true;
   }
   async function openContext(turnId,sourceId){
-    const t=Q.current.turns.find(x=>x.id===turnId),s=t?.sources.find(x=>x.id===Number(sourceId));if(!hasAnswer(t)||!s)return;
+    const t=Q.current.turns.find(x=>x.id===turnId),s=t?.sources.find(x=>x.id===Number(sourceId));if(!s||!s.code||!s.anchor)return;
     const d=openDialog('context','阅读原文','<div class="qa-context-meta"><strong>'+e(s.book||s.code)+'</strong><span>'+e(s.chapter)+'</span></div><p class="qa-dialog-description">以下为当前原文。引用记录保留本次回答时的片段。</p><div class="qa-context-content" aria-busy="true"><p role="status">正在定位引用段落…</p></div>');
     const token=Q.dialogToken;
     try{const data=await request('/api/book/segment?'+new URLSearchParams({code:s.code,anchor:s.anchor,radius:'2'}));if(token!==Q.dialogToken||!d?.open)return;const rows=arr(data.items);d.querySelector('.qa-context-content').innerHTML=rows.length?rows.map(row=>'<section class="qa-context-paragraph'+(row.hit?' is-hit':'')+'"><div><span>'+e(row['篇']||s.chapter)+'</span><span>'+(row.hit?'引用段落':row['段']!=null?'第 '+e(row['段'])+' 段':'上下文')+'</span></div><p>'+e(row['文本']||'')+'</p></section>').join(''):'<p>当前无法找到该原文段落，图书可能已更新或移除。</p>';d.querySelector('.qa-context-content').setAttribute('aria-busy','false');}
@@ -214,7 +230,7 @@ window.BookQA=(function(){
     return recent.flatMap(t=>[{role:'user',content:t.question},...(hasAnswer(t)?[{role:'assistant',content:t.answer}]:[])]);
   }
   async function ask(question,retryId){
-    const q=String(question||'').trim();if(!q||busy()||!Q.status?.ready)return;if(!selectedBooks().length){announce('当前分类或选书范围内没有可提问的图书，请调整范围。');return;}if(q.length>1200){announce('问题请控制在 1200 字以内');return;}if(/\[填入(?:概念|主题|共同主题)\]/.test(q)){const message='请先把方括号中的提示替换为你想了解的具体概念或主题。';announce(message);if(typeof toast==='function')toast(message);focusInput(q.match(/\[填入(?:概念|主题|共同主题)\]/)[0]);return;}
+    const q=String(question||'').trim();if(!q||busy())return;if(!canAsk()){announce('当前选书暂无可检索的正文，请检查来源或调整范围。');return;}if(q.length>1200){announce('问题请控制在 1200 字以内');return;}if(/\[填入(?:概念|主题|共同主题)\]/.test(q)){const message='请先把方括号中的提示替换为你想了解的具体概念或主题。';announce(message);if(typeof toast==='function')toast(message);focusInput(q.match(/\[填入(?:概念|主题|共同主题)\]/)[0]);return;}
     const session=Q.current;
     let targetIndex=-1;
     if(retryId){targetIndex=session.turns.findIndex(t=>t.id===retryId);if(targetIndex<0)return;}
@@ -232,11 +248,11 @@ window.BookQA=(function(){
       // before comparing it with a new answer; a long-open tab may have old book data.
       await refresh(8000);
     }catch(err){turn.status='error';turn.error=err.message||'连接暂时中断，请稍后重试。';if(Q.current.id===session.id)Q.draft=q;}
-    finally{Q.pending=null;if(!hasAnswer(turn)&&Q.current.id===session.id&&!Q.draft)Q.draft=q;session.updated_at=new Date().toISOString();save();if(active()&&Q.current.id===session.id){draw();announce(hasAnswer(turn)?'回答已完成，提供 '+turn.sources.length+' 处来源':'');}}
+    finally{Q.pending=null;if(!hasAnswer(turn)&&Q.current.id===session.id&&!Q.draft)Q.draft=q;session.updated_at=new Date().toISOString();save();if(active()&&Q.current.id===session.id){draw();announce(hasAnswer(turn)?'回答已完成，提供 '+turn.sources.length+' 处来源':turn.error||turn.notice||'本次未生成回答。');}}
   }
   function events(host){
     host.addEventListener('toggle',event=>{const d=event.target;if(d.matches('details[data-qa-previous]')){Q.expandedTurns=Q.expandedTurns.filter(id=>id!==d.dataset.qaPrevious);if(d.open)Q.expandedTurns.push(d.dataset.qaPrevious);}},true);
-    host.addEventListener('input',event=>{if(event.target.id==='qaQuestion'){Q.draft=event.target.value;resizeInput();const btn=host.querySelector('.qa-send');if(btn)btn.disabled=busy()||!Q.status?.ready||!selectedBooks().length||!Q.draft.trim();}});
+    host.addEventListener('input',event=>{if(event.target.id==='qaQuestion'){Q.draft=event.target.value;resizeInput();const btn=host.querySelector('.qa-send');if(btn)btn.disabled=busy()||!canAsk()||!Q.draft.trim();}});
     host.addEventListener('change',event=>{if(event.target.matches('[data-qa-clc]')){changeCategory(event.target.value);return;}const d=host.querySelector('dialog');if(event.target.matches('[data-qa-all]'))d.querySelectorAll('[data-qa-book]').forEach(x=>x.checked=event.target.checked);else if(event.target.matches('[data-qa-book]'))d.querySelector('[data-qa-all]').checked=false;});
     host.addEventListener('keydown',event=>{if(event.target.id==='qaQuestion'&&event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();ask(Q.draft);}});
     host.addEventListener('submit',event=>{if(event.target.matches('[data-qa-form]')){event.preventDefault();ask(Q.draft);}});
@@ -247,7 +263,7 @@ window.BookQA=(function(){
       else if(a==='deleteSession'){event.preventDefault();openDelete('session',el.dataset.id,el.dataset.history==='true');}
       else if(a==='cancelDelete')cancelDelete();else if(a==='confirmDelete')confirmDelete();
       else if(a==='new'&&!busy()){closeDialog();fresh(Q.current.book_codes,Q.current.clc_code||'');save();draw();focusInput();if(typeof toast==='function')toast(Q.storageError?'已开始新话题，但浏览器未能保存历史。':'已开始新话题，之前的对话可在历史中查看。');}
-      else if(a==='example'&&!busy()){Q.draft=el.dataset.question||'';const input=host.querySelector('#qaQuestion');if(input){input.value=Q.draft;resizeInput();host.querySelector('.qa-send').disabled=!Q.status?.ready||!selectedBooks().length;input.scrollIntoView({block:'center',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}focusInput(el.dataset.selection);}
+      else if(a==='example'&&!busy()){Q.draft=el.dataset.question||'';const input=host.querySelector('#qaQuestion');if(input){input.value=Q.draft;resizeInput();host.querySelector('.qa-send').disabled=!canAsk();input.scrollIntoView({block:'center',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}focusInput(el.dataset.selection);}
       else if(a==='loadSession'&&!busy()){const s=Q.sessions.find(x=>x.id===el.dataset.id);if(s){closeDialog();Q.current=s;Q.draft=pendingQuestion(s);Q.selectedTurn='';Q.selectedSource=null;Q.expandedTurns=[];save();draw();focusInput();}}
       else if(a==='cite')selectSource(el.dataset.turn,el.dataset.source);else if(a==='sources')selectSource(el.dataset.turn,null,true);else if(a==='context')openContext(el.dataset.turn,el.dataset.source);else if(a==='copy')copyAnswer(el.dataset.turn);
       else if(a==='editQuestion'&&!busy()){const t=Q.current.turns.find(x=>x.id===el.dataset.turn);if(t){Q.draft=t.question;draw();focusInput();}}

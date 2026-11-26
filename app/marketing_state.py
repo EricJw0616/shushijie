@@ -5,6 +5,7 @@ import os
 import re
 
 import store
+from marketing import evidence_basis
 
 
 def _hash(text):
@@ -43,6 +44,8 @@ def raw_rows(code, include_rejected=False, approved_only=False):
             evidence = (item.get('evidence') if key == 'summary' else val.get('evidence')) or []
             row_id = key + ':' + _hash(main + '|' + sub)
             basis = str(val.get('basis') or '')
+            if key not in ('summary', 'keywords'):
+                basis = evidence_basis(key, main, sub, basis, evidence)
             revision = hashlib.sha256(json.dumps([main, sub, basis, evidence], ensure_ascii=False, sort_keys=True).encode()).hexdigest()[:16]
             decision = flags.get(row_id)
             # Legacy flags have no content revision. Only revisioned asset reviews can approve.
@@ -72,6 +75,8 @@ def rows(code, include_rejected=False, approved_only=False):
         row.update(text=a['text'], main=a['text'], status=a['status'],
                    revision=a['revision'], asset_id=a['id'],
                    evidence=[{'seg': e['anchor'], 'quote': e['quote']} for e in a['evidence']])
+        if row['key'] not in ('summary', 'keywords'):
+            row['basis'] = evidence_basis(row['key'], row['main'], row['sub'], row['basis'], row['evidence'])
         if row['status'] == 'rejected' and not include_rejected:
             continue
         if approved_only and row['status'] != 'approved':

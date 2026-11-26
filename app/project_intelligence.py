@@ -846,7 +846,71 @@ def _semantic_review(snapshot, payload, result):
         return review, {**provenance, 'validation_attempts': attempts}
 
 
-def execute(snapshot, progress=None):
+_EDITABLE_REVIEW_CODES = {'length_mismatch', 'style_mismatch', 'wording', 'tone_mismatch'}
+
+
+class RecoverableDraftError(ValueError):
+    def __init__(self, message, candidate, fields, issues):
+        super().__init__(message)
+        self.candidate = candidate
+        self.fields = fields
+        self.issues = issues
+
+
+def _draft_quality_error(prefix, review, candidate=None, result=None):
+    issues = review['issues']
+    message = prefix + '；'.join(row['location'] + '：' + row['message'] for row in issues)[:1100]
+    scenes = (result or {}).get('channel_assets') or []
+    if (candidate is None or not scenes or not issues or
+            any(row['code'] not in _EDITABLE_REVIEW_CODES for row in issues) or
+            any(row['channel'] not in ('公众号', '小红书', '书店活动') for row in scenes)):
+        return ValueError(message)
+    fields = []
+    for row in scenes:
+        delivery = row.get('channel_delivery')
+        fields.append({'channel': row['channel'], 'title': row['title'],
+                       'body': delivery['note_body'] if delivery else row['body'],
+                       'ending': delivery['ending'] if delivery else row['cta']})
+    return RecoverableDraftError(message, candidate, fields, issues)
+
+
+def edit_recovery_candidate(candidate, fields):
+    candidate = copy.deepcopy(candidate)
+    scenes = candidate['channel_assets']
+    if not isinstance(fields, list) or len(fields) != len(scenes):
+        raise ValueError('请保留原有渠道，只修改稿件文字。')
+    for original, edited in zip(scenes, fields):
+        if not isinstance(edited, dict) or edited.get('channel') != original['channel']:
+            raise ValueError('请保留原有渠道，只修改稿件文字。')
+        for key, limit in (('title', 300), ('body', 5000), ('ending', 500)):
+            if not isinstance(edited.get(key), str) or len(edited[key]) > limit:
+                raise ValueError('标题、正文或结尾格式无效，请检查后重试。')
+        original['title'] = edited['title']
+        if original['channel'] == '小红书' and original.get('delivery'):
+            original['delivery'].update(note_body=edited['body'], ending=edited['ending'])
+        else:
+            original.update(body=edited['body'], cta=edited['ending'])
+    return candidate
+
+
+def _finish_result(result, snapshot, base, provenance, review=None, repairs=0):
+    result = _readable_references(result, snapshot['materials'])
+    result.update(base)
+    result['cited_asset_ids'] = result['asset_ids'][:]
+    result['source_labels'] = {aid: 'S%d' % (i + 1) for i, aid in enumerate(result['asset_ids'])}
+    if snapshot['capability'] == 'video_prompts':
+        # Input scope supports traceability; it is not a per-claim citation list.
+        result['cited_asset_ids'] = []
+        result['source_labels'] = {}
+    result['provenance'] = provenance
+    if review is not None:
+        result['quality_review'] = {**review, 'repair_attempts': repairs,
+                                   'notice': '通过本次自动预审，仍需编辑判断；不代表事实已独立核实。'}
+        result['status'] = 'needs_review'
+    return result
+
+
+def execute(snapshot, progress=None, edited_candidate=None):
     def emit(percent, detail):
         if progress:
             progress(percent, detail)
@@ -863,7 +927,21 @@ def execute(snapshot, progress=None):
                           'next_action': '补充主题关键词、扩大图书范围或导入相关图书后重试'}],
                 'provenance': {'model': None, 'usage': {}, 'model_called': False}}
     serialized = _user_payload(snapshot)
-    provided_ids = [x['asset_id'] for x in json.loads(serialized)['materials']]
+    payload = json.loads(serialized)
+    provided_ids = [x['asset_id'] for x in payload['materials']]
+    if edited_candidate is not None:
+        emit(65, '检查改稿结构与来源范围')
+        result = _validate(edited_candidate, snapshot, provided_ids)
+        emit(76, '重新检查篇幅、事实和来源')
+        review, provenance = _semantic_review(snapshot, payload, result)
+        if not review['accepted']:
+            raise _draft_quality_error('修改后仍需处理：', review, edited_candidate, result)
+        return _finish_result(result, snapshot, base,
+                              {'model': provenance.get('model'), 'usage': provenance.get('usage') or {},
+                               'model_called': True, 'input_characters': len(serialized),
+                               'supplied_assets': len(provided_ids), 'generation_attempts': [],
+                               'semantic_reviews': [{**review, **provenance}], 'editor_revision': True},
+                              review)
     if snapshot['capability'] == 'video_prompts':
         instruction = video_prompts.instruction(snapshot['presentation_mode'],
             replan=snapshot.get('timing_policy') == 'replan_from_narration',
@@ -1020,7 +1098,8 @@ def execute(snapshot, progress=None):
         generations.append({'model': response.get('model'), 'usage': response.get('usage') or {}})
         emit(65, '检查内容结构与来源范围')
         try:
-            result = _validate(_response_json(response), snapshot, provided_ids)
+            candidate = _response_json(response)
+            result = _validate(candidate, snapshot, provided_ids)
             structure_error = None
         except ValueError as exc:
             if not quality_required:
@@ -1032,13 +1111,14 @@ def execute(snapshot, progress=None):
             if not quality_required:
                 break
             emit(76, '独立检查人群、用途与图书内容是否匹配')
-            review, review_provenance = _semantic_review(snapshot, json.loads(serialized), result)
+            review, review_provenance = _semantic_review(snapshot, payload, result)
             reviews.append({**review, **review_provenance})
             if review['accepted']:
                 break
         if attempt:
-            raise ValueError('内容经一次定向修复后仍未通过检查：' + '；'.join(
-                row['location'] + '：' + row['message'] for row in review['issues'])[:1100])
+            raise _draft_quality_error('内容经一次定向修复后仍未通过检查：', review,
+                                       candidate if structure_error is None else None,
+                                       result if structure_error is None else None)
         repairs = 1
         emit(82, '按具体检查意见修正一次，保留当前已确认稿件')
         preservation = ('不可改写、删除或重新排列已确认口播。' if snapshot['capability'] == 'video_prompts' else
@@ -1049,24 +1129,13 @@ def execute(snapshot, progress=None):
         response = llm.chat(messages + [{'role': 'assistant', 'content': str(response.get('text') or '')},
                             {'role': 'user', 'content': json.dumps(repair_request, ensure_ascii=False)}],
                             max_tokens=max_tokens, temperature=0.2, json_mode=True)
-    result = _readable_references(result, snapshot['materials'])
-    result.update(base)
-    result['cited_asset_ids'] = result['asset_ids'][:]
-    result['source_labels'] = {aid: 'S%d' % (i + 1) for i, aid in enumerate(result['asset_ids'])}
-    if snapshot['capability'] == 'video_prompts':
-        # Input scope supports traceability; it is not a per-claim citation list.
-        result['cited_asset_ids'] = []
-        result['source_labels'] = {}
-    result['provenance'] = {'model': response.get('model'), 'usage': response.get('usage') or {},
-                            'model_called': True, 'input_characters': len(serialized),
-                            'supplied_assets': len(provided_ids)}
+    provenance = {'model': response.get('model'), 'usage': response.get('usage') or {},
+                  'model_called': True, 'input_characters': len(serialized),
+                  'supplied_assets': len(provided_ids)}
     if quality_required:
-        result['quality_review'] = {**review, 'repair_attempts': repairs,
-                                   'notice': '通过本次自动预审，仍需编辑判断；不代表事实已独立核实。'}
-        result['provenance'].update(generation_attempts=generations, semantic_reviews=reviews)
-        result['status'] = 'needs_review'
+        provenance.update(generation_attempts=generations, semantic_reviews=reviews)
     emit(95, '保存可追溯的讨论结果')
-    return result
+    return _finish_result(result, snapshot, base, provenance, review if quality_required else None, repairs)
 
 
 def render_markdown(result, snapshot):

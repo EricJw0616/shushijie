@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Read uploaded books, preserving PDF page numbers and recognition sources."""
+import codecs
 import io
 import os
 import re
@@ -15,7 +16,10 @@ ALLOWED = {'.txt': 'txt', '.md': 'md', '.markdown': 'md',
 # 上限可用环境变量改；解析是本机顺序读，不按文件大小吃内存的只有上传那一段
 # （server 边收边写盘），抽文字时内存约为文件的 2～3 倍。
 MAX_BYTES = int(os.environ.get('BOOKDISTILL_MAX_UPLOAD_MB', '1024')) * 1024 * 1024
+MIN_HAN_CHARS = 200
+MIN_HAN_RATIO = 0.25
 _PDF_TEXT_HELP = '请上传清晰的 PDF、Word（.docx）或 TXT。'
+_TEXT_ENCODING_HELP = '这份文本的编码无法可靠读取。请另存为 UTF-8 的 TXT 再上传。'
 
 
 class IngestError(ValueError):
@@ -47,20 +51,40 @@ def _score_text(s):
     return h - bad * 50
 
 
-def _decode_bytes(data):
-    """中文书常见 UTF-8 / GB18030。按「汉字数 - 替换符」选最优，不盲信第一个。"""
-    best, best_score = '', -1
-    for enc in ('utf-8-sig', 'utf-8', 'gb18030', 'gbk', 'big5', 'utf-16'):
+def _decode_bytes(data, *, complete=True):
+    """Honor an explicit Unicode encoding before comparing legacy alternatives."""
+    def decode(encoding):
         try:
-            s = data.decode(enc)
-        except Exception:
-            continue
-        score = _score_text(s)
-        if score > best_score:
-            best, best_score = s, score
-    if best_score < 0:
-        raise IngestError('这份文本打不开。请用文本编辑器打开后，另存为 UTF-8 的 TXT 再上传。')
-    return best
+            value = codecs.getincrementaldecoder(encoding)().decode(data, final=complete)
+        except UnicodeError:
+            return None
+        garbled = re.findall(r'[\x00-\x08\x0b-\x0c\x0e-\x1f\x7f\ufffd]', value)
+        return value if len(garbled) <= len(value) * .01 else None
+
+    for marker, encoding in ((codecs.BOM_UTF32_LE, 'utf-32'), (codecs.BOM_UTF32_BE, 'utf-32'),
+                             (codecs.BOM_UTF16_LE, 'utf-16'), (codecs.BOM_UTF16_BE, 'utf-16'),
+                             (codecs.BOM_UTF8, 'utf-8-sig')):
+        if data.startswith(marker):
+            text = decode(encoding)
+            if text is None:
+                raise IngestError(_TEXT_ENCODING_HELP)
+            return text
+    unicode_text = decode('utf-8')
+    if unicode_text is not None:
+        return unicode_text
+    if b'\x00' in data:
+        sample = data[:4096]
+        even, odd = sample[::2], sample[1::2]
+        for low, high, encoding in ((even, odd, 'utf-16-le'), (odd, even, 'utf-16-be')):
+            if high and high.count(0) > .2 * len(high) and low.count(0) < .05 * len(low):
+                text = decode(encoding)
+                if text is not None:
+                    return text
+        raise IngestError(_TEXT_ENCODING_HELP)
+    options = [s for enc in ('gb18030', 'big5') if (s := decode(enc)) is not None]
+    if not options:
+        raise IngestError(_TEXT_ENCODING_HELP)
+    return max(options, key=_score_text)
 
 
 def _normalize(text):
@@ -86,18 +110,22 @@ def _md_to_text(text):
     return text
 
 
-def _docx_text(path):
+def _open_docx(path):
     try:
         from docx import Document
-        from docx.oxml.ns import qn
-        from docx.table import Table
-        from docx.text.paragraph import Paragraph
     except Exception as e:
         raise IngestError('暂时无法读取 Word 文件。请稍后重试，或将正文另存为 TXT 上传。') from e
     try:
-        doc = Document(path)
+        return Document(path)
     except Exception as e:
         raise IngestError('这份 Word 文件打不开。请确认能正常打开，再另存为 .docx 后上传。') from e
+
+
+def _docx_body(doc):
+    from docx.oxml.ns import qn
+    from docx.table import Table
+    from docx.text.paragraph import Paragraph
+
     parts = []
     body = doc.element.body
     for child in body.iterchildren():
@@ -115,14 +143,32 @@ def _docx_text(path):
     return '\n'.join(parts)
 
 
-def _clean_pdf_lines(text):
+def _docx_text(path):
+    return _docx_body(_open_docx(path))
+
+
+def body_language_issue(han, visible_chars, *, check_minimum=True):
+    """Return the same Chinese-body requirement for preflight and generation."""
+    if visible_chars >= MIN_HAN_CHARS and han < visible_chars * MIN_HAN_RATIO:
+        return ('这份文件以非中文内容为主。图书入库要求中文正文占可读取文字至少 25%，'
+                '并至少有 200 个汉字。请上传包含中文正文的版本。')
+    if check_minimum and han < MIN_HAN_CHARS:
+        return '读取到的中文正文不足 200 个汉字。请上传包含完整中文正文的版本。'
+    return ''
+
+
+def visible_chars(text):
+    return len(re.sub(r'\s', '', text))
+
+
+def _clean_pdf_lines(text, *, keep_numeric=False):
     out = []
     for line in (text or '').splitlines():
         s = line.strip()
         if not s:
             out.append('')
             continue
-        if re.match(r'^[-—–\s]*\d{1,4}[-—–\s]*$', s):
+        if not keep_numeric and re.match(r'^[-—–\s]*\d{1,4}[-—–\s]*$', s):
             continue
         if re.match(r'^第\s*\d+\s*页(\s*[/／]\s*共?\s*\d+\s*页)?$', s):
             continue
@@ -164,7 +210,9 @@ def _pdf_pages(path):
                 pages.append({'page': number, 'w': page.width, 'h': page.height,
                               'lines': [{'t': line['text'], 'k': 'body', 'col': 0,
                                          'x0': line['x0'], 'x1': line['x1'], 'top': line['top']}
-                                        for line in native if _clean_pdf_lines(line['text']).strip()]})
+                                        for line in native if _clean_pdf_lines(
+                                            line['text'], keep_numeric=page.height * .05 <= line['top'] <= page.height * .92
+                                        ).strip()]})
                 page.flush_cache()
     except Exception as e:
         raise IngestError('这份 PDF 打不开。请确认文件完整、没有密码，再上传。') from e
@@ -221,7 +269,7 @@ def extract(path, fmt, on_progress=None, on_layout_progress=None):
         ocr = pdf_ocr.recover_pages(path, layout, AT, on_progress)
         page_issues = _pdf_page_issues(layout)
         text = AT.pages_to_text(layout, mark_pages=True)
-        if not ocr and han_count(text) < 200 and not layout_note:
+        if not ocr and han_count(text) < MIN_HAN_CHARS and not layout_note:
             text = AT.pages_to_text(_pdf_pages(path), mark_pages=True)
             layout_note = '，版面读取采用整页文字，复杂页面请核对原文'
             layout = []
@@ -243,23 +291,21 @@ def extract(path, fmt, on_progress=None, on_layout_progress=None):
     text = _normalize(text)
     body = re.sub(r'^<<<PAGE \d+>>>\s*$', '', text, flags=re.M) if fmt == 'pdf' else text
     h = han_count(body)
-    body_chars = len(re.sub(r'\s', '', body))
-    if h < 200 and ocr.get('unavailable'):
+    body_chars = visible_chars(body)
+    if h < MIN_HAN_CHARS and ocr.get('unavailable'):
         raise OCRProcessingError('PDF 需要识别图中的文字，本机识别暂不可用。恢复后可以用原文件重试。',
                                  page_issues=page_issues)
-    if h < 200 and ocr.get('failed'):
+    if h < MIN_HAN_CHARS and ocr.get('failed'):
         raise OCRProcessingError('PDF 的图片文字没有识别完，可以用原文件重试。', page_issues=page_issues)
-    if body_chars >= 200 and h / body_chars < 0.25:
-        raise IngestError('这份文件读到的中文正文太少，暂时无法生成标签。以外文为主的文件可以先上传中文正文。',
-                          page_issues=page_issues)
-    if h < 200:
+    if h < MIN_HAN_CHARS:
         if ocr.get('blank') == pages:
             raise IngestError('PDF 的页面都是空白，请核对并上传包含正文的文件。', page_issues=page_issues)
         if ocr:
             raise IngestError('PDF 中读到的中文正文少于 200 字，无法生成标签。请上传画面清楚、正文完整的版本。',
                               page_issues=page_issues)
-        raise IngestError('读到的中文正文少于 200 字，暂时无法生成标签。请上传包含完整正文的版本。',
-                          page_issues=page_issues)
+    language_issue = body_language_issue(h, body_chars)
+    if language_issue:
+        raise IngestError(language_issue, page_issues=page_issues)
     # 句读缺失：PDF 抽丢标点的典型症状；这种文本判型与引文都不可信。
     ends = len(re.findall(r'[。！？!?]', body))
     if ends == 0:

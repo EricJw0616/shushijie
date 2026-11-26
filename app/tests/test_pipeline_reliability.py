@@ -26,6 +26,15 @@ import tag_all
 
 
 class StructureTests(unittest.TestCase):
+    def test_person_profile_name_on_next_line_starts_new_chapter(self):
+        text = ('<<<PAGE 5>>>\n姓名：张三\n生卒年：1900—1950\n正文甲。\n'
+                '<<<PAGE 6>>>\n姓名：\n李四\n生卒年：1901—1951\n正文乙。\n'
+                '<<<PAGE 7>>>\n姓名: 王五\n生卒年：1902—1952\n正文丙。')
+        people = [{'name': name, 'page': page} for name, page in [('张三', 5), ('李四', 6), ('王五', 7)]]
+        plan = pipeline._people_plan(text, people)
+        self.assertEqual([(title, page) for title, _, page in structure.outline(text, plan)],
+                         [('张三', 5), ('李四', 6), ('王五', 7)])
+
     def test_all_thirteen_sunzi_chapters(self):
         text = (ROOT / '孙子兵法_简体全文.txt').read_text()
         plan = structure.probe(text)

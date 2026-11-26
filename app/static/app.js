@@ -1367,11 +1367,17 @@ function searchHighlight(value,query){
 }
 
 function searchResultRow(group,item,q){
-  const title=group==='assets'?item.title:group==='tags'?item.tag:group==='cards'?item.type:item.book||item.code;
+  let title=group==='assets'?item.title:group==='tags'?item.tag:group==='cards'?item.type:item.book||item.code;
   let meta, excerpt, action;
   if(group==='assets'){
     meta=item.book;
     excerpt=item.excerpt||clip(item.text||'',160);
+    const label=item.marketing_key==='summary'?'图书简介':item.kind_label||'内容成果';
+    if(!title||title.length>90){
+      title=[item.book||item.code,label].filter(Boolean).join(' · ');
+      meta='';
+    }
+    if(excerpt===title)excerpt='';
     action=`<button type="button" class="btn sm ghost" data-id="${esc(item.id)}" onclick="Studio.detail(this)">查看成果</button>`;
   }else{
     const located=group!=='books'&&item.anchor;
@@ -1525,6 +1531,7 @@ function openUpload(){
     <div class="upload-format-guide" id="uploadFormats">
       <p><strong>支持</strong> ${UPLOAD_DISPLAY_FORMATS}。</p>
       <p><strong>暂不支持</strong> 单独的图片（JPG、PNG）、旧版 Word（.doc）、EPUB、Excel、PPT 和 InDesign 文件。</p>
+      <p>请上传中文正文。读取后须至少有 200 个汉字，且汉字占非空白正文至少 25%。</p>
       <p class="muted">扫描模糊、双页拼版、多栏、竖排或图表较多时，请对照 PDF 原页核对文字和阅读顺序。</p>
     </div>
     <div class="drop" id="dropZone" onclick="document.getElementById('fileInput').click()">
@@ -1557,7 +1564,7 @@ function setProbe(text,bad){
   el.style.display='block'; el.className='probe'+(bad?' bad':''); el.textContent=text;
 }
 function setUploadFile(f){
-  _uploadFile=f; _probe.token=''; _probe.meta=null; _probe.auto={};
+  _uploadFile=f; _probe.token=''; _probe.meta=null; _probe.auto={}; _probe.blocked=false;
   if(_probe.xhr){try{_probe.xhr.abort();}catch(e){}_probe.xhr=null;}
   const name=document.getElementById('fileName'); if(name)name.textContent=f.name+' · '+fmtSize(f.size);
   const msg=document.getElementById('upMsg'); if(msg)msg.textContent='';
@@ -1601,7 +1608,10 @@ function runProbe(f){
       autofill('upTitle','title',p.title); autofill('upAuthor','author',p.author); autofill('upPublisher','publisher',p.publisher);
       setProbe(probeLine(p)); if(btn)btn.disabled=false;
     }else{
-      setProbe((d.error||('文件预检失败（HTTP '+xhr.status+'）'))+'　仍可直接提交。',true); if(btn)btn.disabled=false;
+      _probe.blocked=xhr.status===422;
+      const failure=d.error||('文件预检失败（HTTP '+xhr.status+'）');
+      setProbe(failure+(_probe.blocked?'':'　仍可直接提交。'),true);
+      if(btn)btn.disabled=_probe.blocked;
     }
   };
   xhr.onerror=()=>{if(xhr!==_probe.xhr)return;_probe.xhr=null;setProbe('文件预检失败（网络错误）。仍可直接提交。',true);if(btn)btn.disabled=false;};
@@ -1614,6 +1624,7 @@ async function submitUpload(){
   const msg=document.getElementById('upMsg'), btn=document.getElementById('upBtn');
   if(!_uploadFile){msg.textContent='先选一个文件。';return;}
   if(_probe.xhr){msg.textContent='正在检查文件，请稍等。';return;}
+  if(_probe.blocked){msg.textContent='请修正预检提示的问题，或重新选择文件。';return;}
   if(!title){msg.textContent='书名不能为空。';return;}
   btn.disabled=true; const old=btn.textContent; btn.textContent=_probe.token?'提交中…':'上传中…';
   msg.textContent=_probe.token?'正在创建任务…':'正在上传…';

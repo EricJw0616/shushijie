@@ -15,6 +15,59 @@ import wash
 
 
 class SourceLayoutTests(unittest.TestCase):
+    def test_shared_pdf_baseline_retains_digits_with_different_font_boxes(self):
+        glyphs = []
+        for index, char in enumerate('生卒年：1913—2011'):
+            top = 177 if char.isdigit() else 169
+            glyphs.append({'text': char, 'x0': 150 + index * 6, 'x1': 156 + index * 6,
+                           'top': top, 'y1': 683 - top, 'matrix': (12, 0, 0, 12, 0, 505)})
+        lines = atlas._split_lines(glyphs)
+        self.assertEqual([line['t'] for line in lines], ['生卒年：1913—2011'])
+        self.assertEqual(atlas._kind_of('123456元', 200, 680), 'body')
+        self.assertEqual(atlas._kind_of('123', 675, 680), 'header')
+
+    def test_stranded_year_fuses_only_inside_the_same_source_block(self):
+        text = '<<<PAGE 8>>>\n2021\n年5月开始。\n<<<PAGE 9>>>\n2022\n<<<PAGE 10>>>\n年终结项。'
+        rows, _ = wash.build(text, 'T01', [])
+        self.assertEqual([row['文本'] for row in rows], ['2021年5月开始。', '年终结项。'])
+
+    def test_short_chapter_sequence_and_standalone_english_numbering(self):
+        for headings in (['Chapter 01', 'Chapter 02', 'Chapter 03'], ['第一章', '第二章', '第三章']):
+            with self.subTest(headings=headings):
+                prose = '书中的这一章节有足够的中文正文供读者核对。'
+                contents = '\n'.join(headings)
+                text = contents + '\n' + '\n'.join(f'{h}\n{prose}' for h in headings)
+                plan = structure.probe(text)
+                result = structure.outline(text, plan)
+                self.assertEqual([heading for heading, _, _ in result], headings)
+                self.assertEqual(result[0][1], len(headings))
+
+    def test_unsectioned_prose_is_body_but_possible_headings_keep_review(self):
+        prose = '这段材料解释了图书借阅的办理办法、开放时间以及遇到问题时的咨询渠道。'
+        text = '\n'.join([prose] * 10)
+        self.assertTrue(structure.continuous_short_body(text))
+        self.assertFalse(structure.continuous_short_body(prose + '\n第二章\n' + text))
+        self.assertFalse(structure.continuous_short_body(prose + '\n开放时间\n' + text))
+        prose_rows, _ = wash.build(text, 'T01', [], continuous_body=True)
+        unresolved_rows, _ = wash.build(text, 'T02', [])
+        self.assertEqual({row['篇'] for row in prose_rows}, {'正文'})
+        self.assertFalse(tocclean.audit(prose_rows, [])['结构待复核'])
+        self.assertTrue(tocclean.audit(unresolved_rows, [])['结构待复核'])
+
+    def test_toc_does_not_create_an_appendix_before_body(self):
+        text = ('目录\n2导读\n10开篇\n15后记\n20附录：个人·群体·社会——\n'
+                '一生学术历程的自我思考\n导读\n正文甲。\n开篇\n正文乙。\n'
+                '后记\n正文丙。\n附录: 个人·群体·社会\n—— 一生学术历程的自我思考\n正文丁。')
+        plan = {'mode': 'toc', 'toc': [('导读', 2), ('开篇', 10), ('后记', 15), ('附录：个人·群体·社会——', 20)]}
+        result = structure.outline(text, plan)
+        self.assertEqual([heading for heading, _, _ in result], [heading for heading, _ in plan['toc']])
+        self.assertEqual(result[-1][1], 12)
+
+    def test_complete_short_verse_need_not_be_expanded(self):
+        row = {'id': 'T01-01-P01', '篇序': 1, '篇': '短诗', '文本': '何处闻啼鸟，幽林入晓光。行来溪水畔，春色正悠长。'}
+        report = tocclean.audit([row], [{'篇': '短诗'}])
+        self.assertEqual(report['异常短篇'], [])
+
     def test_narrow_spread_uses_its_central_gutter(self):
         chars = [{'x0': x, 'x1': x + 8} for x in range(45, 310, 8)]
         chars += [{'x0': x, 'x1': x + 8} for x in range(427, 696, 8)]

@@ -36,6 +36,14 @@ docker compose logs --tail=100 app
 
 更新前等待任务中心的运行任务完成。替换容器会中断正在解析或生成的任务；已保存的数据与核对记录保留。备份时应同时备份数据目录的 `app-data`、`out`、`library`、`config`、`lexicon`、`books` 以及私有 `app.env`。
 
+## 存量来源检查
+
+在本机或商用容器的运行副本中执行。商用容器使用 `docker compose exec -T app python ...` 调用相同命令。
+
+- `python scripts/plan_source_repairs.py` 检查全库的章节与段落锚点变化。增加 `--verify-numbers` 对照 PDF 原件。确认候选后，指定书码和原页使用 `--apply-numbers` 写入有唯一依据的数字修复。
+- `python scripts/backfill_source_pages.py` 检查旧段落能否唯一定位到 PDF 原页。确认计划后在无写入任务的维护时段加 `--apply`，备份后补写页码。
+- 章节或段落重新切分会影响已有引用，按计划核对受影响的项目和成果后再处理。保留运行数据备份和原有审校记录。
+
 ## 代码与数据
 
 - `app/`：Web 服务、业务逻辑、前端、测试、字体与资源。

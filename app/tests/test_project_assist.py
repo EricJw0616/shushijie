@@ -247,6 +247,46 @@ class ProjectAssistTests(unittest.TestCase):
         self.assertEqual(assist.get_run(self.p['id'], second['run']['id'])['status'], 'failed')
         self.assertEqual(len(assist.list_runs(self.p['id'])), 2)
 
+    def test_recoverable_failure_rechecks_in_new_record_without_touching_working_draft(self):
+        from project_intelligence import RecoverableDraftError, edit_recovery_candidate
+
+        self.engine.RecoverableDraftError = RecoverableDraftError
+        self.engine.edit_recovery_candidate = edit_recovery_candidate
+        project = projects.create_project({'kind': 'marketing', 'title': '已确认的项目稿'})
+        project = self.update(project, 'add_asset', asset_id=self.asset['id'])
+        project = self.update(project, 'update_item', asset_id=self.asset['id'], status='adopted')
+        project = self.update(project, 'save', draft='原有工作稿')
+        fields = [{'channel': '公众号', 'title': '超长稿', 'body': '应保留的文字', 'ending': ''}]
+        candidate = {'channel_assets': fields}
+        issues = [{'code': 'length_mismatch', 'message': '正文超出上限', 'severity': 'blocker'}]
+        self.engine.execute.side_effect = RecoverableDraftError('正文超出上限', candidate, fields, issues)
+        first = self.enqueue(project)
+        assist.execute_job(first['job']['id'])
+        failed = assist.get_run(project['id'], first['run']['id'])
+        self.assertEqual(failed['recovery_draft'], fields)
+        self.assertNotIn('_recovery_candidate', failed)
+        self.assertEqual(projects._read(project['id'])['draft'], '原有工作稿')
+        with self.assertRaisesRegex(ValueError, '只能应用'):
+            self.update(project, 'apply_generation', run_id=failed['id'])
+        body = {'revision': project['revision'], 'capability': 'draft', 'recovery_run_id': failed['id'],
+                'recovery_draft': [dict(fields[0], body='删短后的正文')]}
+        self.current[self.asset['id']]['stale'] = True
+        with self.assertRaisesRegex(assets.Conflict, '来源'):
+            assist.enqueue(project['id'], body)
+        self.current[self.asset['id']].pop('stale')
+        second = assist.enqueue(project['id'], body)
+        self.assertNotIn('_edited_candidate', second['run'])
+        self.assertEqual(assist.enqueue(project['id'], body)['run']['id'], second['run']['id'])
+        with self.assertRaisesRegex(assets.Conflict, '正在处理'):
+            assist.enqueue(project['id'], dict(body, recovery_draft=[dict(fields[0], body='不同修改')]))
+        self.engine.execute.side_effect = None
+        assist.execute_job(second['job']['id'])
+        self.assertEqual(self.engine.execute.call_args.kwargs['edited_candidate']['channel_assets'][0]['body'],
+                         '删短后的正文')
+        self.assertEqual(projects._read(project['id'])['draft'], '原有工作稿')
+        self.assertEqual(assist.get_run(project['id'], second['run']['id'])['status'], 'done')
+        self.assertEqual(assist.get_run(project['id'], first['run']['id'])['status'], 'failed')
+
     def test_new_plan_delivery_marker_survives_apply_edit_and_clean_export(self):
         p=projects.create_project({'kind':'marketing','title':'信任主题营销',
             'brief':{'marketing_task':'general','topic':'信任','audience':'成年读者','goal':'介绍图书中的具体内容'}})

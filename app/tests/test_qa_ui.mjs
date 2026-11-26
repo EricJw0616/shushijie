@@ -79,7 +79,8 @@ test('late answers are retained without repainting a different page',async()=>{
 test('failures preserve the question for editing and retry, excluding failed answers from follow-up context',async()=>{
   const ui=setup();await ui.api.render(ui.view);ui.responses.answer=()=>Promise.reject(new Error('网络中断'));
   await ui.api.ask('保留我的问题');
-  assert.equal(ui.api.Q.draft,'保留我的问题');assert.doesNotMatch(ui.host.innerHTML,/网络中断|本次回答未完成|重新提问|qa-turn\"/);
+  assert.equal(ui.api.Q.draft,'保留我的问题');
+  assert.match(ui.host.innerHTML,/网络中断/);assert.match(ui.host.innerHTML,/data-qa-action="retry"/);
   const id=ui.api.Q.current.turns[0].id;ui.responses.answer=result;await ui.api.ask('保留我的问题',id);
   assert.equal(ui.api.Q.current.turns.length,1);assert.equal(ui.api.Q.current.turns[0].status,'done');
   assert.deepEqual(ui.calls.filter(x=>x.url==='/api/qa/ask').at(-1).body.history,[]);
@@ -219,14 +220,16 @@ test('empty classification never sends an all-library question; new matching boo
 });
 
 
-test('retrieval-only stays hidden, keeps the question editable, and supports retry in place',async()=>{
+test('retrieval-only shows the reason and evidence and supports retry in place',async()=>{
   const ui=setup();await ui.api.render(ui.view);
-  ui.responses.answer={...result,answer:'',mode:'sources_only',notice:'回答尚未完成，请稍后重试。'};
+  ui.responses.answer={...result,answer:'',mode:'sources_only',retryable:true,notice:'回答尚未完成，请稍后重试。'};
   await ui.api.ask('东北有什么植物可以学习');
-  assert.doesNotMatch(ui.host.innerHTML,/尚未生成答案|重新生成回答|修改问题|查看找到的|qa-turn\"/);
+  assert.match(ui.host.innerHTML,/回答尚未完成，请稍后重试。/);
+  assert.match(ui.host.innerHTML,/这是原文/);assert.match(ui.host.innerHTML,/查看上下文/);
+  assert.match(ui.host.innerHTML,/修改问题/);assert.match(ui.host.innerHTML,/data-qa-action="retry"/);
   assert.equal(ui.api.Q.draft,'东北有什么植物可以学习');
   assert.doesNotMatch(ui.host.innerHTML,/复制回答|本次引用|class="qa-evidence"|让每一个问题/);
-  assert.equal(ui.nodes['.qa-live'].textContent,'');
+  assert.equal(ui.nodes['.qa-live'].textContent,'回答尚未完成，请稍后重试。');
   const id=ui.api.Q.current.turns[0].id;ui.responses.answer=result;
   await ui.api.ask('东北有什么植物可以学习',id);
   assert.equal(ui.api.Q.current.turns.length,1);assert.match(ui.host.innerHTML,/复制回答/);
@@ -240,13 +243,14 @@ test('retrieval-only turns never become assistant history for the next answer',a
 });
 
 
-test('hidden incomplete results remain editable after restoring history',async()=>{
+test('incomplete result reasons remain available after restoring history',async()=>{
   const ui=setup();await ui.api.render(ui.view);
   ui.responses.answer={...result,answer:'',mode:'sources_only',retryable:false,notice:'请改问具体概念。'};
   await ui.api.ask('列出全部内容');
-  assert.doesNotMatch(ui.host.innerHTML,/重新生成回答|复制回答|修改问题|尚未生成答案/);assert.equal(ui.api.Q.draft,'列出全部内容');
+  assert.match(ui.host.innerHTML,/请改问具体概念|修改问题/);
+  assert.doesNotMatch(ui.host.innerHTML,/data-qa-action="retry"|复制回答/);assert.equal(ui.api.Q.draft,'列出全部内容');
   const restored=setup({storage:ui.storage});await restored.api.render(restored.view);
-  assert.doesNotMatch(restored.host.innerHTML,/重新生成回答|尚未生成答案|请改问具体概念/);assert.equal(restored.api.Q.draft,'列出全部内容');
+  assert.match(restored.host.innerHTML,/请改问具体概念/);assert.equal(restored.api.Q.draft,'列出全部内容');
 });
 
 test('resubmitting the latest incomplete question reuses its turn and excludes it from history',async()=>{
@@ -279,20 +283,21 @@ test('earlier turns collapse by default and user expansion survives a redraw',as
 });
 
 
-test('hidden network errors keep their user question in follow-up context without an assistant answer',async()=>{
+test('network errors show a reason and retain only their user context',async()=>{
   const ui=setup();await ui.api.render(ui.view);await ui.api.ask('东北有什么植物');
   ui.responses.answer=()=>Promise.reject(new Error('服务错误'));await ui.api.ask('地钱在什么地方');
-  assert.doesNotMatch(ui.host.innerHTML,/服务错误|本次回答未完成/);
+  assert.match(ui.host.innerHTML,/服务错误/);
   ui.responses.answer=result;await ui.api.ask('具体城市呢');
   assert.deepEqual(ui.calls.filter(x=>x.url==='/api/qa/ask').at(-1).body.history,[{role:'user',content:'东北有什么植物'},{role:'assistant',content:result.answer},{role:'user',content:'地钱在什么地方'}]);
 });
 
-test('several hidden attempts retain the last successful exchange as context',async()=>{
+test('only the latest unsuccessful turn is shown while earlier turns retain context',async()=>{
   const ui=setup();await ui.api.render(ui.view);await ui.api.ask('先介绍地钱');
   ui.responses.answer={...result,answer:'',mode:'insufficient',notice:'依据不足'};
   for(let i=0;i<5;i++)await ui.api.ask('追问 '+i);
-  assert.doesNotMatch(ui.host.innerHTML,/未完成|依据不足|尚未生成答案|qa-previous-turn/);
-  assert.equal((ui.host.innerHTML.match(/class="qa-turn"/g)||[]).length,1);
+  assert.match(ui.host.innerHTML,/依据不足|qa-previous-turn/);
+  assert.equal((ui.host.innerHTML.match(/class="qa-turn"/g)||[]).length,2);
+  assert.doesNotMatch(ui.host.innerHTML,/追问 0|追问 3/);
   ui.responses.answer=result;await ui.api.ask('它适合在哪里观察');
   const history=ui.calls.filter(x=>x.url==='/api/qa/ask').at(-1).body.history;
   assert.equal(history[0].content,'先介绍地钱');assert.equal(history[1].content,result.answer);
@@ -300,11 +305,11 @@ test('several hidden attempts retain the last successful exchange as context',as
   assert.equal(history.at(-1).content,'追问 4');
 });
 
-test('interrupted stored requests restore quietly and remain in follow-up context',async()=>{
+test('interrupted stored requests show a retryable reason and retain follow-up context',async()=>{
   const ui=setup();await ui.api.render(ui.view);await ui.api.ask('地钱的分布');
   const [key]=ui.storage.keys(),saved=JSON.parse(ui.storage.get(key));saved.sessions[0].turns[0].status='pending';ui.storage.set(key,JSON.stringify(saved));
   const restored=setup({storage:ui.storage});await restored.api.render(restored.view);
-  assert.doesNotMatch(restored.host.innerHTML,/尚未取得结果|未完成|qa-turn"/);
+  assert.match(restored.host.innerHTML,/尚未取得结果/);assert.match(restored.host.innerHTML,/data-qa-action="retry"/);
   assert.equal(restored.api.Q.draft,'地钱的分布');await restored.api.ask('那具体呢');
   assert.deepEqual(restored.calls.filter(x=>x.url==='/api/qa/ask').at(-1).body.history,[{role:'user',content:'地钱的分布'}]);
 });
@@ -402,7 +407,7 @@ test('deleting another session from history preserves the current draft and retu
   assert.equal(restored.api.Q.current.id,current.id);assert.ok(!restored.api.Q.sessions.some(s=>s.id===removed));
 });
 
-test('deleting the last visible answer retains hidden user context until the whole session is deleted',async()=>{
+test('deleting the last answered turn preserves the failed attempt until the whole session is deleted',async()=>{
   const ui=setup();await ui.api.render(ui.view);await ui.api.ask('已得到回答的问题');
   const sessionId=ui.api.Q.current.id,answeredId=ui.api.Q.current.turns[0].id;
   ui.responses.answer={...result,answer:'',mode:'sources_only',notice:'不显示的失败提示'};
@@ -410,7 +415,7 @@ test('deleting the last visible answer retains hidden user context until the who
   ui.api.openDelete('turn',answeredId);await ui.api.confirmDelete();
   assert.equal(ui.api.Q.current.id,sessionId);assert.equal(ui.api.Q.current.turns.length,1);
   assert.equal(ui.api.Q.current.turns[0].id,hiddenId);assert.equal(ui.api.Q.current.title,'仍需保留上下文的未完成问题');
-  assert.doesNotMatch(ui.host.innerHTML,/不显示的失败提示|已得到回答的问题/);
+  assert.match(ui.host.innerHTML,/不显示的失败提示/);assert.doesNotMatch(ui.host.innerHTML,/已得到回答的问题/);
   ui.responses.answer=result;await ui.api.ask('那具体呢');
   assert.deepEqual(ui.calls.filter(x=>x.url==='/api/qa/ask').at(-1).body.history,[{role:'user',content:'仍需保留上下文的未完成问题'}]);
   ui.api.openDelete('session',sessionId);await ui.api.confirmDelete();
@@ -502,4 +507,20 @@ test('late clipboard results after deleting a turn or session or leaving the pag
     assert.equal(ui.nodes['.qa-live'].textContent,before.live);assert.deepEqual(ui.notifications,before.notifications);
     assert.ok(!ui.notifications.some(message=>String(message).includes('回答与出处已复制')));
   }
+});
+
+test('counts only searchable books and links a blocked selected book to its source',async()=>{
+  const ui=setup();
+  Object.assign(ui.responses.status.books[1],{
+    searchable_segments:0,total_segments:13,segments:13,unavailable_reason:'章节待核对',
+  });
+  await ui.api.render(ui.view);
+  assert.match(ui.host.innerHTML,/1 本图书可检索/);
+  assert.match(ui.host.innerHTML,/1 本暂无可检索正文/);
+  ui.api.Q.current.book_codes=['B02'];ui.api.Q.draft='现在可以问吗';ui.api.draw();
+  assert.match(ui.host.innerHTML,/章节待核对/);
+  assert.match(ui.host.innerHTML,/#\/book\/B02\/overview/);
+  assert.match(ui.host.innerHTML,/class="qa-send" aria-label="发送问题" disabled/);
+  await ui.api.ask('现在可以问吗');
+  assert.equal(ui.calls.filter(x=>x.url==='/api/qa/ask').length,0);
 });

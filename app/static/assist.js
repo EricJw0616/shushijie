@@ -95,6 +95,27 @@ window.ProjectAssist=(function(){
     if(run.capability==='recommend'){const codes=(run.snapshot||{}).book_codes||[],books=state.books||[],sameScene=scopedWorkflow()&&JSON.stringify(codes.slice().sort())===JSON.stringify(scopeFor(A.project.id).slice().sort());if(!sameScene)html+='<p class="assist-input-scope">本次检索范围：'+e(codes.length?codes.map(function(c){const b=books.find(function(x){return x.code===c;});return b?b.book:'原范围内图书';}).join('、'):'全书库')+'</p>';}
     return html;
   }
+  function failedDraftReason(run){
+    return clip(text(run.review_issues?.find(issue=>issue.severity==='blocker')?.message||run.error),240);
+  }
+  function canEditRecovery(run){
+    return Boolean(run?.status==='failed'&&run.recovery_draft?.length&&!run.stale&&!run.source_stale&&!A.dirty);
+  }
+  function recoveryKey(run){return 'bookworld.recovery-draft:'+run.project_id+':'+run.id;}
+  function recoveryEditor(run){
+    let cached;
+    try{cached=JSON.parse(sessionStorage.getItem(recoveryKey(run))||'null');}catch(_){}
+    const fields=run.recovery_draft.map((row,index)=>{
+      const saved=cached?.[index], value=saved?.channel===row.channel?saved:row;
+      return '<fieldset class="studio-field"><legend>'+e(row.channel)+'</legend>'+
+        '<label class="studio-field"><span>标题</span><input name="title-'+index+'" maxlength="300" required value="'+e(value.title)+'"></label>'+
+        '<label class="studio-field"><span>正文</span><textarea name="body-'+index+'" rows="10" maxlength="5000" required>'+e(value.body)+'</textarea></label>'+
+        '<label class="studio-field"><span>结尾</span><textarea name="ending-'+index+'" rows="3" maxlength="500">'+e(value.ending)+'</textarea></label></fieldset>';
+    }).join('');
+    return '<form class="assist-proposal" data-recovery-run="'+e(run.id)+'" oninput="ProjectAssist.cacheRecovery(this)" onsubmit="event.preventDefault();ProjectAssist.recheck(this)">'+
+      '<h3>修改待检查初稿</h3><p>检查通过后，可以预览并确认应用到工作稿。</p>'+fields+
+      '<div class="assist-apply"><button type="submit" class="btn primary"'+(A.busy||active()?' disabled':'')+'>重新检查修改稿</button></div></form>';
+  }
   function quality(run){const r=run.result||{},snap=run.snapshot||{},warnings=r.quality_warnings||r.warnings||snap.quality_warnings||[],excluded=r.excluded||snap.excluded||[],count=snap.counts||{},notice=snap.retrieval_notice||'';if(!warnings.length&&!excluded.length&&!notice)return '';return '<details class="assist-quality"><summary>材料范围与质量提示'+(count.provided!==undefined?' · 本次提供 '+e(count.provided)+' 条材料':'')+'</summary>'+(notice?'<p>'+e(notice)+'</p>':'')+(warnings.length?'<ul>'+warnings.map(function(w){return '<li>'+e((w.title?w.title+'：':'')+text(w))+'</li>';}).join('')+'</ul>':'')+(excluded.length?'<p>以下材料未进入本次生成：</p><ul>'+excluded.slice(0,12).map(function(w){return '<li>'+e((w.title?w.title+'：':'')+text(w))+'</li>';}).join('')+'</ul>':'')+'</details>';}
   function history(cap){const rows=A.runs.filter(function(r){return r.capability===cap;});if(rows.length<2)return '';const cur=selected(cap);return '<label class="assist-history"><span>'+(cap==='recommend'?'推荐记录':'讨论稿记录')+'</span><select data-assist-key="history:'+cap+'" data-cap="'+cap+'" onchange="ProjectAssist.selectRun(this)">'+rows.map(function(r){return '<option value="'+e(r.id)+'"'+(r.id===cur.id?' selected':'')+'>'+e(String(r.created_at||'').replace('T',' ').slice(0,19)+' · '+(r.applied?'已应用':status[r.status]||r.status))+'</option>';}).join('')+'</select></label>';}
   function canApply(run){return !!(run&&run.capability==='draft'&&run.status==='done'&&run.result&&!run.applied&&!run.stale&&!run.source_stale&&!A.dirty&&!A.busy);}
@@ -237,16 +258,17 @@ window.ProjectAssist=(function(){
     const summary=workflowSummary(),w=workflow(),draft=A.runs.find(r=>r.capability==='draft');
     let title='',description='';
     if(summary.runningCapability==='draft'){
-      title=summary.draftStatus==='queued'?w.draft+'正在排队':'正在生成'+w.draft;
+      title=draft?.recovered_from?'正在检查修改稿':summary.draftStatus==='queued'?w.draft+'正在排队':'正在生成'+w.draft;
       description='生成完成后先预览，再决定是否应用。';
     }else if(summary.draftReady){
       title=w.draft+'已生成，待预览';description=summary.hasDraft?'预览确认后再替换当前工作稿。':'预览确认后，即可放入工作稿继续编辑。';
     }else if(draft?.status==='failed'&&!draft.applied){
-      title='上次生成未完成';description='已选素材仍保留，可以重新生成。';
+      title='上次生成未完成';description=failedDraftReason(draft)||'已选素材仍保留，可以重新生成。';
     }else if(!summary.hasDraft){
       title=summary.usedCount?'素材已就绪':'还没有初稿';description=summary.usedCount?'已选 '+summary.usedCount+' 条素材，可以生成'+w.draft+'。':'先选用素材，再生成'+w.draft+'。';
     }
-    let html=title?'<div class="marketing-assist-generation" role="status"><h3>'+e(title)+'</h3><p>'+e(description)+'</p></div>':'';
+    let html=title?'<div class="marketing-assist-generation" role="status"><h3>'+e(title)+'</h3><p>'+e(description)+'</p>'+
+      (canEditRecovery(draft)?button('修改这份初稿','openPreview',{run:draft.id},'sm ghost',A.busy||active()):'')+'</div>':'';
     return html+(summary.writingNeeds.length?writingNeeds({result:{writing_needs:summary.writingNeeds}}):'');
   }
   function draftPlanning(run,marketing){
@@ -276,7 +298,8 @@ window.ProjectAssist=(function(){
   }
   function draftResult(run){
     if(!run)return '<div class="assist-empty">'+(A.project.draft?'当前工作稿保留在项目主页面；新建议应用后才会替换正文。':'尚未生成建议。采用材料后，可生成并预览。')+'</div>';
-    let html=runNotice(run);const r=run.result;if(!r)return html;
+    let html=runNotice(run);const r=run.result;
+    if(!r)return html+(canEditRecovery(run)?recoveryEditor(run):'');
     const marketing=A.project.kind==='marketing',channels=marketing?(r.channel_assets||[]):[];
     html+='<article class="assist-proposal"><div class="eyebrow">可编辑的内容初稿 · 待审核</div>';
     if(channels.length){
@@ -400,7 +423,7 @@ window.ProjectAssist=(function(){
       scopeControls(p,scope)+recommendResult(recommend);
     h.innerHTML=error+'<div class="assist-workspace-toolbar assist-generation-bar"><div class="assist-toolbar-copy"><h2>'+(scene?'生成'+e(w.draft):'生成建议')+'</h2><p>'+(angle?'已选切口 <strong>'+e(plainSummary(angle.title))+'</strong> · ':'已采用 ')+used+' 条材料'+(latest?' · 最近一次'+e(runLabel(latest)):' · 应用后写入工作稿')+'</p></div><div class="assist-toolbar-actions">'+(!used?button('选择材料','editMaterials',{},'ghost'):'')+button('生成记录'+(drafts.length?' · '+drafts.length:''),'openRecords',{},'ghost')+(scene&&ready.length?button('预览'+e(w.draft),'openPreview',{run:ready[0].id},'primary',running||A.busy):button(running?'任务处理中…':e(draftLabel),'start',{cap:'draft'},'primary',running||A.busy||!used))+'</div></div>'+
       (ready.length?'<div class="assist-ready-line"><span>'+(scene?e(w.draft)+'已生成。预览确认后，点击“应用到工作稿”继续编辑。':ready.length+' 份建议待应用；当前工作稿保持原样。')+'</span>'+button(scene?'查看'+e(w.draft):'预览最新建议','openPreview',{run:ready[0].id},'sm ghost')+'</div>':'')+
-      (latest&&!latest.applied&&latest.status==='failed'?'<p class="assist-generation-error">最近一次生成未完成，可在生成记录中查看原因。当前工作稿仍保留。</p>':'')+
+      (latest&&!latest.applied&&latest.status==='failed'?'<p class="assist-generation-error">'+e(failedDraftReason(latest)||'最近一次生成未完成。当前工作稿仍保留。')+'</p>':'')+
       (A.dialog&&A.dialog.project===p.id&&!document.getElementById('assistDialog')?'<div class="assist-return-preview">'+button('返回刚才查看的内容','restorePreview',{},'sm ghost')+'</div>':'');
     }
     if(focused)Array.from(focusedHost.querySelectorAll('[data-assist-key]')).find(function(x){return x.dataset.assistKey===focused;})?.focus({preventScroll:true});
@@ -450,6 +473,35 @@ window.ProjectAssist=(function(){
       toast(cap==='draft'?(p.kind==='marketing'?'正在生成'+workflow(p).draft:'正在根据任务与材料生成讨论稿'):p.kind==='editorial'?'正在比较选题切口':'正在从图书查找素材');
       await load(pid,epoch);
     }catch(err){if(!here(pid,epoch))return;A.busy=false;A.error=err.message;render();toast(err.message,true);}
+  }
+  function cacheRecovery(form){
+    const run=A.runs.find(r=>r.id===form.dataset.recoveryRun);
+    if(!canEditRecovery(run))return null;
+    const data=new FormData(form);
+    const fields=run.recovery_draft.map((row,index)=>({channel:row.channel,
+      title:String(data.get('title-'+index)||''),body:String(data.get('body-'+index)||''),
+      ending:String(data.get('ending-'+index)||'')}));
+    try{sessionStorage.setItem(recoveryKey(run),JSON.stringify(fields));}catch(_){}
+    return fields;
+  }
+  async function recheck(form){
+    const run=A.runs.find(r=>r.id===form.dataset.recoveryRun);
+    if(A.busy||active()||!A.project||!canEditRecovery(run))return;
+    const fields=cacheRecovery(form),pid=A.project.id,epoch=A.epoch;
+    A.busy=true;A.error='';
+    form.querySelectorAll('fieldset,button').forEach(node=>node.disabled=true);
+    try{
+      const p=await prepare('draft');if(!here(pid,epoch)||p.id!==pid)return;
+      const d=await post('/api/projects/'+pid+'/assist',{revision:p.revision,capability:'draft',
+        recovery_run_id:run.id,recovery_draft:fields});
+      if(!here(pid,epoch))return;
+      if(d.run){A.choice.draft=d.run.id;A.runs=[d.run].concat(A.runs.filter(row=>row.id!==d.run.id));}
+      A.busy=false;closePreview();render();
+      toast('正在检查修改稿');await load(pid,epoch);
+    }catch(err){
+      if(!here(pid,epoch))return;
+      A.busy=false;A.error=err.message;render();paintDialog();toast(err.message,true);
+    }
   }
   function triggerDraft(){return start({dataset:{cap:'draft'}});}
   function previewLatest(){
@@ -554,5 +606,5 @@ window.ProjectAssist=(function(){
     if(ev.key==='Escape'){ev.preventDefault();ev.stopImmediatePropagation();closePreview();return;}
     if(ev.key==='Tab'){const controls=Array.from(dialog.querySelectorAll('button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),textarea:not(:disabled),[tabindex="0"]')).filter(function(el){return el.getClientRects().length;});const first=controls[0],last=controls[controls.length-1];if(!first)return;if(ev.shiftKey&&(document.activeElement===first||document.activeElement===dialog)){ev.preventDefault();last.focus();}else if(!ev.shiftKey&&(document.activeElement===last||document.activeElement===dialog)){ev.preventDefault();first.focus();}}
   },true);
-  return {editWritingNotes,reviseMaterials,mount,start,workflowSummary,triggerDraft,previewLatest,toggleMaterial,openCollected,openRecords,openPreview,openRecommendation,closePreview,restorePreview,hideSource,source,currentSource,openSource,adopt,adoptAngle,goToDraft,apply,selectChannel,channelKeydown,planningToggle,scopeChange,scopeToggle,selectRun,sectionToggle,projectEdited,projectSaved,editBrief,editMaterials,retry,reuse,submitReuse,materialTitleText};
+  return {editWritingNotes,reviseMaterials,mount,start,workflowSummary,triggerDraft,previewLatest,toggleMaterial,openCollected,openRecords,openPreview,openRecommendation,closePreview,restorePreview,hideSource,source,currentSource,openSource,adopt,adoptAngle,goToDraft,apply,selectChannel,channelKeydown,planningToggle,scopeChange,scopeToggle,selectRun,sectionToggle,projectEdited,projectSaved,editBrief,editMaterials,retry,reuse,submitReuse,materialTitleText,cacheRecovery,recheck};
 })();

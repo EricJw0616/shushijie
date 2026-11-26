@@ -37,7 +37,6 @@ _HEADING_RE = re.compile(r'[\u4e00-\u9fa5]{1,8}(?:科|属)[A-Z]')
 _LABEL_ANY_RE = re.compile(
     r'来\s*源|别\s*名|俗\s*名|原\s*植\s*物|生\s*境|分\s*布|采\s*制|'
     r'性味功效|性味功能|主治用法|用\s*量|附\s*注|附\s*方')
-_PAGENO_RE = re.compile(r'^\d{6}')
 
 
 def _detect_gutter(chars, w, h=None):
@@ -72,15 +71,25 @@ def _detect_gutter(chars, w, h=None):
     return (st + en) / 2.0
 
 
+def _glyph_line_position(char):
+    """Use the text baseline when the PDF provides an upright glyph matrix."""
+    matrix = char.get('matrix')
+    if (matrix and char.get('upright', True) and 'y1' in char
+            and abs(matrix[1]) < .001 and abs(matrix[2]) < .001):
+        return char['top'] + char['y1'] - matrix[5]
+    return char['top']
+
+
 def _split_lines(chars):
     """同一列内按纵坐标归行，行内按横坐标拼字（原样保留空格字符）。"""
-    chars = sorted(chars, key=lambda c: (c['top'], c['x0']))
+    chars = sorted(chars, key=lambda c: (_glyph_line_position(c), c['x0']))
     groups = []
     for c in chars:
-        if groups and abs(c['top'] - groups[-1]['top']) <= 2.5:
+        baseline = _glyph_line_position(c)
+        if groups and abs(baseline - groups[-1]['baseline']) <= 2.5:
             groups[-1]['chars'].append(c)
         else:
-            groups.append({'top': c['top'], 'chars': [c]})
+            groups.append({'baseline': baseline, 'chars': [c]})
     out = []
     for g in groups:
         cs = sorted(g['chars'], key=lambda c: c['x0'])
@@ -97,14 +106,12 @@ def _split_lines(chars):
             if not t:
                 continue
             out.append({'t': t, 'x0': run[0]['x0'], 'x1': max(c['x1'] for c in run),
-                        'top': g['top']})
+                        'top': min(c['top'] for c in run)})
     return out
 
 
 def _kind_of(t, top, h):
     if top < h * 0.05 or top > h * 0.92:
-        return 'header'
-    if _PAGENO_RE.match(t.replace(' ', '')):
         return 'header'
     if _CAP_RE.match(t):
         return 'caption'
@@ -242,7 +249,7 @@ def _backmatter_booklist(page, total_pages):
                     for a in columns[0]) >= 6)
 
 
-def layout_pdf(path, on_progress=None):
+def layout_pdf(path, on_progress=None, *, page_numbers=None):
     """返回 [{page, w, h, lines:[{t, x0, x1, top, k, col}]}]。
 
     只读，不落盘；落盘由调用方决定（app 里存 raw/<书名>.layout.jsonl）。
@@ -253,12 +260,15 @@ def layout_pdf(path, on_progress=None):
         raise RuntimeError('服务器未安装 pdfplumber，暂时不能解析 PDF（%s）' % e)
     pages = []
     picture_pages = []
+    selected = None if page_numbers is None else set(page_numbers)
     with pdfplumber.open(path) as pdf:
         bookmarks = _pdf_bookmarks(pdf)
         total_pages = len(pdf.pages)
         if on_progress:
             on_progress(0, total_pages)
         for i, page in enumerate(pdf.pages, 1):
+            if selected is not None and i not in selected:
+                continue
             w, h = page.width, page.height
             chars = page.chars
             tables = _page_tables(page)
@@ -342,7 +352,7 @@ def layout_pdf(path, on_progress=None):
                 on_progress(i, total_pages)
     # When nearly all pages are picture-led, a page with more dialogue is still picture-led.
     sparse_picture_pages = sum(bool(page.get('picture_dominant')) for page in picture_pages)
-    if sparse_picture_pages >= len(pages) * .75:
+    if selected is None and sparse_picture_pages >= len(pages) * .75:
         for page in picture_pages:
             page['picture_dominant'] = True
     return pages

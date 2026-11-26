@@ -16,6 +16,8 @@ const localPath = '/api/creator-match';
 const searchPath = localPath + '/works/search';
 const book = {code: 'test-hebei', book: '河北廉洁故事', author: '测试作者'};
 const synopsis = '通过河北历史人物的故事讲述清廉与吏治。';
+const secondBook = {code: 'test-sea', book: '海岛故事', author: '另一位测试作者'};
+const secondSynopsis = '记录岛上的民间故事和海边风物。';
 const audiences = ['喜欢读古代清官廉吏故事的历史爱好者', '关注廉洁文化与传统美德内容的短视频用户'];
 const candidate = {
   handle: 'fixture-account', name: '作品证据测试账号',
@@ -36,7 +38,7 @@ describe('one-click book and creator matching', {skip: !chromium && 'Playwright 
     t.after(() => page.close());
     const requests = {local: [], public: []};
     await page.route('**/*', async route => {
-      const {hostname, pathname} = new URL(route.request().url());
+      const {hostname, pathname, searchParams} = new URL(route.request().url());
       if (hostname !== 'bookworld.test') return route.abort();
       if (pathname === '/' || pathname.startsWith('/static/')) {
         const asset = pathname === '/' ? 'index.html' : pathname.slice('/static/'.length);
@@ -51,8 +53,10 @@ describe('one-click book and creator matching', {skip: !chromium && 'Playwright 
         requests.public.push(body);
         return publicSearch(route, body);
       }
+      const selected = searchParams.get('code') === secondBook.code ? secondBook : book;
       const fixtures = {
-        '/api/books': {books: [book]}, '/api/book': {row: book, book: {内容简介: synopsis}},
+        '/api/books': {books: [book, secondBook]},
+        '/api/book': {row: selected, book: {内容简介: selected === secondBook ? secondSynopsis : synopsis}},
         '/api/creator-match/audiences': {audiences: audiences.map(text => ({text, label: '图书读者'}))},
       };
       return route.fulfill({json: fixtures[pathname] || {}});
@@ -67,6 +71,47 @@ describe('one-click book and creator matching', {skip: !chromium && 'Playwright 
     await page.locator('#cm-book-title').fill(title);
     await page.locator('#cm-synopsis').fill(summary);
   }
+
+  it('loads and edits each book shortlist without rerunning matching or borrowing other results', async t => {
+    const secondCandidate = {...candidate, handle: 'second-fixture', name: '海岛作品测试账号'};
+    const {page, requests, submit, body} = await open(t, values => values.book_code === book.code
+      ? localHit : {...localHit, matches: [secondCandidate]}, (route, values) => route.fulfill({json: {
+      ...localHit, matches: [{...secondCandidate, name: '更新后的海岛作品账号'}], target_handle: values.handle,
+      search_state: 'found', search_reason: 'found',
+    }}));
+
+    async function choose(selected) {
+      const entry = page.getByRole('button', {name: '从书库选书'});
+      if (await entry.getAttribute('aria-pressed') !== 'true') await entry.click();
+      await page.locator('.cm-book-trigger').click();
+      await page.getByRole('button', {name: new RegExp(selected.book)}).click();
+      await page.waitForFunction(({name, value}) => document.querySelector(name).value === value, {
+        name: '#cm-synopsis', value: selected === book ? synopsis : secondSynopsis,
+      });
+    }
+
+    for (const selected of [secondBook, book]) {
+      await choose(selected);
+      await submit.click();
+      await body.getByRole('button', {name: '加入备选', exact: true}).click();
+    }
+
+    await page.reload();
+    await choose(book);
+    await page.getByRole('button', {name: '备选名单', exact: true}).click();
+    await body.getByText(candidate.name, {exact: true}).waitFor();
+    await choose(secondBook);
+    await body.getByText(secondCandidate.name, {exact: true}).waitFor();
+    assert.equal(await body.getByText(candidate.name, {exact: true}).count(), 0);
+    assert.equal(requests.local.length, 2);
+    await body.getByRole('button', {name: '自动查作品'}).click();
+    await body.getByText('更新后的海岛作品账号', {exact: true}).waitFor();
+    assert.equal(requests.public.at(-1).book_code, secondBook.code);
+    await body.getByRole('button', {name: '移出备选'}).click();
+    await body.getByText('还没有备选达人').waitFor();
+    await choose(book);
+    await body.getByText(candidate.name, {exact: true}).waitFor();
+  });
 
   it('uses the selected library book and both selected audiences for one public lookup', async t => {
     const {page, requests, submit, body} = await open(t, () => noLocalMatch, route =>

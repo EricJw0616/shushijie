@@ -21,6 +21,22 @@ def _refs(value, allowed):
     return list(dict.fromkeys(value))
 
 
+def social_note_ending(body, ending):
+    """Do not add a second copy of the closing text already before trailing tags."""
+    if not ending:
+        return ''
+    lines = body.strip().splitlines()
+    while lines and (not lines[-1].strip() or re.fullmatch(r'(?:\s*#[^\s#]+)+\s*', lines[-1])):
+        lines.pop()
+    content = '\n'.join(lines).rstrip()
+    content = re.sub(r'(?:[ \t]+#[^\s#]+)+$', '', content).rstrip()
+    if content.endswith(ending):
+        prefix = content[:-len(ending)].rstrip(' \t')
+        if not prefix or prefix[-1] in '\n。！？!?':
+            return ''
+    return ending
+
+
 def booktalk_capacity(brief):
     return marketing_context.narration_capacity(brief, default_seconds=240, minimum_seconds=30,
                                                maximum_seconds=1800, channel_label='讲书')
@@ -72,6 +88,7 @@ def validate(channel, value, snapshot, allowed):
                 'ending': _text(value.get('ending'), '笔记结尾', 500, optional=True),
                 'visual_style': _text(value.get('visual_style'), '整组视觉风格', 900),
                 'aspect_ratio': _text(value.get('aspect_ratio'), '图文画幅', 12), 'cards': []}
+        pack['ending'] = social_note_ending(pack['note_body'], pack['ending'])
         if not re.fullmatch(r'\d{1,2}:\d{1,2}', pack['aspect_ratio']) or not all(int(n) > 0 for n in pack['aspect_ratio'].split(':')):
             raise ValueError('图文画幅应为有效比例，例如3:4。')
         cards = value.get('cards')
@@ -133,8 +150,9 @@ def asset_ids(pack):
 def render(pack):
     if pack['type'] == 'social_note':
         lines = ['#### 发布正文', '', pack['note_body'], '']
-        if pack['ending']:
-            lines += [pack['ending'], '']
+        ending = social_note_ending(pack['note_body'], pack['ending'])
+        if ending:
+            lines += [ending, '']
         lines += ['#### 配图制作', '']
         for card in pack['cards']:
             lines += ['##### 第 %d 张 · %s · %s' % (card['number'], '封面' if card['role'] == 'cover' else '图文卡', card['title']), '']

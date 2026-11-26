@@ -247,8 +247,10 @@ def _build(rows, revision):
                  and not s.get('source_issue')]
         hints, entries = _hints(row, valid, reviews, tag_rows)
         clc_code, clc_name = _classification(row['code'])
-        books.append({'code': row['code'], 'title': row['book'], 'segments': len(valid),
-                      'clc_code': clc_code, 'clc_name': clc_name})
+        book = {'code': row['code'], 'title': row['book'], 'segments': len(valid),
+                'total_segments': len(segments), 'clc_code': clc_code, 'clc_name': clc_name}
+        books.append(book)
+        doc_start = len(docs)
         by_id = {segment['id']: segment for segment in valid}
         def append_doc(segment, quote, extra_text, title='', entity_id=''):
             if _INJECTION.search(quote):
@@ -278,6 +280,11 @@ def _build(rows, revision):
                 continue
             for quote in _chunks(s['文本']):
                 append_doc(s, quote, str(s.get('篇') or '') + ' ' + ' '.join(hints.get(s['id'], [])))
+        book['searchable_segments'] = len({doc['anchor'] for doc in docs[doc_start:] if doc['terms']})
+        if not book['searchable_segments']:
+            book['unavailable_reason'] = (
+                '有原文，当前没有符合问答条件的段落。请检查章节和原文质量。' if segments else
+                '图书尚未生成正文段落。请先检查入库任务。')
     df = collections.Counter(t for d in docs for t in d['terms'])
     return {'revision': revision, 'books': books, 'docs': docs, 'df': df,
             'avg_length': sum(d['length'] for d in docs) / max(1, len(docs))}
@@ -322,7 +329,7 @@ def status():
     classifications.append({'code': 'unclassified', 'name': '未分类', 'book_count': counts['unclassified']})
     return {'books': books, 'classifications': classifications, 'book_count': len(idx['books']),
             'segment_count': sum(b['segments'] for b in idx['books']),
-            'ready': bool(idx['docs']), 'model_ready': bool(llm.ready()),
+            'ready': any(b['searchable_segments'] for b in books), 'model_ready': bool(llm.ready()),
             'revision': idx['revision'], 'retrieval': '中文关键词与结构化线索检索'}
 
 
@@ -820,6 +827,8 @@ def ask(body):
         notice = ('当前分类与选书范围内没有可检索的图书，请调整范围。'
                   if request['clc_code'] or request['book_codes'] else '当前没有可检索的图书，请先完成图书解析。')
         return respond(idx, codes, 'insufficient', notice)
+    if not any(book.get('searchable_segments', book['segments']) for book in idx['books'] if book['code'] in codes):
+        return respond(idx, codes, 'insufficient', '所选图书暂无可检索的正文。请先查看该书的来源和章节状态。')
     docs = _retrieve(request, idx, codes)
     sources = _public_sources(docs)
     if not sources:

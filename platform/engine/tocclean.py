@@ -16,6 +16,8 @@
 """
 import re
 
+import structure
+
 HAN = re.compile('[\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF'
                  '\U00020000-\U0002FA1F]')
 # 目录行的典型形态：一行里至少 6 个点/省略号/下划线，通常后面跟页码。
@@ -27,6 +29,8 @@ HEADING = re.compile(r'^\s*(?:第[一二三四五六七八九十百零〇两]+[�
 CHAPTER = re.compile(r'第([一二三四五六七八九十百零〇两]+)章')
 PAGE_LINE = re.compile(r'^<<<PAGE \d+>>>$')
 BROKEN_TEXT = re.compile(r'\ufffd{3,}')
+PERSON_NAME = re.compile(r'[\u3400-\u9fff·]{2,12}')
+PERSON_CARD = re.compile(r'姓名[：:]\s*([\u3400-\u9fff·]{2,12})\s*(?=(?:生卒年|籍贯|身份)[：:])')
 
 _CN = {'零': 0, '〇': 0, '一': 1, '二': 2, '两': 2, '三': 3, '四': 4,
        '五': 5, '六': 6, '七': 7, '八': 8, '九': 9}
@@ -147,12 +151,20 @@ def is_parent_heading(title, following):
     return bool(title and str(following or '').startswith(str(title) + ' · '))
 
 
+def _complete_short_verse(text):
+    lines = [line.strip() for line in re.split(r'[，。？！]', text) if line.strip()]
+    return (len(lines) == 4 and text.rstrip().endswith(('。', '？', '！'))
+            and len(lines[0]) in (5, 7)
+            and all(len(line) == len(lines[0]) and all(HAN.fullmatch(c) for c in line)
+                    for line in lines))
+
+
 def audit(segs, outline, source_text=None):
     """只读体检。返回可落进 book.json 的审计结果。"""
     toc_segs, broken, formulas = [], [], []
     picture_pages = set()
     for s in segs or []:
-        if s.get('篇序', 0) <= 0:
+        if s.get('篇序', 0) <= 0 and s.get('source_kind') != 'body':
             continue  # 前置里的目录不算「正文混目录」
         text = s.get('文本') or ''
         if BROKEN_TEXT.search(text):
@@ -189,6 +201,7 @@ def audit(segs, outline, source_text=None):
             order_bad = True
     # 很短的章节不能直接判成错误，但必须复核；目录尾行常被误当成附录。
     grouped = {}
+    chapter_text = {}
     parent_dividers = set()
     for i, (entry, title) in enumerate(zip(outline or [], titles)):
         number = entry.get('篇序', i + 1) if isinstance(entry, dict) else i + 1
@@ -202,21 +215,43 @@ def audit(segs, outline, source_text=None):
             key = (seg.get('篇序'), seg.get('篇') or '')
             if key not in grouped and not len(HAN.findall(seg.get('文本') or '')):
                 continue
-            grouped[key] = grouped.get(key, 0) + len(HAN.findall(seg.get('文本') or ''))
+            body = seg.get('文本') or ''
+            grouped[key] = grouped.get(key, 0) + len(HAN.findall(body))
+            chapter_text.setdefault(key, []).append(body)
     short = [{'篇序': k[0], '篇': k[1], '汉字': n} for k, n in grouped.items()
-             if n < 30 and k not in parent_dividers]
+             if n < 30 and k not in parent_dividers
+             and not _complete_short_verse(''.join(chapter_text.get(k, [])))]
     sizes = sorted(grouped.values(), reverse=True)
     total = sum(sizes)
     concentrated = (len(sizes) >= 3 and sizes[0] >= 2000
                     and sizes[0] >= total * .72 and sizes[1] <= sizes[0] * .12)
-    unstructured = bool(segs and not outline)
+    unstructured = bool(segs and not outline and any(s.get('source_kind') != 'body' for s in segs))
     missed = []
-    if source_text and not outline:
-        pattern = re.compile(r'^第[一二三四五六七八九十百零〇0-9]+(?:[篇章节回]|[\s　]+[^。！？]{1,20}[篇章])')
-        missed = [line.strip() for line in source_text.splitlines() if pattern.match(line.strip())]
-    structure_abnormal = bool(toc_segs or order_bad or short or unstructured or concentrated or broken)
+    if source_text:
+        existing = {structure.numbered_chapter_key(str(title or '').split(' · ')[-1], outline_title=True)
+                    for title in titles}
+        expected = structure.numbered_chapter_outline(structure.lines_of(source_text))
+        missed = [title for title, _, _ in expected if structure.numbered_chapter_key(title) not in existing]
+    misplaced = []
+    profile_chapters = {name for (_, name), parts in chapter_text.items()
+                        if PERSON_NAME.fullmatch(name) and parts
+                        and re.search(r'(?:生卒年|籍贯)[：:]', parts[0][:70])}
+    if len(profile_chapters) >= 3:
+        for seg in segs or []:
+            if seg.get('篇') not in profile_chapters:
+                continue
+            for card in PERSON_CARD.finditer((seg.get('文本') or '')[:100]):
+                if card[1] != seg['篇']:
+                    misplaced.append({'锚点': seg.get('id'), '篇序': seg.get('篇序'),
+                                      '篇': seg['篇'], '姓名': card[1]})
+    structure_abnormal = bool(toc_segs or order_bad or short or unstructured or concentrated
+                              or broken or missed or misplaced)
     abnormal = structure_abnormal or bool(formulas or picture_pages)
-    chapters = {seg['篇序'] for seg in short + toc_segs + broken if seg.get('篇序') is not None}
+    chapters = {seg['篇序'] for seg in short + toc_segs + broken + misplaced if seg.get('篇序') is not None}
+    if missed:
+        for seg in segs or []:
+            if any(title in (seg.get('文本') or '') for title in missed):
+                chapters.add(seg.get('篇序') or 0)
     if concentrated or order_bad:
         chapters.update(number for number, _ in grouped)
     if unstructured:
@@ -228,6 +263,8 @@ def audit(segs, outline, source_text=None):
         notes.append('原文有 %d 个疑似章节标题未识别' % len(missed))
     if short:
         notes.append('%d 个章节没有正文或正文很短，请核对章节位置' % len(short))
+    if misplaced:
+        notes.append('%d 段人物资料可能归入另一人物的篇章，请核对原文' % len(misplaced))
     if toc_segs:
         notes.append('有 %d 段目录内容可能混进了正文' % len(toc_segs))
     if concentrated:
@@ -253,6 +290,7 @@ def audit(segs, outline, source_text=None):
         '公式或字符待核对段': [seg.get('id') for seg in formulas[:30]],
         '图片为主正文页': sorted(picture_pages),
         '遗漏标题': missed[:30],
+        '人物归属待核对段': misplaced[:30],
         '章号顺序异常': order_bad,
         '章号序列': nums[:40],
         '重复篇名': dup[:30],

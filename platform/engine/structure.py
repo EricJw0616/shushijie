@@ -438,6 +438,22 @@ def _has_digit_run(lines, need=60, maxval=999):
     return low >= 5
 
 
+def _join_year_lines(lines):
+    """A year on its own immediately before its unit is a broken text line."""
+    result = []
+    for index, (page, text, block) in enumerate(lines):
+        if index + 1 < len(lines) and re.fullmatch(r'[12][0-9]{3}', text):
+            _, following, next_block = lines[index + 1]
+            if block == next_block and following.startswith('年'):
+                continue
+        if text.startswith('年') and index:
+            _, previous, previous_block = lines[index - 1]
+            if previous_block == block and re.fullmatch(r'[12][0-9]{3}', previous):
+                text = previous + text
+        result.append((page, text, block))
+    return result
+
+
 def source_lines(text):
     """返回 (PDF 页号, 正文行, 连续块号)。同一 PDF 页可以有多个块。
 
@@ -452,6 +468,8 @@ def source_lines(text):
             if s:
                 page_lines.append((pno, s))
         raw_lines.extend((pno, s, block) for pno, s in _join_broken(page_lines))
+
+    raw_lines = _join_year_lines(raw_lines)
 
     # 先判「原始行里有没有长递增三位编号」，再决定要不要保留。
     # 顺序不能反：若先滤掉数字行再判，永远判不出来（这里踩过一次）。
@@ -476,10 +494,75 @@ def lines_of(text):
 
 _FRONT_BOOKMARKS = re.compile(r'^(?:封面|封底|扉页|书名页|版权页|护封|出版说明|序|序言|前言|译序|导读|目录|目录页|封勒)$')
 _DIGIT_CHAPTER_TITLE = re.compile(r'^第\s*(\d{1,4})\s*章\s+([^。！？]{1,80})$')
+_NUMBERED_CHAPTER = re.compile(
+    r'^(?:Chapter\s+(?P<english>[0-9]{1,4})(?:[：:\s.\-–—]+[^。！？!?]{1,70})?'
+    r'|第\s*(?P<chinese>[一二三四五六七八九十百零〇0-9]{1,5})\s*章'
+    r'(?:[：:\s.\-–—]*[^，。；！？!?]{1,50})?)$', re.I)
+_CHAPTER_PREFIX = re.compile(r'^(?:Chapter\s+(?P<english>[0-9]{1,4})\b'
+                             r'|第\s*(?P<chinese>[一二三四五六七八九十百零〇0-9]{1,5})\s*章)', re.I)
+_BODY_SIGNAL = re.compile(r'[\u3400-\u9fff]')
+_SECTION_CUE = re.compile(r'^(?:第\s*[一二三四五六七八九十百零〇0-9]{1,5}\s*[章节篇回卷部]'
+                          r'|Chapter\b|Section\b|Part\b|目\s*[录錄]|Contents\b'
+                          r'|[一二三四五六七八九十0-9]{1,4}[、.)）]\s*\S)', re.I)
 
 
 def _title_key(value):
     return ''.join(c for c in unicodedata.normalize('NFKC', value) if c.isalnum())
+
+
+def numbered_chapter_key(title, *, outline_title=False):
+    match = (_CHAPTER_PREFIX.match(title.strip()) if outline_title
+             else _NUMBERED_CHAPTER.fullmatch(title.strip()))
+    if not match:
+        return None
+    language = 'en' if match['english'] else 'zh'
+    number = cn2int(match['english'] or match['chinese'])
+    return (language, number) if number else None
+
+
+def numbered_chapter_outline(lines):
+    """Accept a coherent sequence with actual text between stand-alone headings."""
+    groups = {'en': [], 'zh': []}
+    for index, (page, title) in enumerate(lines):
+        key = numbered_chapter_key(title)
+        if key:
+            groups[key[0]].append((key[1], title, index, page))
+
+    def has_body(first, last):
+        body = ' '.join(text for _, text in lines[first + 1:last])
+        return len(_BODY_SIGNAL.findall(body)) >= 12 and bool(re.search(r'[。！？；]', body))
+
+    best = []
+    for candidates in groups.values():
+        run = []
+        for pos, (number, title, index, page) in enumerate(candidates):
+            stop = candidates[pos + 1][2] if pos + 1 < len(candidates) else len(lines)
+            body = has_body(index, stop)
+            if not body or (run and number != run[-1][0] + 1):
+                if len(run) > len(best):
+                    best = run
+                run = []
+            if body:
+                run.append((number, title, index, page))
+        if len(run) > len(best):
+            best = run
+    return [(title, index, page) for _, title, index, page in best] if len(best) >= 3 else []
+
+
+def continuous_short_body(text):
+    """Allow short prose with sentences and no apparent chapter or table of contents."""
+    lines = [line for _, line in lines_of(text)]
+    count = len(_BODY_SIGNAL.findall(text))
+    if not 200 <= count <= 3500 or len(re.findall(r'[。！？]', text)) < 4:
+        return False
+    if any(_SECTION_CUE.match(line) or RE_TOC.fullmatch(line) for line in lines):
+        return False
+    # A title at the start is normal. Later isolated short labels after a sentence
+    # could instead be headings and should keep the review requirement.
+    return not any(len(line) <= 24 and _BODY_SIGNAL.search(line)
+                   and not re.search(r'[，。！？；：]', line)
+                   and lines[index - 1][-1] in '。！？'
+                   for index, line in enumerate(lines[1:], 1))
 
 
 def _matches_page_title(page_lines, offset, key, max_lines):
@@ -831,6 +914,12 @@ def probe(text, name='', layout_path=None):
 
     plan = {'lines': n, 'toc_n': len(toc), 'toc': toc[:400], 'toc_src': _src,
             'marks': stat, 'mode': None, 'unit': None}
+    numbered = numbered_chapter_outline(lines)
+    if numbered and (numbered_chapter_key(numbered[0][0])[0] == 'en'
+                     or (len(numbered) < 8 and len(toc) < 8)):
+        plan.update(mode='pdf_outline', unit='章', pdf_outline=numbered,
+                    pattern='numbered_chapters', titles=[title for title, _, _ in numbered])
+        return plan
 
     # 标题序号连续且至少三篇才接受，避免正文中的孤立编号短句。
     leading = [(i, s, RE_PIAN_LEAD.match(s)) for i, (_, s) in enumerate(lines) if RE_PIAN_LEAD.match(s)]
@@ -1193,17 +1282,29 @@ def outline(text, plan):
         return ded
 
     if mode == 'toc':
-        # 用目录名去正文里找第一个「整行等于篇名」的位置
+        # 目录条目先用来划范围，再只在范围之后找实际正文标题。
+        keys = {(_title_key(name), page) for name, page in plan['toc']}
+        directory_rows = []
+        for index, (_, line) in enumerate(lines[:600]):
+            match = RE_TOC.fullmatch(line)
+            if match and (_title_key(match[2] or match[3]), int(match[1] or match[4])) in keys:
+                if directory_rows and index - directory_rows[-1] > 6:
+                    if len(directory_rows) >= 3:
+                        break
+                    directory_rows = []
+                directory_rows.append(index)
+        body_start = directory_rows[-1] + 1 if len(directory_rows) >= 3 else 0
         idx_by_name = {}
-        for i, (pno, s) in enumerate(lines):
-            idx_by_name.setdefault(norm(s), i)
+        for i in range(body_start, len(lines)):
+            idx_by_name.setdefault(_title_key(lines[i][1]), i)
         out = []
         for nm, pg in plan['toc']:
-            i = idx_by_name.get(norm(nm))
+            key = _title_key(nm)
+            i = idx_by_name.get(key)
             if i is None:                     # 容忍带编号前缀
-                for j, (pno, s) in enumerate(lines):
-                    ns = norm(s)
-                    if ns.endswith(norm(nm)) and len(ns) <= len(norm(nm)) + 8:
+                for j in range(body_start, len(lines)):
+                    ns = _title_key(lines[j][1])
+                    if ns.endswith(key) and len(ns) <= len(key) + 8:
                         i = j
                         break
             if i is not None:

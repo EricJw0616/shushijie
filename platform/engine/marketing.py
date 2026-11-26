@@ -141,6 +141,32 @@ def _fix_ev(ev, segmap):
     return None
 
 
+_AUDIENCE_DECLARATION = re.compile(
+    r'^(?:(?:本书|本册)(?:的)?(?:目标读者|适读人群|适读对象)[：:为是]'
+    r'|(?:目标读者|适读人群|适读对象|读者对象)[：:]'
+    r'|(?:本书|本册)(?:主要)?(?:面向|适合|适于|供))')
+_INFERENCE_REASON = re.compile(r'推断|推测|推想|猜测|估计|可能|或许|大概|可考虑')
+
+
+def evidence_basis(key, text, reason, basis, evidence):
+    """Reserve 原文明示 for a conclusion stated directly in its source quote."""
+    if basis != '原文明示' or _INFERENCE_REASON.search(str(reason or '')):
+        return '推断'
+    claim = re.sub(r'\s+', '', str(text or '')).rstrip('。')
+    for entry in evidence if isinstance(evidence, list) else []:
+        if not isinstance(entry, dict):
+            continue
+        quote = re.sub(r'\s+', '', str(entry.get('quote') or '')).rstrip('。')
+        if key == 'audience':
+            declaration = _AUDIENCE_DECLARATION.match(quote)
+            if (declaration and claim and not quote.endswith(('?', '？')) and
+                    claim in (quote, quote[declaration.end():])):
+                return '原文明示'
+        elif claim and claim == quote:
+            return '原文明示'
+    return '推断'
+
+
 def _call(prompt, max_tokens=3000):
     r = llm.chat([{'role': 'system', 'content': SYSTEM},
                   {'role': 'user', 'content': prompt}],
@@ -185,7 +211,8 @@ def _prompt_b(text):
         '- emotions 情绪价值\n- leads 营销线索\n'
         '每条：{"text":"一句结论","seg":"段号","quote":"原文逐字引文",'
         '"reason":"为什么","basis":"原文明示或推断"}。\n'
-        '要求：只依据给出的原文；推断必须标“推断”，不能包装成原文明示；'
+        '只依据给出的原文。原文明示须逐字表达整条结论。目标读者须引用原文明确指定读者的句子，'
+        '仅根据题材、难度或风格判断可能受众时标“推断”。'
         '找不到依据就少写或不写。引文必须逐字来自片段。\n\n'
         '只输出 JSON：{"audience":[...],"scenarios":[...],"gains":[...],'
         '"emotions":[...],"leads":[...]}\n\n'
@@ -245,8 +272,9 @@ def build(code, max_chars=16000, model_note=''):
             if not ev or not txt:
                 dropped += 1
                 continue
-            vals.append({'text': txt, 'basis': x.get('basis') or '推断',
-                         'reason': x.get('reason') or '', 'evidence': [ev]})
+            reason = x.get('reason') or ''
+            vals.append({'text': txt, 'basis': evidence_basis(key, txt, reason, x.get('basis'), [ev]),
+                         'reason': reason, 'evidence': [ev]})
         items[key] = _item(key, vals, [e for x in vals for e in x['evidence']],
                            'AI 草稿，需人工确认；共 %d 条' % len(vals))
 

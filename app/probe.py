@@ -407,17 +407,19 @@ def _read_pdf(path, head_pages=5):
             md = pdf.metadata or {}
             info['meta'] = {k: (md.get(k) or '') for k in
                             ('Title', 'Author', 'Subject', 'Creator', 'Producer')}
-            idx = list(range(min(head_pages, n)))
+            idx = list(range(n if n <= 8 else head_pages))
             # 再抽 10% / 50% / 90% 三页，判断「只有封面有字」的假文本型 PDF
             if n > 12:
                 for p in (0.1, 0.5, 0.9):
                     i = int(n * p)
                     if i not in idx:
                         idx.append(i)
+            samples = {}
             texts = []
             head, front = [], []
             for i in idx:
                 t = pdf.pages[i].extract_text() or ''
+                samples[i] = t
                 if i < 3:            # 封面/扉页/目录：只用来认书名
                     head.append(t)
                 if i < head_pages:
@@ -426,7 +428,7 @@ def _read_pdf(path, head_pages=5):
             info['head_text'] = '\n'.join(head)
             for i in range(min(8, n)):      # 扉页/版权页常在第 4~8 页
                 try:
-                    front.append(pdf.pages[i].extract_text() or '')
+                    front.append(samples[i] if i in samples else pdf.pages[i].extract_text() or '')
                 except Exception:
                     pass
             info['front_text'] = '\n'.join(front)
@@ -434,14 +436,13 @@ def _read_pdf(path, head_pages=5):
             tail = []
             for i in range(max(0, n - 2), n):
                 try:
-                    tail.append(pdf.pages[i].extract_text() or '')
+                    tail.append(samples[i] if i in samples else pdf.pages[i].extract_text() or '')
                 except Exception:
                     pass
             info['tail_text'] = '\n'.join(tail)
-            for i in idx:
-                t = pdf.pages[i].extract_text() or ''
-                info['sample_han'].append(_han(t))
-                info['sample_chars'].append(len(t.strip()))
+            for t in samples.values():
+                info['sample_han'].append(ingest.han_count(t))
+                info['sample_chars'].append(ingest.visible_chars(t))
             info['sampled'] = len(idx)
     except Exception as e:
         raise ingest.IngestError('PDF 打不开：%s' % e)
@@ -449,14 +450,7 @@ def _read_pdf(path, head_pages=5):
 
 
 def _read_docx(path):
-    try:
-        from docx import Document
-    except Exception as e:
-        raise ingest.IngestError('服务器未安装 python-docx，暂时不能预检 docx（%s）。' % e)
-    try:
-        doc = Document(path)
-    except Exception as e:
-        raise ingest.IngestError('docx 打不开：%s' % e)
+    doc = ingest._open_docx(path)
     cp = doc.core_properties
     paras = []
     for p in doc.paragraphs[:60]:
@@ -466,17 +460,46 @@ def _read_docx(path):
     return {'pages': 0,
             'meta': {'Title': cp.title or '', 'Author': cp.author or '',
                      'Subject': cp.subject or ''},
-            'text': '\n'.join(paras[:25])}
+            'text': '\n'.join(paras[:25]), 'body': ingest._docx_body(doc), 'complete_body': True}
 
 
 def _read_text(path, limit=65536):
     with open(path, 'rb') as fp:
-        raw = fp.read(limit)
-    try:
-        text = ingest._decode_bytes(raw)
-    except Exception:
-        text = raw.decode('utf-8', 'replace')
-    return {'pages': 0, 'meta': {}, 'text': text}
+        raw = fp.read(limit + 1)
+    complete = len(raw) <= limit
+    text = ingest._decode_bytes(raw[:limit], complete=complete)
+    return {'pages': 0, 'meta': {}, 'text': text, 'body': text, 'complete_body': complete}
+
+
+def _check_text_sample(raw, fmt, warnings):
+    body = raw['body']
+    if fmt == 'md':
+        body = ingest._md_to_text(body)
+    body = ingest._normalize(body)
+    issue = ingest.body_language_issue(ingest.han_count(body), ingest.visible_chars(body),
+                                       check_minimum=raw['complete_body'])
+    if issue and raw['complete_body']:
+        raise ingest.IngestError(issue)
+    if issue:
+        warnings.append('文首抽样文字以非中文为主。全文需以中文正文为主，入库时会检查全文。')
+
+
+def _check_pdf_sample(raw, warnings):
+    counts = raw['sample_chars']
+    low_text = sum(n < 80 for n in counts)
+    if counts and low_text == len(counts):
+        warnings.append('抽样页可读取文字很少，可能是扫描件。入库时会识别未读到文字的页面。')
+        return True
+    if counts and low_text * 2 > len(counts):
+        warnings.append('多数抽样页可读取文字很少，正文可能夹着扫描页。入库后请对照原页核对。')
+    count = sum(counts)
+    han = sum(raw['sample_han'])
+    if ingest.body_language_issue(han, count, check_minimum=False):
+        complete_text_layer = raw['pages'] == len(counts) and low_text == 0
+        if complete_text_layer:
+            raise ingest.IngestError(ingest.body_language_issue(han, count))
+        warnings.append('抽样文字以非中文为主。图书入库须至少读到 200 个汉字，且中文占可读文字至少 25%。如正文为外文，请改传含中文正文的版本。')
+    return False
 
 
 def _pick_title(fmt, stem, p_title, toc_title, meta_title, first_src):
@@ -539,21 +562,18 @@ def probe_file(path, fmt, filename):
     if fmt == 'pdf':
         raw = _read_pdf(path)
         pages, meta, text = raw['pages'], raw['meta'], raw['text']
-        sample = raw.get('sample_han') or []
-        if sample and sum(1 for h in sample if h < 10) == len(sample):
-            scanned = True
-            warnings.append('抽样页读到的中文很少，可能含扫描页。入库时会尝试识别读不到文字的页面。使用前请对照原页。')
-        elif sample and 2 * sum(1 for h in sample if h < 10) > len(sample):
-            warnings.append('多数抽样页读到的中文很少，正文可能夹着扫描页。入库结果可在任务记录查看。')
+        scanned = _check_pdf_sample(raw, warnings)
         if pages and size / max(1, pages) > 600 * 1024:
             warnings.append('文件平均每页 %.1f MB，处理大图页可能需要更多时间。'
                             % (size / 1024 / 1024 / pages))
     elif fmt == 'docx':
         raw = _read_docx(path)
         meta, text = raw['meta'], raw['text']
+        _check_text_sample(raw, fmt, warnings)
     else:
         raw = _read_text(path)
         meta, text = raw['meta'], raw['text']
+        _check_text_sample(raw, fmt, warnings)
 
     first_src = '封面页' if fmt in ('pdf', 'docx') else '文首'
     head_text = raw.get('head_text') or text

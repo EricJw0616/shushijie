@@ -19,7 +19,7 @@ function setup(asset){
     },
   },addEventListener(){}};
   context.window=context;
-  runInNewContext(app.match(/^function clip\(.*$/m)[0]+'\n'+reader+'\n'+source.replace('return {editWritingNotes,','return {A,materialTitle,marketingMaterialRow,recommendationHtml,editWritingNotes,'),context);
+  runInNewContext(app.match(/^function clip\(.*$/m)[0]+'\n'+reader+'\n'+source.replace('return {editWritingNotes,','return {A,materialTitle,marketingMaterialRow,recommendationHtml,marketingGeneration,draftResult,editWritingNotes,'),context);
   const api=context.ProjectAssist;
   api.A.project={id:'test-project',kind:'marketing',items:[],brief:{marketing_task:'channel',channel:'公众号'}};
   const run={id:'existing-run',capability:'recommend',status:'done',snapshot:{materials:[asset]},result:{suggestions:[{asset_id:asset.id,proposed_use:'用于结尾的图书介绍。'}]}};
@@ -35,6 +35,24 @@ test('book introduction has a compact type heading while detail preserves the co
   assert.ok(!card.includes(content));
   assert.ok(ui.detail().includes(content),'opening the detail still exposes the full saved introduction');
   assert.equal(JSON.stringify(asset),before,'displaying a shorter heading does not rewrite the source');
+});
+
+test('editor can recheck an eligible failed copy and sees factual errors without an edit action',()=>{
+  const {api}=setup({id:'source',kind:'quote',title:'原文'});
+  const failed={id:'draft-a',project_id:'test-project',capability:'draft',status:'failed',error:'正文超出上限',
+    review_issues:[{severity:'blocker',message:'实际325字，超过300字'}],
+    recovery_draft:[{channel:'小红书',title:'候选标题',body:'<未检查正文>',ending:''}]};
+  api.A.runs=[failed];
+  assert.match(api.marketingGeneration(),/实际325字，超过300字/);
+  assert.match(api.marketingGeneration(),/修改这份初稿/);
+  assert.match(api.draftResult(failed),/&lt;未检查正文&gt;/);
+  assert.match(api.draftResult(failed),/重新检查修改稿/);
+  assert.doesNotMatch(api.draftResult(failed),/ProjectAssist\.apply\(/);
+  const invalid={...failed,source_stale:true,recovery_draft:undefined,error:'原文依据无效',review_issues:undefined};
+  api.A.runs=[invalid];
+  assert.match(api.marketingGeneration(),/原文依据无效/);
+  assert.doesNotMatch(api.marketingGeneration(),/修改这份初稿/);
+  assert.doesNotMatch(api.draftResult(invalid),/重新检查修改稿/);
 });
 
 test('older recommendation snapshots without type metadata remain readable without regeneration',()=>{

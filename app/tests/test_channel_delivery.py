@@ -76,6 +76,51 @@ class ChannelDeliveryTests(unittest.TestCase):
         self.assertNotIn('参考图：',production)
         self.assertEqual(data,before)
 
+    def test_repeated_closing_is_removed_before_review_and_rendering(self):
+        _, snapshot, data, ids = self.case('小红书')
+        delivery = data['channel_assets'][0]['delivery']
+        for ending, tags in [('请翻开原书读这一段。', '#读书 #原文'), ('你会怎么读这段？', '#共读')]:
+            delivery.update(note_body='从具体情节展开。' + ending + '\n\n' + tags, ending=ending)
+            result = I._validate(data, snapshot, ids)
+            pack = result['channel_assets'][0]['channel_delivery']
+            self.assertEqual(pack['ending'], '')
+            self.assertEqual(I.render_markdown(result, snapshot).count(ending), 1)
+            self.assertEqual(D.render(dict(pack, ending=ending)).count(ending), 1)
+            self.assertEqual(D.social_note_ending('开头。' + ending + ' ' + tags, ending), '')
+        delivery.update(note_body='另一份开头。' + ending + '\n\n还有一个不同的结尾。\n' + tags)
+        result = I._validate(data, snapshot, ids)
+        self.assertEqual(result['channel_assets'][0]['channel_delivery']['ending'], ending)
+
+    def test_length_blocker_can_be_edited_and_rechecked_against_same_sources(self):
+        _, snapshot, data, ids = self.case('小红书', '正文不超过200字')
+        delivery = data['channel_assets'][0]['delivery']
+        blocker = {'accepted': False, 'issues': [{'code': 'length_mismatch', 'severity': 'blocker',
+            'location': '正文', 'message': '请缩短正文', 'candidate_quote': delivery['note_body'],
+            'source_basis': '写作要求不超过200字'}]}
+        response = lambda value: {'text': json.dumps(value, ensure_ascii=False)}
+        with patch.object(I.llm, 'chat', side_effect=map(response, [data, blocker, data, blocker])), \
+                self.assertRaises(I.RecoverableDraftError) as caught:
+            I.execute(snapshot)
+        failure = caught.exception
+        edit = dict(failure.fields[0], body='从共同经历读起。')
+        edited = I.edit_recovery_candidate(failure.candidate, [edit])
+        self.assertEqual(edited['channel_assets'][0]['asset_ids'], data['channel_assets'][0]['asset_ids'])
+        self.assertEqual(edited['channel_assets'][0]['delivery']['cards'], delivery['cards'])
+        self.assertEqual(failure.candidate, data)
+        with self.assertRaisesRegex(ValueError, '保留原有渠道'):
+            I.edit_recovery_candidate(failure.candidate, [dict(edit, channel='公众号')])
+        with patch.object(I.llm, 'chat', return_value=response({'accepted': True, 'issues': []})) as semantic:
+            result = I.execute(snapshot, edited_candidate=edited)
+        self.assertEqual(semantic.call_count, 1)
+        self.assertTrue(result['provenance']['editor_revision'])
+        self.assertIn(edit['body'], I.render_markdown(result, snapshot))
+        fact = {'accepted': False, 'issues': [dict(blocker['issues'][0], code='ungrounded',
+                message='无法找到事实出处', candidate_quote=edit['body'], source_basis=ids[0])]}
+        with patch.object(I.llm, 'chat', return_value=response(fact)), self.assertRaises(ValueError) as blocked:
+            I.execute(snapshot, edited_candidate=edited)
+        self.assertNotIsInstance(blocked.exception, I.RecoverableDraftError)
+        self.assertIn('无法找到事实出处', str(blocked.exception))
+
     def test_real_cover_reference_is_specific_to_its_card(self):
         _,snapshot,data,ids=self.case('小红书')
         cover=data['channel_assets'][0]['delivery']['cards'][0]
